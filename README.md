@@ -1,6 +1,6 @@
-# Mina Avsikt
+# Niyyah
 
-This repository contains the source code for the Mina Avsikt project, a platform to facilitate serious marriage intentions according to orthodox Islamic rules, with the local mosque as a neutral, responsible party. The platform is designed to be discreet, secure, and respectful of Islamic principles. For a detailed understanding of the project's features, and technical specifications, please refer to the [project specification document](./docs/specification.md).
+This repository contains the source code for the Niyyah project, a platform to facilitate serious marriage intentions according to orthodox Islamic rules, with the local mosque as a neutral, responsible party. The platform is designed to be discreet, secure, and respectful of Islamic principles. For a detailed understanding of the project's features, and technical specifications, please refer to the [project specification document](./docs/specification.md).
 
 ## Contributing
 

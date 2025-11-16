@@ -1,0 +1,17 @@
+{
+  "editor.defaultFormatter": "oxc.oxc-vscode",
+  "explorer.fileNesting.patterns": {
+    "*.js": "${capture}.test.js,${capture}.spec.js,${capture}.mock.js",
+    "*.ts": "${capture}.test.ts,${capture}.spec.ts,${capture}.mock.ts"
+  },
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svelte-kit": true,
+    "**/node_modules": true
+  },
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "files.trimTrailingWhitespace": true,
+  "oxc.fmt.experimental": true,
+  "svelte.enable-ts-plugin": true
+}
