@@ -2,6 +2,7 @@
   "recommendations": [
     "bradlc.vscode-tailwindcss",
     "svelte.svelte-vscode",
-    "vitest.explorer"
+    "vitest.explorer",
+    "inlang.vs-code-extension"
   ]
 }

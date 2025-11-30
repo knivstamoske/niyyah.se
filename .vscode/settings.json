@@ -1,13 +1,23 @@
 {
-  "editor.defaultFormatter": "oxc.oxc-vscode",
   "explorer.fileNesting.patterns": {
-    "*.js": "${capture}.test.js,${capture}.spec.js,${capture}.mock.js",
     "*.ts": "${capture}.test.ts,${capture}.spec.ts,${capture}.mock.ts"
+  },
+  "files.associations": {
+    "*.css": "tailwindcss"
   },
   "files.exclude": {
     "**/.git": true,
+    "**/.gitignore": true,
+    "**/.npmrc": true,
+    "**/.prettierignore": true,
+    "**/.prettierrc": true,
     "**/.svelte-kit": true,
-    "**/node_modules": true
+    "**/.wrangler": true,
+    "**/docker-compose.yml": true,
+    "**/eslint.config.js": true,
+    "**/node_modules": true,
+    "**/pnpm-workspace.yaml": true,
+    "**/project.inlang": true
   },
   "files.insertFinalNewline": true,
   "files.trimFinalNewlines": true,

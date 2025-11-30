@@ -1,0 +1,109 @@
+# www.niyyah.se
+
+Public marketing website for Niyyah.se
+
+## Application Details
+
+- **Production URL:** `https://www.niyyah.se`
+- **Development Port:** `8050`
+
+## Technology Stack
+
+This is a SvelteKit-based application with the following technologies:
+
+- **Framework:** SvelteKit (TypeScript)
+- **Database:** PostgreSQL 18 with Drizzle ORM
+- **Styling:** TailwindCSS v4
+- **Internationalization:** Paraglide.js (supports English, Swedish, Arabic)
+- **Testing:** Vitest (unit/component), Playwright (E2E)
+- **Deployment:** Cloudflare (using @sveltejs/adapter-cloudflare)
+
+## Prerequisites
+
+- Node.js 24+ and the pnpm package manager
+- Docker and Docker Compose (for local database)
+
+## Getting Started
+
+### 1. Install Dependencies
+
+From the monorepo root:
+
+```bash
+pnpm install
+```
+
+### 2. Start the Database
+
+Start PostgreSQL 18 locally:
+
+```bash
+docker compose up -d
+```
+
+### 3. Setup Database Schema
+
+Push the database schema:
+
+```bash
+cd apps/www.niyyah.se
+pnpm db:push
+```
+
+### 4. Start Development Server
+
+```bash
+pnpm dev
+```
+
+The application will be available at `http://localhost:8050`
+
+## Internationalization
+
+The application supports three languages:
+
+- English (en) - Default
+- Swedish (sv) - Supported
+- Arabic (ar)  - Supported
+
+Translation files are located in `i18n/` directory. Use Paraglide.js for accessing translations in components.
+
+## Testing
+
+### Unit and Component Tests
+
+Run unit tests with Vitest:
+
+```bash
+pnpm test
+```
+
+Test files are co-located with source files using the `.spec.ts` or `.test.ts` suffix.
+
+### End-to-End Tests
+
+Run E2E tests with Playwright:
+
+```bash
+pnpm test:e2e
+```
+
+E2E tests are located in the `e2e/` directory.
+
+## Development Guidelines
+
+Follow the guidelines in `/docs/AGENTS.md` and commit using [Conventional Commits](https://www.conventionalcommits.org/).
+
+## Port Allocation
+
+This application uses port **8050** for local development. The port range 8050-8059 is reserved for this application to avoid conflicts with other apps in the monorepo.
+
+## Related Documentation
+
+- [Architecture Decision Records](/docs/adrs/)
+- [Developer Guidelines](/AGENTS.md)
+- [Monorepo Root README](/README.md)
+
+---
+
+**Last Updated:** 2025-11-30
