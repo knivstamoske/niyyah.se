@@ -1,4 +1,19 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
-	"hello_world": "Hello, {name} from ar!"
+	"hello_world": "Hello, {name} from ar!",
+	"page_title": "Niyyah.se - التوفيق الحلال في السويد",
+	"meta_description": "منصة مخصصة للمسلمين في السويد للعثور على شريك متوافق وفقًا للقيم الإسلامية.",
+	"headline": "Niyyah.se",
+	"description": "منصة للمسلمين في السويد للعثور على شريك متوافق وفقًا للقيم الإسلامية.",
+	"email_placeholder": "أدخل بريدك الإلكتروني",
+	"email_label": "عنوان البريد الإلكتروني",
+	"join_waitlist": "انضم إلى قائمة الانتظار",
+	"joining": "جاري الانضمام...",
+	"social_proof": "كن من أوائل المنضمين عند الإطلاق.",
+	"privacy_notice": "نحن نحترم خصوصيتك. لا رسائل مزعجة.",
+	"footer_tagline": "نربط القلوب، مسترشدين بالمبادئ الإسلامية",
+	"copyright": "© 2025 Niyyah.se. جميع الحقوق محفوظة.",
+	"facebook": "فيسبوك",
+	"twitter": "تويتر",
+	"instagram": "انستغرام"
 }

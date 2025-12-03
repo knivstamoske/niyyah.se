@@ -1,4 +1,19 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
-	"hello_world": "Hello, {name} from sv!"
+	"hello_world": "Hello, {name} from sv!",
+	"page_title": "Niyyah.se - Halal matchmaking i Sverige",
+	"meta_description": "En dedikerad plattform för muslimer i Sverige att hitta en kompatibel partner i enlighet med islamiska värderingar.",
+	"headline": "Niyyah.se",
+	"description": "En plattform för muslimer i Sverige att hitta en kompatibel partner i enlighet med islamiska värderingar.",
+	"email_placeholder": "Ange din e-post",
+	"email_label": "E-postadress",
+	"join_waitlist": "Gå med i väntelistan",
+	"joining": "Ansluter...",
+	"social_proof": "Var bland de första att gå med när vi lanserar.",
+	"privacy_notice": "Vi respekterar din integritet. Ingen spam.",
+	"footer_tagline": "Förenar hjärtan, vägledda av islamiska principer",
+	"copyright": "© 2025 Niyyah.se. Alla rättigheter förbehållna.",
+	"facebook": "Facebook",
+	"twitter": "Twitter",
+	"instagram": "Instagram"
 }

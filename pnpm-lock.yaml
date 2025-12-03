@@ -32,6 +32,12 @@ importers:
       '@inlang/paraglide-js':
         specifier: ^2.5.0
         version: 2.5.0
+      '@inlang/plugin-m-function-matcher':
+        specifier: ^2.1.0
+        version: 2.1.0
+      '@inlang/plugin-message-format':
+        specifier: ^4.0.0
+        version: 4.0.0
       '@playwright/test':
         specifier: ^1.57.0
         version: 1.57.0
@@ -805,6 +811,12 @@ packages:
   '@inlang/paraglide-js@2.5.0':
     resolution: {integrity: sha512-FnycOM6j0GYd/n97NCDyXJiHnyPYGPgufL640eZWs+rTIRrOgDVz/o77iWRYFZK84REOcmSDi0N6PbbY8NT8+A==}
     hasBin: true
+
+  '@inlang/plugin-m-function-matcher@2.1.0':
+    resolution: {integrity: sha512-IAbG7rOl+rlTiZY7qj92we6lmII693lVthPtY9bFDkZ/Ig7FPSpae/TfLzqjf2KcR1nDdx1zRpSo6roDPeM85g==}
+
+  '@inlang/plugin-message-format@4.0.0':
+    resolution: {integrity: sha512-zNpLxLTt+bDd3JLXj1ONzo+Q6AOzz2MfcgGo8XB6/bweGhFIndK3GU/q0iU4o7VI4KS1+OHNLpKwFcrAifwERQ==}
 
   '@inlang/recommend-sherlock@0.2.1':
     resolution: {integrity: sha512-ckv8HvHy/iTqaVAEKrr+gnl+p3XFNwe5D2+6w6wJk2ORV2XkcRkKOJ/XsTUJbPSiyi4PI+p+T3bqbmNx/rDUlg==}
@@ -1667,6 +1679,11 @@ packages:
   flat-cache@4.0.1:
     resolution: {integrity: sha512-f7ccFPK3SXFHpx15UIGyRJ/FJQctuKZ0zVuN3frBo4HnK3cay9VEW0R6yPYFHC0AgqhukPzKjq22t5DmAyqGyw==}
     engines: {node: '>=16'}
+
+  flat@6.0.1:
+    resolution: {integrity: sha512-/3FfIa8mbrg3xE7+wAhWeV+bd7L2Mof+xtZb5dRDKZ+wDvYJK4WDYeIOuOhre5Yv5aQObZrlbRmk3RTSiuQBtw==}
+    engines: {node: '>=18'}
+    hasBin: true
 
   flatted@3.3.3:
     resolution: {integrity: sha512-GX+ysw4PBCz0PzosHDepZGANEuFCMLrnRTiEy9McGjmkCQYwRq4A/X786G/fjM/+OjsWSU1ZrY5qyARZmO/uwg==}
@@ -2921,6 +2938,16 @@ snapshots:
     transitivePeerDependencies:
       - babel-plugin-macros
 
+  '@inlang/plugin-m-function-matcher@2.1.0':
+    dependencies:
+      '@inlang/sdk': 2.4.9
+    transitivePeerDependencies:
+      - babel-plugin-macros
+
+  '@inlang/plugin-message-format@4.0.0':
+    dependencies:
+      flat: 6.0.1
+
   '@inlang/recommend-sherlock@0.2.1':
     dependencies:
       comment-json: 4.4.1
@@ -3756,6 +3783,8 @@ snapshots:
     dependencies:
       flatted: 3.3.3
       keyv: 4.5.4
+
+  flat@6.0.1: {}
 
   flatted@3.3.3: {}
 
