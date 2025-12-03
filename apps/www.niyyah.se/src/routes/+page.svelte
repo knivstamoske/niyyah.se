@@ -13,20 +13,20 @@
 
 <div class="min-h-screen flex flex-col bg-background text-text">
 	<!-- Main Content -->
-	<main class="flex-1 flex flex-col">
+	<main class="flex-1 flex flex-col lg:py-8 lg:justify-center">
 		<!-- Hero Image -->
-		<div class="px-4 py-3">
-			<div class="w-full rounded-xl overflow-hidden">
+		<div class="px-4 py-3 flex justify-center lg:px-8">
+			<div class="w-full max-w-2xl rounded-xl overflow-hidden">
 				<img
 					src="/hero-family.png"
 					alt="Muslim couple with child"
-					class="w-full h-auto object-cover"
+					class="w-full h-auto max-h-160 object-cover"
 				/>
 			</div>
 		</div>
 
 		<!-- Headline -->
-		<h1 class="text-3xl font-bold leading-tight px-4 text-center pb-3 pt-6">Halal Matchmaking</h1>
+		<h1 class="text-3xl font-bold leading-tight px-4 text-center pb-3 pt-8 lg:pt-8">Niyyah.se</h1>
 
 		<!-- Description -->
 		<p
@@ -36,14 +36,10 @@
 			values.
 		</p>
 
-		<div class="flex-grow"></div>
+		<div class="grow lg:grow-0"></div>
 
 		<!-- Waitlist Section -->
-		<div class="px-4 py-6 mt-6">
-			<h2 class="text-lg font-bold leading-tight px-4 text-center pb-4 pt-4">
-				Be the first to know when we launch.
-			</h2>
-
+		<div class="px-4 py-6 mt-6 lg:mt-8 lg:px-8">
 			<!-- Form -->
 			<form {...joinWaitlist} class="flex flex-col gap-4 max-w-sm mx-auto">
 				<label class="flex flex-col w-full">
@@ -104,15 +100,15 @@
 
 			<!-- Social Links -->
 			<div class="flex justify-center gap-6 mt-6">
-				<a href="#" class="text-gray-400 hover:text-secondary transition-colors">
+				<a href="#facebook" class="text-gray-400 hover:text-secondary transition-colors">
 					<Facebook size={24} />
 					<span class="sr-only">Facebook</span>
 				</a>
-				<a href="#" class="text-gray-400 hover:text-secondary transition-colors">
+				<a href="#twitter" class="text-gray-400 hover:text-secondary transition-colors">
 					<Twitter size={24} />
 					<span class="sr-only">Twitter</span>
 				</a>
-				<a href="#" class="text-gray-400 hover:text-secondary transition-colors">
+				<a href="#instagram" class="text-gray-400 hover:text-secondary transition-colors">
 					<Instagram size={24} />
 					<span class="sr-only">Instagram</span>
 				</a>
@@ -120,7 +116,7 @@
 
 			<!-- Copyright -->
 			<div class="mt-8 text-center">
-				<p class="text-xs text-gray-500">© 2024 Niyyah.se. All rights reserved.</p>
+				<p class="text-xs text-gray-500">© 2025 Niyyah.se. All rights reserved.</p>
 			</div>
 		</div>
 	</footer>
