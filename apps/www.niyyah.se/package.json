@@ -52,7 +52,8 @@
 		"vite": "^7.2.4",
 		"vite-plugin-devtools-json": "^1.0.0",
 		"vitest": "^4.0.14",
-		"vitest-browser-svelte": "^2.0.1"
+		"vitest-browser-svelte": "^2.0.1",
+		"wrangler": "^4.51.0"
 	},
 	"dependencies": {
 		"daisyui": "^5.5.5",
