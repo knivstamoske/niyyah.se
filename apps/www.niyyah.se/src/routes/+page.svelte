@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Heart, Facebook, Twitter, Instagram } from 'lucide-svelte';
+	import { joinWaitlist } from './waitlist.remote';
 </script>
 
 <svelte:head>
@@ -25,15 +26,14 @@
 		</div>
 
 		<!-- Headline -->
-		<h1 class="text-3xl font-bold leading-tight px-4 text-center pb-3 pt-6">
-		Halal Matchmaking
-	</h1>
+		<h1 class="text-3xl font-bold leading-tight px-4 text-center pb-3 pt-6">Halal Matchmaking</h1>
 
 		<!-- Description -->
 		<p
 			class="text-subtle-text text-base leading-relaxed pb-3 pt-1 px-4 text-center max-w-md mx-auto"
 		>
-			A platform for Muslims in Sweden to find a compatible partner in accordance with Islamic values.
+			A platform for Muslims in Sweden to find a compatible partner in accordance with Islamic
+			values.
 		</p>
 
 		<div class="flex-grow"></div>
@@ -45,23 +45,38 @@
 			</h2>
 
 			<!-- Form -->
-			<form class="flex flex-col gap-4 max-w-sm mx-auto">
+			<form {...joinWaitlist} class="flex flex-col gap-4 max-w-sm mx-auto">
 				<label class="flex flex-col w-full">
 					<span class="sr-only">Email address</span>
 					<input
-						type="email"
+						{...joinWaitlist.fields.email.as('email')}
 						placeholder="Enter your email"
 						class="w-full h-14 px-4 rounded-lg bg-white border-2 border-border text-text placeholder:text-subtle-text focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary"
 					/>
+					{#each joinWaitlist.fields.email.issues() as issue}
+						<p class="text-sm text-red-600 mt-1">{issue.message}</p>
+					{/each}
 				</label>
 
 				<button
 					type="submit"
-					class="h-14 px-6 rounded-lg w-full bg-primary text-white font-bold hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-background transition-colors"
+					class="h-14 px-6 rounded-lg w-full bg-primary text-white font-bold hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-background transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+					disabled={!!joinWaitlist.pending}
 				>
-					Join the Waitlist
+					{joinWaitlist.pending ? 'Joining...' : 'Join the Waitlist'}
 				</button>
 			</form>
+
+			<!-- Success/Error Messages -->
+			{#if joinWaitlist.result}
+				<p
+					class="text-center mt-4 text-sm {joinWaitlist.result.success
+						? 'text-green-600'
+						: 'text-red-600'}"
+				>
+					{joinWaitlist.result.message}
+				</p>
+			{/if}
 
 			<!-- Social Proof -->
 			<p class="text-subtle-text text-sm pt-4 px-4 text-center">
@@ -84,9 +99,7 @@
 					<Heart class="text-secondary" size={24} />
 					<h3 class="text-xl font-bold">Niyyah.se</h3>
 				</div>
-				<p class="mt-2 text-sm text-gray-400">
-					Connecting hearts, guided by Islamic principles
-				</p>
+				<p class="mt-2 text-sm text-gray-400">Connecting hearts, guided by Islamic principles</p>
 			</div>
 
 			<!-- Social Links -->

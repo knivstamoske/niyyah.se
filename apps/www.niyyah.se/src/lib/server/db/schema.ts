@@ -1,6 +1,8 @@
-import { pgTable, serial, integer } from 'drizzle-orm/pg-core';
+import { pgTable, uuid, varchar, timestamp, boolean } from 'drizzle-orm/pg-core';
 
-export const user = pgTable('user', {
-	id: serial('id').primaryKey(),
-	age: integer('age')
+export const waitlistEmails = pgTable('waitlist_emails', {
+	id: uuid('id').primaryKey().defaultRandom(),
+	email: varchar('email', { length: 255 }).notNull().unique(),
+	createdAt: timestamp('created_at').notNull().defaultNow(),
+	verified: boolean('verified').notNull().default(false)
 });

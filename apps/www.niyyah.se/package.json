@@ -57,6 +57,7 @@
 	"dependencies": {
 		"daisyui": "^5.5.5",
 		"lucide-svelte": "^0.555.0",
-		"postgres": "^3.4.7"
+		"postgres": "^3.4.7",
+		"zod": "^4.1.13"
 	}
 }
