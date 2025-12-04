@@ -8,6 +8,13 @@
       "when": 1764721077604,
       "tag": "0000_add-waitlist-table",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1764833258493,
+      "tag": "0001_add-candidate-applications-table",
+      "breakpoints": true
     }
   ]
 }

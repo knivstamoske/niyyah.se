@@ -1,0 +1,20 @@
+CREATE TABLE "candidate_applications" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"name" varchar(255) NOT NULL,
+	"email" varchar(255) NOT NULL,
+	"phone" varchar(50),
+	"birth_year" integer NOT NULL,
+	"gender" varchar(10) NOT NULL,
+	"city" varchar(255) NOT NULL,
+	"occupation" varchar(255),
+	"education" varchar(255),
+	"family_situation" text,
+	"religious_practice" text,
+	"housing_situation" text,
+	"intention" text,
+	"about_me" text,
+	"seeking_age_min" integer,
+	"seeking_age_max" integer,
+	"seeking_city" varchar(255),
+	"created_at" timestamp DEFAULT now() NOT NULL
+);
