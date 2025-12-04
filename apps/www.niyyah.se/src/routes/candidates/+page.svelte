@@ -58,7 +58,7 @@
 						{m.candidate_personal_info()}
 					</legend>
 
-					<div class="grid gap-4 sm:grid-cols-2">
+					<div class="grid gap-4">
 						<label class="flex flex-col">
 							<span class="label">{m.candidate_name()} *</span>
 							<input
@@ -139,7 +139,7 @@
 						{m.candidate_profile_info()}
 					</legend>
 
-					<div class="grid gap-4 sm:grid-cols-2">
+					<div class="grid gap-4">
 						<label class="flex flex-col">
 							<span class="label">{m.candidate_occupation()}</span>
 							<input
@@ -235,7 +235,7 @@
 				<fieldset class="fieldset">
 					<legend class="fieldset-legend text-lg font-semibold">{m.candidate_seeking()}</legend>
 
-					<div class="grid gap-4 sm:grid-cols-3">
+					<div class="grid gap-4">
 						<label class="flex flex-col">
 							<span class="label">{m.candidate_seeking_age_min()}</span>
 							<input
@@ -282,7 +282,7 @@
 				<div class="pt-4">
 					<button
 						type="submit"
-						class="btn btn-primary w-full h-14 text-lg"
+						class="btn btn-primary w-full h-14 text-lg text-white"
 						disabled={!!submitApplication.pending}
 					>
 						{submitApplication.pending ? m.candidate_submitting() : m.candidate_submit()}
