@@ -16,5 +16,6 @@ CREATE TABLE "candidate_applications" (
 	"seeking_age_min" integer,
 	"seeking_age_max" integer,
 	"seeking_city" varchar(255),
-	"created_at" timestamp DEFAULT now() NOT NULL
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	CONSTRAINT "candidate_applications_email_unique" UNIQUE("email")
 );

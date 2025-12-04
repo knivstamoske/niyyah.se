@@ -1,5 +1,5 @@
 {
-  "id": "978df8dd-c24c-4717-9234-567454032609",
+  "id": "ad2f42eb-8802-431d-ade9-eb3aa875de42",
   "prevId": "99ab19b4-6e2e-4157-bf10-ac8fe335faac",
   "version": "7",
   "dialect": "postgresql",
@@ -122,7 +122,15 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
+      "uniqueConstraints": {
+        "candidate_applications_email_unique": {
+          "name": "candidate_applications_email_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "email"
+          ]
+        }
+      },
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false

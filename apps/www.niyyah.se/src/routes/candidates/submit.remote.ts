@@ -6,28 +6,41 @@ import { candidateApplications } from '$lib/server/db/schema';
 const currentYear = new Date().getFullYear();
 
 export const submitApplication = form(
-	z.object({
-		name: z.string().min(1, 'Name is required').max(255),
-		email: z.email().min(1, 'Email is required'),
-		phone: z.string().max(50).optional(),
-		birthYear: z.coerce
-			.number()
-			.int()
-			.min(currentYear - 100, 'Invalid birth year')
-			.max(currentYear - 18, 'You must be at least 18 years old'),
-		gender: z.enum(['man', 'woman'], { message: 'Please select your gender' }),
-		city: z.string().min(1, 'City is required').max(255),
-		occupation: z.string().max(255).optional(),
-		education: z.string().max(255).optional(),
-		familySituation: z.string().max(1000).optional(),
-		religiousPractice: z.string().max(1000).optional(),
-		housingSituation: z.string().max(1000).optional(),
-		intention: z.string().max(1000).optional(),
-		aboutMe: z.string().max(2000).optional(),
-		seekingAgeMin: z.coerce.number().int().min(18).max(100).optional(),
-		seekingAgeMax: z.coerce.number().int().min(18).max(100).optional(),
-		seekingCity: z.string().max(255).optional()
-	}),
+	z
+		.object({
+			name: z.string().min(1, 'Name is required').max(255),
+			email: z.email().min(1, 'Email is required'),
+			phone: z.string().max(50).optional(),
+			birthYear: z.coerce
+				.number()
+				.int()
+				.min(currentYear - 100, 'Invalid birth year')
+				.max(currentYear - 18, 'You must be at least 18 years old'),
+			gender: z.enum(['man', 'woman'], { message: 'Please select your gender' }),
+			city: z.string().min(1, 'City is required').max(255),
+			occupation: z.string().max(255).optional(),
+			education: z.string().max(255).optional(),
+			familySituation: z.string().max(1000).optional(),
+			religiousPractice: z.string().max(1000).optional(),
+			housingSituation: z.string().max(1000).optional(),
+			intention: z.string().max(1000).optional(),
+			aboutMe: z.string().max(2000).optional(),
+			seekingAgeMin: z.coerce.number().int().min(18).max(100).optional(),
+			seekingAgeMax: z.coerce.number().int().min(18).max(100).optional(),
+			seekingCity: z.string().max(255).optional()
+		})
+		.refine(
+			(data) => {
+				if (data.seekingAgeMin !== undefined && data.seekingAgeMax !== undefined) {
+					return data.seekingAgeMin <= data.seekingAgeMax;
+				}
+				return true;
+			},
+			{
+				message: 'Minimum age must be less than or equal to maximum age',
+				path: ['seekingAgeMin']
+			}
+		),
 	async (data) => {
 		try {
 			await db.insert(candidateApplications).values({

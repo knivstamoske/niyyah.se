@@ -11,7 +11,7 @@ export const candidateApplications = pgTable('candidate_applications', {
 	id: uuid('id').primaryKey().defaultRandom(),
 	// Personal information
 	name: varchar('name', { length: 255 }).notNull(),
-	email: varchar('email', { length: 255 }).notNull(),
+	email: varchar('email', { length: 255 }).notNull().unique(),
 	phone: varchar('phone', { length: 50 }),
 	birthYear: integer('birth_year').notNull(),
 	gender: varchar('gender', { length: 10 }).notNull(), // 'man' or 'woman'
