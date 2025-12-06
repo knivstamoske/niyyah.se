@@ -32,6 +32,7 @@ The project uses a single PostgreSQL database with multiple schemas:
 ## Local Development
 
 Run PostgreSQL 18 locally using Docker Compose:
+
 - Start: `docker compose up -d`
 - Stop: `docker compose down`
 - Database runs on standard port 5432
@@ -51,3 +52,53 @@ Examples:
 - `chore: update dependencies to fix critical vulnerabilities`
 
 All changes must be submitted via a GitHub Pull Request and reviewed by a human. Merges to the `main` branch are automatically deployed to the production environment.
+
+## Coding Style
+
+### Svelte Components
+
+**Comments:**
+
+- Use Go-style comments: start with the name of the thing being documented, followed by "is" or "are"
+- Document interfaces, types, constants, and functions. Add inline comments sparingly for complex logic
+- Since we use TypeScript, don't document parameter/return types (they're already in the type signature)
+- Keep comments concise and focused on why the code does something, not what or how it does it
+
+Example:
+
+```ts
+/**
+ * LanguageOption is an option for the language picker.
+ */
+interface LanguageOption {
+  code: string;
+  label: string;
+}
+```
+
+**Component Structure:**
+
+- Place all TypeScript code in the `<script lang="ts">` block at the top
+- Import statements first
+- Then interfaces/types
+- Then constants/variables
+- Then functions
+- Follow with the template markup
+
+**Naming Conventions:**
+
+- Use PascalCase for component filenames (e.g., `LanguagePicker.svelte`)
+- Use PascalCase for interfaces and types
+- Use camelCase for variables and functions
+- Use UPPER_SNAKE_CASE for constants that represent fixed configuration values
+
+**Helper Functions:**
+
+- Extract complex logic into named helper functions rather than inline expressions
+- Keep template expressions simple and readable
+- Helper functions should have clear, descriptive names that indicate their purpose
+
+**Loops and Conditionals:**
+
+- Prefer loops over repeated markup when rendering lists
+- Use `{#each}` with index when you need positional logic (e.g., adding separators between items)
