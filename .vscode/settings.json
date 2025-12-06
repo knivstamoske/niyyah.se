@@ -13,6 +13,7 @@
     "**/.prettierrc": true,
     "**/.svelte-kit": true,
     "**/.wrangler": true,
+    "**/.playwright-mcp": true,
     "**/docker-compose.yml": true,
     "**/eslint.config.js": true,
     "**/node_modules": true,

@@ -2,6 +2,9 @@
 .DS_Store
 Thumbs.db
 
+# Repository
+.playwright-mcp
+
 # Workspace
 node_modules
 
