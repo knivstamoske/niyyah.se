@@ -9,12 +9,8 @@ Thumbs.db
 node_modules
 
 # Output
-.output
-.vercel
-.netlify
 .wrangler
-/.svelte-kit
-/build
+build
 
 # Environment
 .env
@@ -29,4 +25,4 @@ vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
 # Paraglide
-src/lib/paraglide
+src/lib/i18n
