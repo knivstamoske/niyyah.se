@@ -2,7 +2,7 @@
 	import { Heart, Facebook, Twitter, Instagram } from 'lucide-svelte';
 	import { joinWaitlist } from './waitlist.remote';
 	import { m } from '$lib/i18n/messages.js';
-	import { setLocale, getLocale } from '$lib/i18n/runtime';
+	import { LanguagePicker } from '$lib/client/ui';
 </script>
 
 <svelte:head>
@@ -13,28 +13,7 @@
 <div class="min-h-screen flex flex-col bg-background text-text">
 	<!-- Language Picker -->
 	<div class="flex justify-end px-4 py-2">
-		<div class="flex gap-3 text-sm text-subtle-text">
-			<button
-				class="hover:text-primary transition-colors {getLocale() === 'en' ? 'text-primary font-semibold' : ''}"
-				onclick={() => setLocale('en')}
-			>
-				English
-			</button>
-			<span class="text-border">|</span>
-			<button
-				class="hover:text-primary transition-colors {getLocale() === 'sv' ? 'text-primary font-semibold' : ''}"
-				onclick={() => setLocale('sv')}
-			>
-				Svenska
-			</button>
-			<span class="text-border">|</span>
-			<button
-				class="hover:text-primary transition-colors {getLocale() === 'ar' ? 'text-primary font-semibold' : ''}"
-				onclick={() => setLocale('ar')}
-			>
-				العربية
-			</button>
-		</div>
+		<LanguagePicker />
 	</div>
 
 	<!-- Main Content -->
