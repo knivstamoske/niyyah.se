@@ -31,11 +31,21 @@ The project uses a single PostgreSQL database with multiple schemas:
 
 ## Local Development
 
-Run PostgreSQL 18 locally using Docker Compose:
+**Setup:**
+
+1. Create a `.env` file from the example:
+   ```bash
+   cp .env.example .env
+   ```
+2. Review and update the `.env` file with your local configuration if needed
+
+**Run PostgreSQL 18 locally using Docker Compose:**
 
 - Start: `docker compose up -d`
 - Stop: `docker compose down`
 - Database runs on standard port 5432
+
+The database credentials are configured in the `.env` file and automatically loaded by Docker Compose.
 
 ## Development Workflow
 

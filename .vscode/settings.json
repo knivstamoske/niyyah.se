@@ -14,11 +14,8 @@
     "**/.svelte-kit": true,
     "**/.wrangler": true,
     "**/.playwright-mcp": true,
-    "**/docker-compose.yml": true,
     "**/eslint.config.js": true,
-    "**/node_modules": true,
-    "**/pnpm-workspace.yaml": true,
-    "**/project.inlang": true
+    "**/node_modules": true
   },
   "files.insertFinalNewline": true,
   "files.trimFinalNewlines": true,
