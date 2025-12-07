@@ -1,3 +1,5 @@
+name: niyyah
+
 services:
   postgres:
     image: postgres:18
