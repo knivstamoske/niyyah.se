@@ -3,9 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "pnpm --recursive --parallel dev",
-    "test": "pnpm --recursive test",
-    "lint": "pnpm --recursive lint"
+    "all": "pnpm --recursive --parallel",
+    "dev": "pnpm run all dev"
   },
   "repository": {
     "type": "git",
