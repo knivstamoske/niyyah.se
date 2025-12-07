@@ -1,0 +1,128 @@
+name: Validate Pull Requests
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "apps/**"
+      - "libs/**"
+
+# Cancel in-progress runs when a new run is triggered
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  # Determine which apps have changes to optimize CI runs
+  # -----------------------------------------------------
+  detect-changes:
+    name: Detect Changed Apps
+    runs-on: ubuntu-latest
+    outputs:
+      apps: ${{ steps.filter.outputs.changes }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            www.niyyah.se:
+              - 'apps/www.niyyah.se/**'
+              - 'libs/**'
+
+  # Validate each changed app
+  # -------------------------
+  validate:
+    name: Validate ${{ matrix.app }}
+    runs-on: ubuntu-latest
+    needs: detect-changes
+    if: needs.detect-changes.outputs.apps != '[]'
+    strategy:
+      fail-fast: false
+      matrix:
+        app: ${{ fromJSON(needs.detect-changes.outputs.apps) }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.24.0
+
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        run: echo "pnpm_cache_dir=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - name: Cache pnpm store
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.pnpm-cache.outputs.pnpm_cache_dir }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run build
+        working-directory: apps/${{ matrix.app }}
+        run: pnpm build
+
+      - name: Run type checking
+        working-directory: apps/${{ matrix.app }}
+        run: pnpm check
+
+      - name: Run linting
+        working-directory: apps/${{ matrix.app }}
+        run: pnpm lint
+
+      - name: Run unit tests
+        working-directory: apps/${{ matrix.app }}
+        run: pnpm test
+
+      - name: Install Playwright browsers
+        working-directory: apps/${{ matrix.app }}
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Run e2e tests
+        working-directory: apps/${{ matrix.app }}
+        run: pnpm test:e2e
+
+      - name: Upload test results
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-${{ matrix.app }}
+          path: |
+            apps/${{ matrix.app }}/test-results/
+            apps/${{ matrix.app }}/playwright-report/
+          retention-days: 7
+
+  # All validations must pass
+  validation-complete:
+    name: All Validations Passed
+    runs-on: ubuntu-latest
+    needs: [detect-changes, validate]
+    if: always()
+    steps:
+      - name: Check validation results
+        run: |
+          if [ "${{ needs.detect-changes.result }}" != "success" ]; then
+            echo "Change detection failed"
+            exit 1
+          fi
+
+          if [ "${{ needs.validate.result }}" != "success" ] && [ "${{ needs.validate.result }}" != "skipped" ]; then
+            echo "One or more validations failed"
+            exit 1
+          fi
+
+          echo "All validations passed!"
