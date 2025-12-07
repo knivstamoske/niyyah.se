@@ -102,6 +102,15 @@
 				<p class="mt-2 text-sm text-gray-400">{m.footer_tagline()}</p>
 			</div>
 
+			<!-- Links -->
+			<div class="mt-6 text-center">
+				<p class="text-sm">
+					<a href="/privacy" class="hover:underline">Privacy Policy</a>
+					·
+					<a href="/terms" class="hover:underline">Terms of Service</a>
+				</p>
+			</div>
+
 			<!-- Copyright -->
 			<div class="mt-8 text-center">
 				<p class="text-xs text-gray-500">{m.copyright()}</p>
