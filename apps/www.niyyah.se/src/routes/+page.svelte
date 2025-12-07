@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { Heart, Facebook, Twitter, Instagram } from 'lucide-svelte';
-	import { joinWaitlist } from './waitlist.remote';
-	import { m } from '$lib/i18n/messages.js';
 	import { LanguagePicker } from '$lib/client/ui';
+	import { m } from '$lib/i18n/messages.js';
+	import { Heart } from 'lucide-svelte';
+	import { joinWaitlist } from './waitlist.remote';
 </script>
 
 <svelte:head>
@@ -10,9 +10,9 @@
 	<meta name="description" content={m.meta_description()} />
 </svelte:head>
 
-<div class="min-h-screen flex flex-col bg-background text-text">
+<div class="min-h-screen flex flex-col bg-app-background text-app-text">
 	<!-- Language Picker -->
-	<div class="flex justify-end px-4 py-2">
+	<div class="flex justify-end px-4 py-4">
 		<LanguagePicker />
 	</div>
 
@@ -36,11 +36,10 @@
 
 		<!-- Description -->
 		<p
-			class="text-subtle-text text-base leading-relaxed pb-3 pt-1 px-4 text-center max-w-md mx-auto"
+			class="text-app-subtle-text text-base leading-relaxed pb-3 pt-1 px-4 text-center max-w-md mx-auto"
 		>
 			{m.description()}
 		</p>
-
 		<div class="grow lg:grow-0"></div>
 
 		<!-- Waitlist Section -->
@@ -52,7 +51,7 @@
 					<input
 						{...joinWaitlist.fields.email.as('email')}
 						placeholder={m.email_placeholder()}
-						class="w-full h-14 px-4 rounded-lg bg-white border-2 border-border text-text placeholder:text-subtle-text focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary"
+						class="input input-bordered w-full"
 					/>
 					{#each joinWaitlist.fields.email.issues() as issue}
 						<p class="text-sm text-red-600 mt-1">{issue.message}</p>
@@ -61,7 +60,7 @@
 
 				<button
 					type="submit"
-					class="h-14 px-6 rounded-lg w-full bg-primary text-white font-bold hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-background transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+					class="btn bg-app-primary text-app-background border-0 w-full"
 					disabled={!!joinWaitlist.pending}
 				>
 					{joinWaitlist.pending ? m.joining() : m.join_waitlist()}
@@ -80,43 +79,27 @@
 			{/if}
 
 			<!-- Social Proof -->
-			<p class="text-subtle-text text-sm pt-4 px-4 text-center">
+			<p class="text-app-subtle-text text-sm pt-4 px-4 text-center">
 				{m.social_proof()}
 			</p>
 
 			<!-- Privacy Notice -->
-			<p class="text-subtle-text text-xs pt-2 px-4 text-center">
+			<p class="text-app-subtle-text text-xs pt-2 px-4 text-center">
 				{m.privacy_notice()}
 			</p>
 		</div>
 	</main>
 
 	<!-- Footer -->
-	<footer class="bg-footer-bg text-white py-10 px-6">
+	<footer class="bg-app-primary text-white py-10 px-6">
 		<div class="max-w-md mx-auto">
 			<!-- Brand Section -->
 			<div class="flex flex-col items-center text-center">
 				<div class="flex items-center gap-3">
-					<Heart class="text-secondary" size={24} />
+					<Heart size={24} />
 					<h3 class="text-xl font-bold">{m.headline()}</h3>
 				</div>
 				<p class="mt-2 text-sm text-gray-400">{m.footer_tagline()}</p>
-			</div>
-
-			<!-- Social Links -->
-			<div class="flex justify-center gap-6 mt-6">
-				<a href="#facebook" class="text-gray-400 hover:text-secondary transition-colors">
-					<Facebook size={24} />
-					<span class="sr-only">{m.facebook()}</span>
-				</a>
-				<a href="#twitter" class="text-gray-400 hover:text-secondary transition-colors">
-					<Twitter size={24} />
-					<span class="sr-only">{m.twitter()}</span>
-				</a>
-				<a href="#instagram" class="text-gray-400 hover:text-secondary transition-colors">
-					<Instagram size={24} />
-					<span class="sr-only">{m.instagram()}</span>
-				</a>
 			</div>
 
 			<!-- Copyright -->

@@ -1,18 +1,23 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
+
 @plugin "daisyui" {
-	themes: false;
+	themes: wireframe --default;
 	root: ':root';
 	logs: false;
 }
 
 @theme {
-	--color-primary: #003d6b;
-	--color-secondary: #d4af37;
-	--color-background: #ffffff;
-	--color-text: #1a1a1a;
-	--color-subtle-text: #666666;
-	--color-footer-bg: #002147;
-	--color-border: #e0e0e0;
+	--color-app-primary: #003d6b;
+	--color-app-secondary: #d4af37;
+	--color-app-background: #ffffff;
+	--color-app-text: #1a1a1a;
+	--color-app-subtle-text: #666666;
+	--color-app-footer-bg: #002147;
+	--color-app-border: #e0e0e0;
+}
+
+* {
+	outline: none;
 }

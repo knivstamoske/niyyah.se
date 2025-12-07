@@ -13,9 +13,9 @@
 	 * options is the list of available language options.
 	 */
 	const options: LanguageOption[] = [
-		{ code: 'en', label: 'En' },
-		{ code: 'sv', label: 'Sv' },
-		{ code: 'ar', label: 'Ar' }
+		{ code: 'en', label: 'English' },
+		{ code: 'sv', label: 'Svenska' },
+		{ code: 'ar', label: 'العربية' }
 	];
 
 	/**
@@ -27,7 +27,11 @@
 	}
 </script>
 
-<select class="select select-sm" value={getLocale()} onchange={handleLanguageChange}>
+<select
+	class="select select-sm select-ghost w-24"
+	value={getLocale()}
+	onchange={handleLanguageChange}
+>
 	{#each options as option}
 		<option value={option.code}>{option.label}</option>
 	{/each}
