@@ -2,7 +2,7 @@
 	import { LanguagePicker } from '$lib/client/ui';
 	import { m } from '$lib/i18n/messages.js';
 	import { Heart } from 'lucide-svelte';
-	import { joinWaitlist } from './waitlist.remote';
+	import { joinWaitlist } from './(remote)/waitlist.remote';
 </script>
 
 <svelte:head>
