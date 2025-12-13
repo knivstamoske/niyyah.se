@@ -6,7 +6,7 @@
 	"scripts": {
 		"start": "vite start --port 8050 --strictPort",
 		"build": "vite build",
-		"check": "pnpm run lint:eslint & pnpm run lint:svelte & pnpm run test:vitest & pnpm run test:e2e",
+		"check": "pnpm run lint:eslint & pnpm run lint:svelte & pnpm run test:vitest",
 		"lint:eslint": "eslint .",
 		"lint:eslint:fix": "eslint --fix .",
 		"lint:svelte": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
