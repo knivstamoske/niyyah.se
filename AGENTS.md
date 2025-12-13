@@ -12,11 +12,11 @@ This document provides guidance for AI agents and human developers on the conven
 
 This is a SvelteKit-based platform with five separate applications serving different user roles:
 
-- `admin.niyyah.se` - Administrator portal for platform operations (port 8010)
-- `app.niyyah.se` - Candidate webapp for marriage seekers (port 8020)
-- `match.niyyah.se` - Facilitator webapp for match coordination (port 8030)
-- `wali.niyyah.se` - Guardian webapp for verification (port 8040)
-- `www.niyyah.se` - Public marketing website (port 8050)
+- `admin-niyyah-se` - Administrator portal for platform operations (port 8010)
+- `app-niyyah-se` - Candidate webapp for marriage seekers (port 8020)
+- `match-niyyah-se` - Facilitator webapp for match coordination (port 8030)
+- `wali-niyyah-se` - Guardian webapp for verification (port 8040)
+- `www-niyyah-se` - Public marketing website (port 8050)
 
 Each application has its own dedicated port range (10 ports per app) for local development to avoid conflicts.
 
@@ -51,9 +51,9 @@ The project uses Docker Compose with service profiles. The database is always av
 
 **Specific App in Docker:**
 
-- Start (rebuild): `docker compose --profile apps up -d --build www`
+- Start (rebuild): `docker compose --profile apps up -d --build www-niyyah-se`
 - Stop: `docker compose --profile apps down`
-- Replace `www` with the app name (e.g., `www.niyyah.se`, matches service name in docker-compose.yml)
+- Replace `www-niyyah-se` with the app name (matches service name in docker-compose.yml)
 
 **All Apps in Docker:**
 

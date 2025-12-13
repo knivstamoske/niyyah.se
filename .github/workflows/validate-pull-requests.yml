@@ -27,8 +27,8 @@ jobs:
         id: filter
         with:
           filters: |
-            www.niyyah.se:
-              - 'apps/www.niyyah.se/**'
+            www-niyyah-se:
+              - 'apps/www-niyyah-se/**'
               - 'libs/**'
 
   # Validate each changed app

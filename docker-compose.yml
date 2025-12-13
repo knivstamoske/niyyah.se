@@ -17,8 +17,8 @@ services:
     profiles: ["apps"]
     build:
       context: .
-      dockerfile: apps/www.niyyah.se/Dockerfile
-    image: www.niyyah.se
+      dockerfile: apps/www-niyyah-se/Dockerfile
+    image: www-niyyah-se
     restart: unless-stopped
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}

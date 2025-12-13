@@ -8,7 +8,7 @@ importers:
 
   .: {}
 
-  apps/www.niyyah.se:
+  apps/www-niyyah-se:
     dependencies:
       daisyui:
         specifier: ^5.5.5

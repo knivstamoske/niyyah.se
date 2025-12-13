@@ -1,4 +1,4 @@
-# www.niyyah.se
+# www-niyyah-se
 
 Public marketing website for Niyyah.se
 
@@ -46,7 +46,7 @@ docker compose up -d
 Push the database schema:
 
 ```bash
-cd apps/www.niyyah.se
+cd apps/www-niyyah-se
 pnpm drizzle-kit push
 ```
 

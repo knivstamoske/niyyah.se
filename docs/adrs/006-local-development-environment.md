@@ -20,7 +20,7 @@ Each application is assigned a dedicated port range of 10 ports, with the develo
 - `app.niyyah.se`: 8020-8029 (dev server on 8020)
 - `match.niyyah.se`: 8030-8039 (dev server on 8030)
 - `wali.niyyah.se`: 8040-8049 (dev server on 8040)
-- `www.niyyah.se`: 8050-8059 (dev server on 8050)
+- `www-niyyah-se`: 8050-8059 (dev server on 8050)
 
 The remaining 9 ports in each range are reserved for future services related to that application (e.g., API servers, WebSocket servers, development proxies).
 
