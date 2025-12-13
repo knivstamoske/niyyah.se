@@ -15,14 +15,6 @@ export default defineConfig({
 			outdir: './src/lib/i18n'
 		})
 	],
-	server: {
-		port: 8050,
-		strictPort: true
-	},
-	preview: {
-		port: 8050,
-		strictPort: true
-	},
 	test: {
 		expect: { requireAssertions: true },
 		projects: [

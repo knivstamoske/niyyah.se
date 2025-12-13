@@ -4,7 +4,7 @@
 	"version": "0.0.1",
 	"type": "module",
 	"scripts": {
-		"start": "vite start",
+		"start": "vite start --port 8050 --strictPort",
 		"build": "vite build",
 		"check": "pnpm run lint:eslint & pnpm run lint:svelte & pnpm run test:vitest & pnpm run test:e2e",
 		"lint:eslint": "eslint .",
