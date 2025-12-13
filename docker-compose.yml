@@ -13,5 +13,20 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
 
+  www:
+    profiles: ["apps"]
+    build:
+      context: .
+      dockerfile: apps/www.niyyah.se/Dockerfile
+    image: www.niyyah.se
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      NODE_ENV: production
+    ports:
+      - "8050:3000"
+    depends_on:
+      - postgres
+
 volumes:
   postgres-data:

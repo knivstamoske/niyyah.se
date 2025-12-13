@@ -3,21 +3,17 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "all": "pnpm --recursive --parallel",
-    "dev": "pnpm run all dev"
+    "start": "pnpm -r --parallel start",
+    "build": "pnpm -r build",
+    "check": "pnpm -r check"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/aivara-se/niyyah.se"
   },
   "engines": {
-    "node": ">=22",
+    "node": ">=24",
     "pnpm": ">=10"
   },
-  "packageManager": "pnpm@10.24.0",
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "esbuild"
-    ]
-  }
+  "packageManager": "pnpm@10.25.0"
 }

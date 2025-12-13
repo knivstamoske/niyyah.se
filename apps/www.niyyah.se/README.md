@@ -14,7 +14,7 @@ This is a SvelteKit-based application with the following technologies:
 - **Framework:** SvelteKit (TypeScript)
 - **Database:** PostgreSQL 18 with Drizzle ORM
 - **Styling:** TailwindCSS v4
-- **Internationalization:** Paraglide.js (supports English, Swedish, Arabic)
+- **Translation:** Paraglide.js (supports English, Swedish, Arabic)
 - **Testing:** Vitest (unit/component), Playwright (E2E)
 - **Deployment:** Cloudflare (using @sveltejs/adapter-cloudflare)
 
@@ -35,7 +35,7 @@ pnpm install
 
 ### 2. Start the Database
 
-Start PostgreSQL 18 locally:
+Start PostgreSQL 18 locally (from the monorepo root):
 
 ```bash
 docker compose up -d
@@ -47,13 +47,13 @@ Push the database schema:
 
 ```bash
 cd apps/www.niyyah.se
-pnpm db:push
+pnpm drizzle-kit push
 ```
 
 ### 4. Start Development Server
 
 ```bash
-pnpm dev
+pnpm start
 ```
 
 The application will be available at `http://localhost:8050`
@@ -64,7 +64,7 @@ The application supports three languages:
 
 - English (en) - Default
 - Swedish (sv) - Supported
-- Arabic (ar)  - Supported
+- Arabic (ar) - Supported
 
 Translation files are located in `i18n/` directory. Use Paraglide.js for accessing translations in components.
 
@@ -75,7 +75,7 @@ Translation files are located in `i18n/` directory. Use Paraglide.js for accessi
 Run unit tests with Vitest:
 
 ```bash
-pnpm test
+pnpm test:vitest
 ```
 
 Test files are co-located with source files using the `.spec.ts` or `.test.ts` suffix.
@@ -92,7 +92,7 @@ E2E tests are located in the `e2e/` directory.
 
 ## Development Guidelines
 
-Follow the guidelines in `/docs/AGENTS.md` and commit using [Conventional Commits](https://www.conventionalcommits.org/).
+Follow the guidelines in `/AGENTS.md` and commit using [Conventional Commits](https://www.conventionalcommits.org/).
 
 ## Port Allocation
 
@@ -103,7 +103,3 @@ This application uses port **8050** for local development. The port range 8050-8
 - [Architecture Decision Records](/docs/adrs/)
 - [Developer Guidelines](/AGENTS.md)
 - [Monorepo Root README](/README.md)
-
----
-
-**Last Updated:** 2025-11-30

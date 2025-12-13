@@ -39,11 +39,27 @@ The project uses a single PostgreSQL database with multiple schemas:
    ```
 2. Review and update the `.env` file with your local configuration if needed
 
-**Run PostgreSQL 18 locally using Docker Compose:**
+**Docker Commands:**
+
+The project uses Docker Compose with service profiles. The database is always available, while apps are in the "apps" profile.
+
+**Database Only:**
 
 - Start: `docker compose up -d`
 - Stop: `docker compose down`
 - Database runs on standard port 5432
+
+**Specific App in Docker:**
+
+- Start (rebuild): `docker compose --profile apps up -d --build www`
+- Stop: `docker compose --profile apps down`
+- Replace `www` with the app name (e.g., `www.niyyah.se`, matches service name in docker-compose.yml)
+
+**All Apps in Docker:**
+
+- Start (rebuild): `docker compose --profile apps up -d --build`
+- Stop: `docker compose --profile apps down`
+- This starts the database and all applications defined in the docker-compose.yml
 
 The database credentials are configured in the `.env` file and automatically loaded by Docker Compose.
 

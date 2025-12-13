@@ -1,6 +1,9 @@
 {
   "explorer.fileNesting.patterns": {
-    "*.ts": "${capture}.test.ts,${capture}.spec.ts,${capture}.mock.ts"
+    ".env": ".env.*",
+    "*.ts": "${capture}.test.ts,${capture}.spec.ts,${capture}.mock.ts",
+    "package.json": "eslint.config.js,drizzle.config.ts,playwright.config.ts,svelte.config.js,vite.config.ts,tsconfig.json,.prettierignore,.prettierrc,.gitignore,.npmrc,pnpm-workspace.yaml",
+    "README.md": "AGENTS.md"
   },
   "files.associations": {
     "*.css": "tailwindcss"
@@ -9,17 +12,17 @@
     "**/.git": true,
     "**/.gitignore": true,
     "**/.npmrc": true,
-    "**/.prettierignore": true,
-    "**/.prettierrc": true,
-    "**/.svelte-kit": true,
-    "**/.wrangler": true,
+    "**/.nx": true,
+    "**/build": true,
+    "**/drizzle": true,
     "**/.playwright-mcp": true,
-    "**/eslint.config.js": true,
-    "**/node_modules": true
+    "**/.svelte-kit": true,
+    "**/project.inlang": true,
+    "**/node_modules": true,
+    "**/pnpm-lock.yaml": true
   },
   "files.insertFinalNewline": true,
   "files.trimFinalNewlines": true,
   "files.trimTrailingWhitespace": true,
-  "oxc.fmt.experimental": true,
   "svelte.enable-ts-plugin": true
 }
