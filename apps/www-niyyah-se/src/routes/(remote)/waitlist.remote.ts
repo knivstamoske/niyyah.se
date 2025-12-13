@@ -13,9 +13,9 @@ export const joinWaitlist = form(
 				email: email.toLowerCase().trim(),
 				verified: false
 			});
-		} catch (error: any) {
+		} catch (error: unknown) {
 			// Handle duplicate signups gracefully
-			if (error?.code !== '23505') {
+			if ((error as { code?: string })?.code !== '23505') {
 				console.error('Failed to add email to waitlist:', error);
 				throw new Error('Failed to join waitlist. Please try again.');
 			}

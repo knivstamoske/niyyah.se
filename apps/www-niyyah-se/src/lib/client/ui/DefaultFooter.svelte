@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { m } from '$lib/i18n/messages.js';
+	import { resolve } from '$app/paths';
 	import { Heart } from 'lucide-svelte';
 </script>
 
@@ -17,9 +18,9 @@
 		<!-- Links -->
 		<div class="mt-6 text-center">
 			<p class="text-sm">
-				<a href="/privacy" class="hover:underline">Privacy Policy</a>
+				<a href={resolve('/privacy')} class="hover:underline">Privacy Policy</a>
 				·
-				<a href="/terms" class="hover:underline">Terms of Service</a>
+				<a href={resolve('/terms')} class="hover:underline">Terms of Service</a>
 			</p>
 		</div>
 

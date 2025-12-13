@@ -32,7 +32,7 @@
 	value={getLocale()}
 	onchange={handleLanguageChange}
 >
-	{#each options as option}
+	{#each options as option (option.code)}
 		<option value={option.code}>{option.label}</option>
 	{/each}
 </select>

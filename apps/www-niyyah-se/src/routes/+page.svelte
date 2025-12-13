@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { LanguagePicker } from '$lib/client/ui';
 	import { m } from '$lib/i18n/messages.js';
+	import { resolve } from '$app/paths';
 	import { Heart } from 'lucide-svelte';
 	import { joinWaitlist } from './(remote)/waitlist.remote';
 </script>
@@ -53,11 +54,10 @@
 						placeholder={m.email_placeholder()}
 						class="input input-bordered w-full"
 					/>
-					{#each joinWaitlist.fields.email.issues() as issue}
+					{#each joinWaitlist.fields.email.issues() as issue, index (index)}
 						<p class="text-sm text-red-600 mt-1">{issue.message}</p>
 					{/each}
 				</label>
-
 				<button
 					type="submit"
 					class="btn bg-app-primary text-app-background border-0 w-full"
@@ -105,9 +105,9 @@
 			<!-- Links -->
 			<div class="mt-6 text-center">
 				<p class="text-sm">
-					<a href="/privacy" class="hover:underline">Privacy Policy</a>
+					<a href={resolve('/privacy')} class="hover:underline">Privacy Policy</a>
 					·
-					<a href="/terms" class="hover:underline">Terms of Service</a>
+					<a href={resolve('/terms')} class="hover:underline">Terms of Service</a>
 				</p>
 			</div>
 
