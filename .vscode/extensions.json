@@ -3,6 +3,7 @@
     "bradlc.vscode-tailwindcss",
     "svelte.svelte-vscode",
     "vitest.explorer",
-    "inlang.vs-code-extension"
+    "inlang.vs-code-extension",
+    "ms-ossdata.vscode-pgsql"
   ]
 }
