@@ -1,0 +1,20 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1765737727596,
+      "tag": "0000_add-marketing-schema",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1765738076447,
+      "tag": "0001_add-waitlist-table",
+      "breakpoints": true
+    }
+  ]
+}

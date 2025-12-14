@@ -1,8 +1,28 @@
-import { pgTable, uuid, varchar, timestamp, boolean } from 'drizzle-orm/pg-core';
+import { pgEnum, pgSchema, text, timestamp, uuid } from 'drizzle-orm/pg-core';
 
-export const waitlistEmails = pgTable('waitlist_emails', {
+/**
+ * Group PostgreSQL schemas on an object for easy access.
+ */
+export const schemas = {
+	marketing: pgSchema('marketing')
+};
+
+/**
+ * Group PostgreSQL enums on an object for easy access.
+ */
+export const enums = {
+	gender: pgEnum('gender', ['male', 'female'])
+};
+
+/**
+ * Waitlist is the table for storing waitlist signups.
+ */
+export const waitlist = schemas.marketing.table('waitlist', {
 	id: uuid('id').primaryKey().defaultRandom(),
-	email: varchar('email', { length: 255 }).notNull().unique(),
+	email: text('email').notNull().unique(),
+	gender: enums.gender('gender'),
+	nearestCity: text('nearest_city'),
 	createdAt: timestamp('created_at').notNull().defaultNow(),
-	verified: boolean('verified').notNull().default(false)
+	updatedAt: timestamp('updated_at'),
+	deletedAt: timestamp('deleted_at')
 });
