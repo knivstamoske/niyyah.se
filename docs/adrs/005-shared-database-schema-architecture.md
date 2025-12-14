@@ -26,13 +26,22 @@ Each application gets its own dedicated schema for authentication and applicatio
 - `guardian` - GuardianWebapp authentication and session data
 - `facilitator` - FacilitatorWebapp authentication and session data
 - `administrator` - AdministratorPortal authentication and session data
+- `marketing` - MarketingWebsite waitlist and marketing data
 
-**Contents:**
+**Contents (for user-facing apps):**
 
 - User authentication records (credentials, tokens, sessions)
 - Application-specific preferences and settings
 - GDPR compliance records (eg: consents)
 - Application logs and audit trails
+
+**Contents (for marketing schema):**
+
+- Waitlist signups and contact information
+- Marketing campaign data
+- Newsletter subscriptions
+- Contact form submissions
+- Analytics and tracking data
 
 #### 2. Shared Domain Schema (`niyyah`)
 
@@ -47,7 +56,8 @@ A central schema containing all shared business domain data:
 
 **Access pattern:**
 
-- All applications (except MarketingWebsite) have read/write access to `niyyah`
+- All authenticated applications (candidate, guardian, facilitator, administrator) have read/write access to `niyyah`
+- The marketing website does NOT have access to `niyyah` (it only stores pre-registration data)
 - Business logic and constraints are enforced at the application layer and database level.
 
 #### 3. Admin Application Special Access
