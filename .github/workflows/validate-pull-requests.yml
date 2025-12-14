@@ -76,17 +76,9 @@ jobs:
         working-directory: apps/${{ matrix.app }}
         run: pnpm build
 
-      - name: Run type checking
+      - name: Run checks (linting and testing)
         working-directory: apps/${{ matrix.app }}
         run: pnpm check
-
-      - name: Run linting
-        working-directory: apps/${{ matrix.app }}
-        run: pnpm lint
-
-      - name: Run unit tests
-        working-directory: apps/${{ matrix.app }}
-        run: pnpm test
 
       - name: Install Playwright browsers
         working-directory: apps/${{ matrix.app }}
