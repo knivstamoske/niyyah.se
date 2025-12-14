@@ -15,6 +15,7 @@
     "**/.nx": true,
     "**/build": true,
     "**/drizzle": true,
+    "**/test-results": true,
     "**/.playwright-mcp": true,
     "**/.svelte-kit": true,
     "**/project.inlang": true,
