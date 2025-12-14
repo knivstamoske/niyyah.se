@@ -13,7 +13,7 @@ RUN pnpm install --frozen-lockfile
 # Build the application
 WORKDIR /app/apps/www-niyyah-se
 COPY apps/www-niyyah-se ./
-RUN pnpm build:bundle
+RUN pnpm build
 
 # -----------------------------------------------------------------
 
@@ -35,11 +35,12 @@ COPY --from=builder /app/apps/www-niyyah-se/build ./apps/www-niyyah-se/build
 # Set working directory to the app
 WORKDIR /app/apps/www-niyyah-se
 
-# Expose port 3000
-EXPOSE 3000
+# Expose port 8050
+EXPOSE 8050
 
 # Set environment variables
-ENV ORIGIN=https://niyyah.se
+ENV PORT=8050
+ENV ORIGIN=http://localhost:8050
 ENV NODE_ENV=production
 
 # Start the application

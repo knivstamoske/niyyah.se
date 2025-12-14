@@ -1,7 +1,7 @@
 name: niyyah
 
 services:
-  postgres:
+  postgresql:
     image: postgres:18
     restart: unless-stopped
     environment:
@@ -11,22 +11,23 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - postgresql:/var/lib/postgresql
 
-  www:
+  www-niyyah-se:
     profiles: ["apps"]
+    image: www-niyyah-se
     build:
       context: .
       dockerfile: apps/www-niyyah-se/Dockerfile
-    image: www-niyyah-se
     restart: unless-stopped
     environment:
-      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      ORIGIN: https://niyyah.se
+      DATABASE_URL: ${POSTGRES_URL}
       NODE_ENV: production
     ports:
-      - "8050:3000"
+      - "8050:8050"
     depends_on:
-      - postgres
+      - postgresql
 
 volumes:
-  postgres-data:
+  postgresql:
