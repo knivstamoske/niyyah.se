@@ -22,7 +22,7 @@ services:
     restart: unless-stopped
     environment:
       NODE_ENV: production
-      ORIGIN: https://niyyah.se
+      ORIGIN: http://localhost:8050
       DATABASE_URL: ${POSTGRES_URL}
     ports:
       - "8050:8050"
