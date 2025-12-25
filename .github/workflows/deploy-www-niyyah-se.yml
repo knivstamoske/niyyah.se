@@ -11,7 +11,7 @@ env:
   IMAGE_NAME: ${{ github.repository_owner }}/www-niyyah-se
 
 jobs:
-  build-and-deploy:
+  build-and-push:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -55,5 +55,11 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build-and-push
+    environment: production
+
+    steps:
       - name: Trigger deployment webhook
-        run: curl ${{ secrets['www-niyyah-se-deploy-webhook-url'] }}
+        run: curl ${{ secrets.WWW_NIYYAH_SE_DEPLOY_WEBHOOK_URL }}
