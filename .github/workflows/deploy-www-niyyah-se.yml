@@ -75,11 +75,10 @@ jobs:
           version: 10.26.2
 
       - name: Install dependencies
-        working-directory: ./apps/www-niyyah-se
         run: pnpm install --frozen-lockfile
 
       - name: Run database migrations
-        working-directory: ./apps/www-niyyah-se
+        working-directory: ./libs/db
         env:
           DATABASE_URL: ${{ secrets.WWW_NIYYAH_SE_DATABASE_URL }}
         run: pnpm exec drizzle-kit migrate
