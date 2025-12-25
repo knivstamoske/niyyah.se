@@ -31,6 +31,16 @@ The project uses a single PostgreSQL database with multiple schemas:
 
 ## Local Development
 
+**Package Manager:**
+
+This project uses **pnpm** as its package manager. The `packageManager` field in `package.json` enforces pnpm@10.25.0.
+
+To install dependencies:
+
+```bash
+pnpm install
+```
+
 **Setup:**
 
 1. Create a `.env` file from the example:

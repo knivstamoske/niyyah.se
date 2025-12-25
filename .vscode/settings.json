@@ -17,6 +17,7 @@
     "**/test-results": true,
     "**/.playwright-mcp": true,
     "**/.svelte-kit": true,
+    "**/lib/i18n": true,
     "**/project.inlang": true,
     "**/node_modules": true,
     "**/pnpm-lock.yaml": true
