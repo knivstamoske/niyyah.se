@@ -1,26 +1,22 @@
 <script lang="ts">
 	import { m } from '$lib/i18n/messages.js';
 	import { resolve } from '$app/paths';
-	import { Heart } from 'lucide-svelte';
 </script>
 
 <footer class="bg-app-primary text-white py-10 px-6">
 	<div class="max-w-md mx-auto">
 		<!-- Brand Section -->
 		<div class="flex flex-col items-center text-center">
-			<div class="flex items-center gap-3">
-				<Heart size={24} />
-				<h3 class="text-xl font-bold">{m.headline()}</h3>
-			</div>
+			<h3 class="text-xl font-bold">{m.headline()}</h3>
 			<p class="mt-2 text-sm text-gray-400">{m.footer_tagline()}</p>
 		</div>
 
 		<!-- Links -->
 		<div class="mt-6 text-center">
 			<p class="text-sm">
-				<a href={resolve('/privacy')} class="hover:underline">Privacy Policy</a>
+				<a href={resolve('/privacy')} class="hover:underline">{m.privacy_policy()}</a>
 				·
-				<a href={resolve('/terms')} class="hover:underline">Terms of Service</a>
+				<a href={resolve('/terms')} class="hover:underline">{m.terms_of_service()}</a>
 			</p>
 		</div>
 
