@@ -1,0 +1,25 @@
+{
+  "id": "f925523f-fb96-4fb2-9217-47b976ba3c4c",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {},
+  "enums": {},
+  "schemas": {
+    "administrator": "administrator",
+    "candidate": "candidate",
+    "facilitator": "facilitator",
+    "guardian": "guardian",
+    "marketing": "marketing",
+    "niyyah": "niyyah"
+  },
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}

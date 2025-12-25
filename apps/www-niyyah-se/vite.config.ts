@@ -16,6 +16,9 @@ export default defineConfig({
 			emitTsDeclarations: true
 		})
 	],
+	ssr: {
+		noExternal: ['@niyyah/db']
+	},
 	test: {
 		expect: { requireAssertions: true },
 		projects: [

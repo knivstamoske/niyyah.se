@@ -5,15 +5,15 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1765737727596,
-      "tag": "0000_add-marketing-schema",
+      "when": 1766680240778,
+      "tag": "0000_add_database_schema",
       "breakpoints": true
     },
     {
       "idx": 1,
       "version": "7",
-      "when": 1765738076447,
-      "tag": "0001_add-waitlist-table",
+      "when": 1766680260108,
+      "tag": "0001_add_waitlist_table",
       "breakpoints": true
     }
   ]

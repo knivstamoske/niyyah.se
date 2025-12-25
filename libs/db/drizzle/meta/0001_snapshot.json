@@ -1,6 +1,6 @@
 {
-  "id": "a4c9afae-6bb2-45c2-8f41-f9166322a543",
-  "prevId": "79e93ce6-5ef6-42aa-982b-d8a1637dc142",
+  "id": "07e9f36c-f2d4-4d65-a9ee-d17b98eff7d8",
+  "prevId": "f925523f-fb96-4fb2-9217-47b976ba3c4c",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -24,7 +24,7 @@
         "gender": {
           "name": "gender",
           "type": "gender",
-          "typeSchema": "public",
+          "typeSchema": "marketing",
           "primaryKey": false,
           "notNull": false
         },
@@ -71,8 +71,24 @@
       "isRLSEnabled": false
     }
   },
-  "enums": {},
-  "schemas": {},
+  "enums": {
+    "marketing.gender": {
+      "name": "gender",
+      "schema": "marketing",
+      "values": [
+        "male",
+        "female"
+      ]
+    }
+  },
+  "schemas": {
+    "administrator": "administrator",
+    "candidate": "candidate",
+    "facilitator": "facilitator",
+    "guardian": "guardian",
+    "marketing": "marketing",
+    "niyyah": "niyyah"
+  },
   "sequences": {},
   "roles": {},
   "policies": {},

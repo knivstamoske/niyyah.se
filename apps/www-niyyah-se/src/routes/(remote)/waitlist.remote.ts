@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { form } from '$app/server';
 import { db } from '$lib/server/db';
-import { waitlist } from '$lib/server/db/schema';
+import { marketing } from '@niyyah/db';
 
 export const joinWaitlist = form(
 	z.object({
@@ -9,7 +9,7 @@ export const joinWaitlist = form(
 	}),
 	async ({ email }) => {
 		try {
-			await db.insert(waitlist).values({
+			await db.insert(marketing.waitlist).values({
 				email: email.toLowerCase().trim()
 			});
 		} catch (error: unknown) {

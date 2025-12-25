@@ -1,8 +1,9 @@
--- Create the waitlist table in the marketing schema
+CREATE TYPE "marketing"."gender" AS ENUM('male', 'female');
+--> statement-breakpoint
 CREATE TABLE "marketing"."waitlist" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"email" text NOT NULL,
-	"gender" text CHECK ("gender" IN ('male', 'female')),
+	"gender" "marketing"."gender",
 	"nearest_city" text,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp,

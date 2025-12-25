@@ -1,8 +1,8 @@
-import { drizzle } from 'drizzle-orm/postgres-js';
-import { eq } from 'drizzle-orm';
-import postgres from 'postgres';
+import { marketing } from '@niyyah/db';
 import { config } from 'dotenv';
-import * as schema from '../src/lib/server/db/schema';
+import { eq } from 'drizzle-orm';
+import { drizzle } from 'drizzle-orm/postgres-js';
+import postgres from 'postgres';
 
 // Load environment variables from .env file
 config();
@@ -20,7 +20,7 @@ export class TestDatabase {
 			throw new Error('DATABASE_URL environment variable is not set');
 		}
 		this.client = postgres(databaseUrl, { prepare: false });
-		this.db = drizzle(this.client, { schema });
+		this.db = drizzle(this.client, { schema: marketing });
 	}
 
 	/**
@@ -29,8 +29,8 @@ export class TestDatabase {
 	async getWaitlistEntry(email: string) {
 		const results = await this.db
 			.select()
-			.from(schema.waitlist)
-			.where(eq(schema.waitlist.email, email.toLowerCase().trim()));
+			.from(marketing.waitlist)
+			.where(eq(marketing.waitlist.email, email.toLowerCase().trim()));
 		return results[0] || null;
 	}
 
@@ -39,8 +39,8 @@ export class TestDatabase {
 	 */
 	async deleteWaitlistEntry(email: string) {
 		await this.db
-			.delete(schema.waitlist)
-			.where(eq(schema.waitlist.email, email.toLowerCase().trim()));
+			.delete(marketing.waitlist)
+			.where(eq(marketing.waitlist.email, email.toLowerCase().trim()));
 	}
 
 	/**
@@ -49,8 +49,8 @@ export class TestDatabase {
 	async countWaitlistEntries(email: string) {
 		const results = await this.db
 			.select()
-			.from(schema.waitlist)
-			.where(eq(schema.waitlist.email, email.toLowerCase().trim()));
+			.from(marketing.waitlist)
+			.where(eq(marketing.waitlist.email, email.toLowerCase().trim()));
 		return results.length;
 	}
 
