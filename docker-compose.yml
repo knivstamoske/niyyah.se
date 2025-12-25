@@ -21,9 +21,9 @@ services:
       dockerfile: apps/www-niyyah-se/Dockerfile
     restart: unless-stopped
     environment:
+      NODE_ENV: production
       ORIGIN: https://niyyah.se
       DATABASE_URL: ${POSTGRES_URL}
-      NODE_ENV: production
     ports:
       - "8050:8050"
     depends_on:
