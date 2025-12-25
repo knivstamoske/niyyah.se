@@ -12,7 +12,8 @@ export default defineConfig({
 		devtoolsJson(),
 		paraglideVitePlugin({
 			project: './project.inlang',
-			outdir: './src/lib/i18n'
+			outdir: './src/lib/i18n',
+			emitTsDeclarations: true
 		})
 	],
 	test: {
