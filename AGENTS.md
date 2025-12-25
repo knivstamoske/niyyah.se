@@ -77,6 +77,8 @@ The database credentials are configured in the `.env` file and automatically loa
 
 Commit messages must follow the [Conventional Commits specification](https://www.conventionalcommits.org/). This ensures a consistent and machine-readable commit history.
 
+The commit description must be in all lower case (except for proper nouns, acronyms, etc.).
+
 ```
 <type>[optional scope]: <description>
 ```
