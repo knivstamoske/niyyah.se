@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { form } from '$app/server';
 import { db } from '$lib/server/db';
-import { waitlistEmails } from '$lib/server/db/schema';
+import { waitlist } from '$lib/server/db/schema';
 
 export const joinWaitlist = form(
 	z.object({
@@ -9,9 +9,8 @@ export const joinWaitlist = form(
 	}),
 	async ({ email }) => {
 		try {
-			await db.insert(waitlistEmails).values({
-				email: email.toLowerCase().trim(),
-				verified: false
+			await db.insert(waitlist).values({
+				email: email.toLowerCase().trim()
 			});
 		} catch (error: unknown) {
 			// Handle duplicate signups gracefully
