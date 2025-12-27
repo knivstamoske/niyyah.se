@@ -1,9 +1,45 @@
 <script lang="ts">
-	import { LanguagePicker, DefaultFooter } from '$lib/client/ui';
+	import { LanguagePicker } from '$lib/client/ui';
 	import { m } from '$lib/i18n/messages.js';
 	import { authClient } from '$lib/client/auth';
+	import { resolve } from '$app/paths';
+	import { CircleCheck } from 'lucide-svelte';
 
-	const { user } = authClient.useSession();
+	let email = '';
+	let error = '';
+	let loading = false;
+	let success = false;
+
+	const session = authClient.useSession();
+
+	async function handleSendMagicLink() {
+		if (!email) {
+			error = 'Please enter your email address';
+			return;
+		}
+
+		loading = true;
+		error = '';
+
+		try {
+			await authClient.signIn.magicLink(
+				{ email },
+				{
+					onSuccess: () => {
+						success = true;
+					},
+					onError: (ctx) => {
+						error = ctx.error.message || 'Failed to send link. Please try again.';
+					}
+				}
+			);
+		} catch (err) {
+			error = 'An unexpected error occurred. Please try again.';
+			console.error('Sign-in link error:', err);
+		} finally {
+			loading = false;
+		}
+	}
 </script>
 
 <svelte:head>
@@ -17,54 +53,74 @@
 		<LanguagePicker />
 	</div>
 
-	<!-- Main Content -->
-	<main class="flex-1 flex flex-col lg:py-8 lg:justify-center">
-		<!-- Headline -->
-		<h1 class="text-3xl font-bold leading-tight px-4 text-center pb-3 pt-8 lg:pt-8">
-			{#if $user}
-				Welcome back, {$user.name || $user.email}
+	<main class="flex-1 flex flex-col items-center justify-center px-4 py-8">
+		<div class="w-full max-w-md">
+			{#if success}
+				<!-- Success Message -->
+				<div class="text-center">
+					<div class="mb-4">
+						<CircleCheck class="w-16 h-16 mx-auto text-app-primary" />
+					</div>
+					<h2 class="text-xl font-bold mb-2">Check Your Email</h2>
+					<p class="text-app-subtle-text">
+						We've sent a sign-in link to
+						<span class="font-medium text-app-text">{email}</span>.<br />
+						Didn't get it?
+						<button
+							type="button"
+							class="text-app-primary hover:underline"
+							on:click={() => (success = false)}
+						>
+							Try again
+						</button>
+					</p>
+				</div>
+			{:else if $session.data?.user}
+				<div class="text-center mb-8">
+					<p class="text-app-subtle-text mb-4">
+						You are already logged in as {$session.data.user.email}
+					</p>
+					<a
+						href={resolve('/my-pages')}
+						class="btn bg-app-primary text-app-background border-0 w-full"
+					>
+						Go to My Pages
+					</a>
+				</div>
 			{:else}
-				{m.headline()}
+				<!-- Magic Link Request Form -->
+				<form on:submit|preventDefault={handleSendMagicLink} class="space-y-4">
+					<!-- Email Input -->
+					<div>
+						<label for="email" class="block text-sm font-medium mb-2"> Email </label>
+						<input
+							id="email"
+							type="email"
+							bind:value={email}
+							placeholder="you@example.com"
+							class="input input-bordered w-full"
+							required
+							disabled={loading}
+						/>
+					</div>
+
+					<!-- Error Message -->
+					{#if error}
+						<div class="alert alert-error bg-red-50 text-red-600 border-red-200">
+							<p class="text-sm">{error}</p>
+						</div>
+					{/if}
+
+					<!-- Submit Button -->
+					<button
+						type="submit"
+						class="btn bg-app-primary text-app-background border-0 w-full"
+						disabled={loading}
+					>
+						{loading ? 'Sending...' : 'Continue'}
+					</button>
+				</form>
 			{/if}
-		</h1>
-
-		<!-- Description -->
-		<p
-			class="text-app-subtle-text text-base leading-relaxed pb-3 pt-1 px-4 text-center max-w-md mx-auto"
-		>
-			{#if $user}
-				Manage your profile and track your progress
-			{:else}
-				{m.description()}
-			{/if}
-		</p>
-		<div class="grow lg:grow-0"></div>
-
-		<!-- Action Section -->
-		<div class="px-4 py-6 mt-6 lg:mt-8 lg:px-8">
-			<div class="flex flex-col gap-4 max-w-sm mx-auto">
-				{#if $user}
-					<!-- Logged in actions -->
-					<a href="/dashboard" class="btn bg-app-primary text-app-background border-0 w-full">
-						Go to Dashboard
-					</a>
-					<a href="/profile" class="btn btn-outline border-app-primary text-app-primary w-full">
-						View Profile
-					</a>
-				{:else}
-					<!-- Not logged in actions -->
-					<a href="/auth/login" class="btn bg-app-primary text-app-background border-0 w-full">
-						{m.get_started()}
-					</a>
-				{/if}
-			</div>
-
-			<!-- Privacy Notice -->
-			<p class="text-app-subtle-text text-xs pt-4 px-4 text-center">
-				{m.privacy_notice()}
-			</p>
 		</div>
 	</main>
-
-	<DefaultFooter />
 </div>

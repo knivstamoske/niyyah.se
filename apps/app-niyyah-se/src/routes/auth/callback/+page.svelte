@@ -1,19 +1,21 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
+	import { Loader2, AlertCircle } from 'lucide-svelte';
 	import type { PageData } from './$types';
 
-	export let data: PageData;
+	let { data }: { data: PageData & { error?: string } } = $props();
 
-	let error = '';
-	let verifying = true;
+	let error = $state('');
+	let verifying = $state(true);
 
 	onMount(() => {
 		// Check if verification was successful
 		if (data && !data.error) {
-			// Redirect to dashboard after successful verification
+			// Redirect to my-pages after successful verification
 			setTimeout(() => {
-				goto('/dashboard');
+				goto(resolve('/my-pages'));
 			}, 1000);
 		} else {
 			verifying = false;
@@ -34,19 +36,7 @@
 					<!-- Verifying State -->
 					<div class="text-center">
 						<div class="mb-4">
-							<svg
-								class="w-16 h-16 mx-auto text-app-primary animate-spin"
-								fill="none"
-								stroke="currentColor"
-								viewBox="0 0 24 24"
-							>
-								<path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									stroke-width="2"
-									d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-								></path>
-							</svg>
+							<Loader2 class="w-16 h-16 mx-auto text-app-primary animate-spin" />
 						</div>
 						<h2 class="text-xl font-bold mb-2">Verifying...</h2>
 						<p class="text-app-subtle-text">Please wait while we sign you in</p>
@@ -55,23 +45,11 @@
 					<!-- Error State -->
 					<div class="text-center">
 						<div class="mb-4">
-							<svg
-								class="w-16 h-16 mx-auto text-red-500"
-								fill="none"
-								stroke="currentColor"
-								viewBox="0 0 24 24"
-							>
-								<path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									stroke-width="2"
-									d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-								></path>
-							</svg>
+							<AlertCircle class="w-16 h-16 mx-auto text-red-500" />
 						</div>
 						<h2 class="text-xl font-bold mb-2 text-red-600">Verification Failed</h2>
 						<p class="text-app-subtle-text mb-6">{error}</p>
-						<a href="/auth/login" class="btn bg-app-primary text-app-background border-0 w-full">
+						<a href={resolve('/')} class="btn bg-app-primary text-app-background border-0 w-full">
 							Request New Link
 						</a>
 					</div>
@@ -80,7 +58,9 @@
 
 			<!-- Back to Home -->
 			<div class="mt-6 text-center">
-				<a href="/" class="text-app-subtle-text text-sm hover:text-app-text"> ← Back to Home </a>
+				<a href={resolve('/')} class="text-app-subtle-text text-sm hover:text-app-text">
+					← Back to Home
+				</a>
 			</div>
 		</div>
 	</main>

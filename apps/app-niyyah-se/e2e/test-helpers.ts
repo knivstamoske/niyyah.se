@@ -4,6 +4,19 @@ import { eq } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
 
+/**
+ * MailpitMessage represents an email message from Mailpit.
+ */
+export interface MailpitMessage {
+	ID: string;
+	Subject: string;
+	To: { Name: string; Address: string }[];
+	From: { Name: string; Address: string };
+	Created: string;
+	HTML: string;
+	Text: string;
+}
+
 // Load environment variables from .env file
 config();
 
@@ -84,7 +97,7 @@ export class MailpitClient {
 	/**
 	 * getMessages fetches all messages from Mailpit.
 	 */
-	async getMessages(): Promise<any[]> {
+	async getMessages(): Promise<MailpitMessage[]> {
 		const response = await fetch(`${this.baseUrl}/api/v1/messages`);
 		if (!response.ok) {
 			throw new Error(`Failed to fetch messages: ${response.statusText}`);
@@ -96,14 +109,15 @@ export class MailpitClient {
 	/**
 	 * getLatestEmailByRecipient fetches the most recent email sent to a specific recipient.
 	 */
-	async getLatestEmailByRecipient(email: string): Promise<any | null> {
+	async getLatestEmailByRecipient(email: string): Promise<MailpitMessage | null> {
 		const messages = await this.getMessages();
-		const filtered = messages.filter((msg: any) =>
-			msg.To?.some((to: any) => to.Address.toLowerCase() === email.toLowerCase())
+		const filtered = messages.filter((msg: MailpitMessage) =>
+			msg.To?.some((to) => to.Address.toLowerCase() === email.toLowerCase())
 		);
 		// Sort by Created (newest first)
 		filtered.sort(
-			(a: any, b: any) => new Date(b.Created).getTime() - new Date(a.Created).getTime()
+			(a: MailpitMessage, b: MailpitMessage) =>
+				new Date(b.Created).getTime() - new Date(a.Created).getTime()
 		);
 		return filtered[0] || null;
 	}
@@ -111,7 +125,7 @@ export class MailpitClient {
 	/**
 	 * getEmailById fetches a specific email by its ID.
 	 */
-	async getEmailById(id: string): Promise<any> {
+	async getEmailById(id: string): Promise<MailpitMessage> {
 		const response = await fetch(`${this.baseUrl}/api/v1/message/${id}`);
 		if (!response.ok) {
 			throw new Error(`Failed to fetch email: ${response.statusText}`);

@@ -6,12 +6,7 @@
 export const MAGIC_LINK_EXPIRY_MINUTES = 10;
 export const MAGIC_LINK_EXPIRY_SECONDS = MAGIC_LINK_EXPIRY_MINUTES * 60;
 
-interface MagicLinkEmailParams {
-	email: string;
-	url: string;
-}
-
-export async function createMagicLinkEmail({ email, url }: MagicLinkEmailParams) {
+export async function createMagicLinkEmail({ url }: { email: string; url: string }) {
 	const html = `
 <!DOCTYPE html>
 <html>

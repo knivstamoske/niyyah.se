@@ -4,7 +4,7 @@ import { magicLink } from 'better-auth/plugins/magic-link';
 import { sveltekitCookies } from 'better-auth/svelte-kit';
 import { getRequestEvent } from '$app/server';
 import { env } from '$env/dynamic/private';
-import { client, db } from '$lib/server/db';
+import { db } from '$lib/server/db';
 import { candidate } from '@niyyah/db/schema';
 import nodemailer from 'nodemailer';
 import {
@@ -73,7 +73,6 @@ export const auth = betterAuth({
 	plugins: [
 		magicLink({
 			expiresIn: MAGIC_LINK_EXPIRY_SECONDS,
-			callbackURL: '/dashboard',
 			sendMagicLink: async ({ email, url }) => {
 				const emailTemplate = await createMagicLinkEmail({ email, url });
 
