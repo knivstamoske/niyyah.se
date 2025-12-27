@@ -5,7 +5,7 @@
   "main": "src/index.ts",
   "exports": {
     ".": "./src/index.ts",
-    "./schema": "./src/schema"
+    "./schema": "./src/schema/index.ts"
   },
   "peerDependencies": {
     "drizzle-orm": "^0.45.1",

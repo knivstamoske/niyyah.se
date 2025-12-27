@@ -1,0 +1,21 @@
+{
+	"$schema": "https://inlang.com/schema/inlang-message-format",
+	"hello_world": "Hello, {name} from ar!",
+	"page_title": "نية - التوفيق الحلال في السويد",
+	"meta_description": "منصة مخصصة للمسلمين في السويد للعثور على شريك متوافق وفقًا للقيم الإسلامية.",
+	"headline": "نية",
+	"description": "منصة للمسلمين في السويد للعثور على شريك متوافق وفقًا للقيم الإسلامية.",
+	"email_placeholder": "أدخل بريدك الإلكتروني",
+	"email_label": "عنوان البريد الإلكتروني",
+	"join_waitlist": "انضم إلى قائمة الانتظار",
+	"joining": "جاري الانضمام...",
+	"social_proof": "كن من أوائل المنضمين عند الإطلاق.",
+	"privacy_notice": "نحن نحترم خصوصيتك. لا رسائل مزعجة.",
+	"footer_tagline": "نربط القلوب، مسترشدين بالمبادئ الإسلامية",
+	"copyright": "© 2025 نية. جميع الحقوق محفوظة.",
+	"facebook": "فيسبوك",
+	"twitter": "تويتر",
+	"instagram": "انستغرام",
+	"privacy_policy": "سياسة الخصوصية",
+	"terms_of_service": "شروط الخدمة"
+}
