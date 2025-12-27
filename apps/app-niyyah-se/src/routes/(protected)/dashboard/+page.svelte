@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { authClient } from '$lib/client/auth';
+	import { goto } from '$app/navigation';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -20,7 +21,10 @@
 					</div>
 					<div class="flex items-center gap-4">
 						<a href="/profile" class="text-app-text hover:text-app-primary"> Profile </a>
-						<button on:click={() => authClient.signOut()} class="btn btn-sm border-app-border">
+						<button
+							on:click={() => authClient.signOut({ fetchOptions: { onSuccess: () => goto('/') } })}
+							class="btn btn-sm border-app-border"
+						>
 							Sign Out
 						</button>
 					</div>

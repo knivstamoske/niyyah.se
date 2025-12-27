@@ -54,7 +54,7 @@
 				{:else}
 					<!-- Not logged in actions -->
 					<a href="/auth/login" class="btn bg-app-primary text-app-background border-0 w-full">
-						Get Started
+						{m.get_started()}
 					</a>
 				{/if}
 			</div>

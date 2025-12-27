@@ -25,9 +25,6 @@
 				{
 					onSuccess: () => {
 						success = true;
-						console.log('\n========== MAGIC LINK REQUESTED ==========');
-						console.log(`Check Mailpit UI at http://localhost:8090 for the login link`);
-						console.log('==========================================\n');
 					},
 					onError: (ctx) => {
 						error = ctx.error.message || 'Failed to send magic link. Please try again.';

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { authClient } from '$lib/client/auth';
+	import { goto } from '$app/navigation';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -20,7 +21,10 @@
 					</div>
 					<div class="flex items-center gap-4">
 						<a href="/dashboard" class="text-app-text hover:text-app-primary"> Dashboard </a>
-						<button on:click={() => authClient.signOut()} class="btn btn-sm border-app-border">
+						<button
+							on:click={() => authClient.signOut({ fetchOptions: { onSuccess: () => goto('/') } })}
+							class="btn btn-sm border-app-border"
+						>
 							Sign Out
 						</button>
 					</div>
@@ -73,7 +77,7 @@
 						<div class="flex items-center justify-between">
 							<span class="text-sm">Email Verified</span>
 							<span
-								class="text-sm {$user.emailVerified
+								class="text-sm {data.user.emailVerified
 									? 'text-green-600'
 									: 'text-yellow-600'} font-medium"
 							>
