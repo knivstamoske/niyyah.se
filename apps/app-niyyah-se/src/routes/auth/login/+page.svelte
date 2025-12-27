@@ -52,8 +52,8 @@
 		<div class="w-full max-w-md">
 			<!-- Header -->
 			<div class="text-center mb-8">
-				<h1 class="text-3xl font-bold mb-2">Sign In</h1>
-				<p class="text-app-subtle-text">Access your Niyyah account</p>
+				<h1 class="text-3xl font-bold mb-2">Welcome to Niyyah</h1>
+				<p class="text-app-subtle-text">Sign in or create an account to get started</p>
 			</div>
 
 			{#if success}
@@ -140,15 +140,7 @@
 						</p>
 					</div>
 
-					<!-- Links -->
-					<div class="mt-6 text-center text-sm">
-						<p class="text-app-subtle-text">
-							Don't have an account?
-							<a href="/auth/register" class="text-app-primary font-medium hover:underline">
-								Register
-							</a>
-						</p>
-					</div>
+
 				</div>
 			{/if}
 

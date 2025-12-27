@@ -1,23 +1,15 @@
 <script lang="ts">
 	import { authClient } from '$lib/client/auth';
-	import { goto } from '$app/navigation';
-	import { onMount } from 'svelte';
+	import type { PageData } from './$types';
 
-	const { user } = authClient.useSession();
-
-	onMount(() => {
-		// Redirect to home if not logged in
-		if (!$user) {
-			goto('/auth/login');
-		}
-	});
+	export let data: PageData;
 </script>
 
 <svelte:head>
 	<title>Profile - Niyyah.se</title>
 </svelte:head>
 
-{#if $user}
+
 	<div class="min-h-screen bg-app-background text-app-text">
 		<!-- Navigation -->
 		<nav class="bg-white border-b border-app-border">
@@ -51,20 +43,20 @@
 					<div class="space-y-4">
 						<div>
 							<label class="block text-sm font-medium text-app-subtle-text mb-1"> Full Name </label>
-							<p class="text-app-text font-medium">{$user.name || 'Not set'}</p>
+							<p class="text-app-text font-medium">{data.user.name || 'Not set'}</p>
 						</div>
 						<div>
 							<label class="block text-sm font-medium text-app-subtle-text mb-1">
 								Email Address
 							</label>
-							<p class="text-app-text font-medium">{$user.email}</p>
+							<p class="text-app-text font-medium">{data.user.email}</p>
 						</div>
 						<div>
 							<label class="block text-sm font-medium text-app-subtle-text mb-1">
 								Email Verified
 							</label>
 							<p class="text-app-text font-medium">
-								{$user.emailVerified ? '✓ Verified' : '✗ Not verified'}
+								{data.user.emailVerified ? '✓ Verified' : '✗ Not verified'}
 							</p>
 						</div>
 					</div>
@@ -85,7 +77,7 @@
 									? 'text-green-600'
 									: 'text-yellow-600'} font-medium"
 							>
-								{$user.emailVerified ? '✓ Complete' : '⚠ Pending'}
+								{data.user.emailVerified ? '✓ Complete' : '⚠ Pending'}
 							</span>
 						</div>
 						<div class="flex items-center justify-between">
@@ -130,4 +122,3 @@
 			</div>
 		</main>
 	</div>
-{/if}

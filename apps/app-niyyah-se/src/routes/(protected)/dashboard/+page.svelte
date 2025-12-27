@@ -1,23 +1,15 @@
 <script lang="ts">
 	import { authClient } from '$lib/client/auth';
-	import { goto } from '$app/navigation';
-	import { onMount } from 'svelte';
+	import type { PageData } from './$types';
 
-	const { user } = authClient.useSession();
-
-	onMount(() => {
-		// Redirect to home if not logged in
-		if (!$user) {
-			goto('/auth/login');
-		}
-	});
+	export let data: PageData;
 </script>
 
 <svelte:head>
 	<title>Dashboard - Niyyah.se</title>
 </svelte:head>
 
-{#if $user}
+
 	<div class="min-h-screen bg-app-background text-app-text">
 		<!-- Navigation -->
 		<nav class="bg-white border-b border-app-border">
@@ -40,7 +32,7 @@
 		<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 			<div class="mb-8">
 				<h1 class="text-3xl font-bold mb-2">
-					Welcome, {$user.name || 'User'}
+					Welcome, {data.user.name || 'User'}
 				</h1>
 				<p class="text-app-subtle-text">Manage your profile and track your progress</p>
 			</div>
@@ -96,4 +88,3 @@
 			</div>
 		</main>
 	</div>
-{/if}

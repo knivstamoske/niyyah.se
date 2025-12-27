@@ -53,11 +53,8 @@
 					</a>
 				{:else}
 					<!-- Not logged in actions -->
-					<a href="/auth/register" class="btn bg-app-primary text-app-background border-0 w-full">
+					<a href="/auth/login" class="btn bg-app-primary text-app-background border-0 w-full">
 						Get Started
-					</a>
-					<a href="/auth/login" class="btn btn-outline border-app-primary text-app-primary w-full">
-						Sign In
 					</a>
 				{/if}
 			</div>
