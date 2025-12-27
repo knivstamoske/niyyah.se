@@ -32,8 +32,15 @@ const transporter = nodemailer.createTransport({
 export const auth = betterAuth({
 	database: drizzleAdapter(db, {
 		provider: 'pg',
-		schema: candidate.schema
+		schema: {
+			user: candidate.user,
+			session: candidate.session,
+			account: candidate.account,
+			verification: candidate.verification
+		}
 	}),
+	// Secret for signing tokens (required for production)
+	secret: env.BETTER_AUTH_SECRET,
 	// Session configuration
 	session: {
 		expiresIn: 60 * 60 * 24 * 7, // 7 days
