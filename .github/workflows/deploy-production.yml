@@ -11,6 +11,10 @@ concurrency:
   group: ${{ github.workflow }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   build-www:
     uses: ./.github/workflows/reusable-build.yml
