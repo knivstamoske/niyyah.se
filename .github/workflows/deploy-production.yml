@@ -1,0 +1,43 @@
+name: Deploy Production
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+# Cancel in-progress runs when a new run is triggered
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  build-www:
+    uses: ./.github/workflows/reusable-build.yml
+    with:
+      image_name: ${{ github.repository_owner }}/www-niyyah-se
+      dockerfile: ./apps/www-niyyah-se/Dockerfile
+
+  build-app:
+    uses: ./.github/workflows/reusable-build.yml
+    with:
+      image_name: ${{ github.repository_owner }}/app-niyyah-se
+      dockerfile: ./apps/app-niyyah-se/Dockerfile
+
+  migrate:
+    needs: [build-www, build-app]
+    uses: ./.github/workflows/reusable-migrate.yml
+    secrets:
+      DATABASE_URL: ${{ secrets.WWW_NIYYAH_SE_DATABASE_URL }}
+
+  deploy-www:
+    needs: migrate
+    uses: ./.github/workflows/reusable-deploy.yml
+    secrets:
+      WEBHOOK_URL: ${{ secrets.WWW_NIYYAH_SE_DEPLOY_WEBHOOK_URL }}
+
+  deploy-app:
+    needs: migrate
+    uses: ./.github/workflows/reusable-deploy.yml
+    secrets:
+      WEBHOOK_URL: ${{ secrets.APP_NIYYAH_SE_DEPLOY_WEBHOOK_URL }}

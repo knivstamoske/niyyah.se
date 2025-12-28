@@ -15,6 +15,13 @@
       "when": 1766680260108,
       "tag": "0001_add_waitlist_table",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1766864884348,
+      "tag": "0002_add_candidate_auth",
+      "breakpoints": true
     }
   ]
 }

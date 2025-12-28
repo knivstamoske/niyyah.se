@@ -29,5 +29,16 @@ services:
     depends_on:
       - postgresql
 
+  # Use mailpit to test emails when developing
+  mailpit:
+    image: axllent/mailpit
+    restart: always
+    ports:
+      - 8090:8025 # Web UI
+      - 1025:1025 # SMTP server
+    environment:
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+
 volumes:
   postgresql:

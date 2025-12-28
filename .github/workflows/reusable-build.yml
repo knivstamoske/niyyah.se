@@ -1,17 +1,20 @@
-name: Deploy www-niyyah-se
+name: Reusable Build
 
 on:
-  push:
-    branches:
-      - main
-  workflow_dispatch:
+  workflow_call:
+    inputs:
+      image_name:
+        required: true
+        type: string
+      dockerfile:
+        required: true
+        type: string
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository_owner }}/www-niyyah-se
 
 jobs:
-  build-and-push:
+  build:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -35,7 +38,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          images: ${{ env.REGISTRY }}/${{ inputs.image_name }}
           tags: |
             type=ref,event=branch
             type=semver,pattern={{version}}
@@ -48,40 +51,9 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          file: ./apps/www-niyyah-se/Dockerfile
+          file: ${{ inputs.dockerfile }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build-and-push
-    environment: production
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "24"
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10.26.2
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Run database migrations
-        working-directory: ./libs/db
-        env:
-          DATABASE_URL: ${{ secrets.WWW_NIYYAH_SE_DATABASE_URL }}
-        run: pnpm exec drizzle-kit migrate
-
-      - name: Trigger deployment webhook
-        run: curl ${{ secrets.WWW_NIYYAH_SE_DEPLOY_WEBHOOK_URL }}

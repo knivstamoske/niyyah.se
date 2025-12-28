@@ -30,6 +30,9 @@ jobs:
             www-niyyah-se:
               - 'apps/www-niyyah-se/**'
               - 'libs/**'
+            app-niyyah-se:
+              - 'apps/app-niyyah-se/**'
+              - 'libs/**'
 
   # Validate each changed app
   # -------------------------
@@ -111,10 +114,8 @@ jobs:
             echo "Change detection failed"
             exit 1
           fi
-
           if [ "${{ needs.validate.result }}" != "success" ] && [ "${{ needs.validate.result }}" != "skipped" ]; then
             echo "One or more validations failed"
             exit 1
           fi
-
           echo "All validations passed!"

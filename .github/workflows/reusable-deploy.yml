@@ -1,0 +1,15 @@
+name: Reusable Deploy
+
+on:
+  workflow_call:
+    secrets:
+      WEBHOOK_URL:
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Trigger deployment webhook
+        run: curl ${{ secrets.WEBHOOK_URL }}
