@@ -90,7 +90,7 @@ export function generateTestEmail(): string {
 export class MailpitClient {
 	private baseUrl: string;
 
-	constructor(baseUrl: string = 'http://localhost:8090') {
+	constructor(baseUrl: string = 'http://localhost:1035') {
 		this.baseUrl = baseUrl;
 	}
 

@@ -7,10 +7,7 @@ import { env } from '$env/dynamic/private';
 import { db } from '$lib/server/db';
 import { candidate } from '@niyyah/db/schema';
 import nodemailer from 'nodemailer';
-import {
-	createMagicLinkEmail,
-	MAGIC_LINK_EXPIRY_SECONDS
-} from '$lib/server/email/magic-link-template';
+import { createMagicLinkEmail, LINK_EXPIRY } from '$lib/server/email/magic-link-template';
 
 /**
  * Create SMTP transporter for sending emails
@@ -44,7 +41,7 @@ export const auth = betterAuth({
 		}
 	}),
 	// Secret for signing tokens (required for production)
-	secret: env.BETTER_AUTH_SECRET,
+	secret: env.AUTH_SECRET,
 	// Session configuration
 	session: {
 		expiresIn: 60 * 60 * 24 * 7, // 7 days
@@ -57,7 +54,7 @@ export const auth = betterAuth({
 	// Add plugins
 	plugins: [
 		magicLink({
-			expiresIn: MAGIC_LINK_EXPIRY_SECONDS,
+			expiresIn: LINK_EXPIRY,
 			sendMagicLink: async ({ email, url }) => {
 				const emailTemplate = await createMagicLinkEmail({ email, url });
 

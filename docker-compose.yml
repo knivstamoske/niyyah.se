@@ -29,12 +29,33 @@ services:
     depends_on:
       - postgresql
 
+  app-niyyah-se:
+    profiles: ["apps"]
+    image: app-niyyah-se
+    build:
+      context: .
+      dockerfile: apps/app-niyyah-se/Dockerfile
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      ORIGIN: ${APP_NIYYAH_SE_ORIGIN}
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgresql:5432/${POSTGRES_DB}?options=-c%20search_path%3Dcandidate
+      SMTP_HOST: ${APP_NIYYAH_SE_SMTP_HOST}
+      SMTP_PORT: ${APP_NIYYAH_SE_SMTP_PORT}
+      SMTP_FROM: ${APP_NIYYAH_SE_SMTP_FROM}
+      AUTH_SECRET: ${APP_NIYYAH_SE_AUTH_SECRET}
+      LINK_EXPIRY: ${APP_NIYYAH_SE_LINK_EXPIRY}
+    ports:
+      - "8020:8020"
+    depends_on:
+      - postgresql
+
   # Use mailpit to test emails when developing
   mailpit:
     image: axllent/mailpit
     restart: always
     ports:
-      - 8090:8025 # Web UI
+      - 1035:8025 # Web UI
       - 1025:1025 # SMTP server
     environment:
       MP_SMTP_AUTH_ACCEPT_ANY: 1

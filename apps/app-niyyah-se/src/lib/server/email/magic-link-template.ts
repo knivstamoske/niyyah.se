@@ -5,8 +5,8 @@
 
 import { env } from '$env/dynamic/private';
 
-export const MAGIC_LINK_EXPIRY_SECONDS = parseInt(env.MAGIC_LINK_EXPIRY_SECONDS || '600');
-export const MAGIC_LINK_EXPIRY_MINUTES = Math.floor(MAGIC_LINK_EXPIRY_SECONDS / 60);
+export const LINK_EXPIRY = parseInt(env.LINK_EXPIRY || '600');
+export const MAGIC_LINK_EXPIRY_MINUTES = Math.floor(LINK_EXPIRY / 60);
 
 export async function createMagicLinkEmail({ url }: { email: string; url: string }) {
 	const html = `
