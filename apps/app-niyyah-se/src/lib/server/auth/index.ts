@@ -13,21 +13,6 @@ import {
 } from '$lib/server/email/magic-link-template';
 
 /**
- * Validate required environment variables
- */
-if (!env.BETTER_AUTH_SECRET) {
-	throw new Error(
-		'BETTER_AUTH_SECRET environment variable is required. Generate one with: openssl rand -base64 32'
-	);
-}
-
-if (env.BETTER_AUTH_SECRET.length < 32) {
-	console.warn(
-		'⚠️  WARNING: BETTER_AUTH_SECRET should be at least 32 characters for production use.'
-	);
-}
-
-/**
  * Create SMTP transporter for sending emails
  */
 const transporter = nodemailer.createTransport({
