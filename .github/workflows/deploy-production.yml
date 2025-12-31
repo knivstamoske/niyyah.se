@@ -32,19 +32,20 @@ jobs:
     needs: [build-www, build-app]
     environment: production
     uses: ./.github/workflows/reusable-migrate.yml
-    secrets:
-      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+    secrets: inherit
 
   deploy-www:
     needs: migrate
     environment: production
-    uses: ./.github/workflows/reusable-deploy.yml
-    secrets:
-      WEBHOOK_URL: ${{ secrets.WWW_NIYYAH_SE_DEPLOY_WEBHOOK_URL }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger deployment webhook
+        run: curl ${{ secrets.WWW_NIYYAH_SE_DEPLOY_WEBHOOK_URL }}
 
   deploy-app:
     needs: migrate
     environment: production
-    uses: ./.github/workflows/reusable-deploy.yml
-    secrets:
-      WEBHOOK_URL: ${{ secrets.APP_NIYYAH_SE_DEPLOY_WEBHOOK_URL }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger deployment webhook
+        run: curl ${{ secrets.APP_NIYYAH_SE_DEPLOY_WEBHOOK_URL }}
