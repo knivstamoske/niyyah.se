@@ -1,6 +1,15 @@
-name: Reusable Migrate
+name: Deploy Migrations
 
-on: workflow_call
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+# Cancel in-progress runs when a new run is triggered
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
 
 jobs:
   migrate:
@@ -25,5 +34,5 @@ jobs:
       - name: Run database migrations
         working-directory: ./libs/db
         env:
-          DATABASE_URL: ---${{ secrets.DATABASE_URL }}---
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: pnpm exec drizzle-kit migrate

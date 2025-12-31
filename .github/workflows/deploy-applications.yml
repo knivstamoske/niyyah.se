@@ -28,12 +28,8 @@ jobs:
       image_name: ${{ github.repository_owner }}/app-niyyah-se
       dockerfile: ./apps/app-niyyah-se/Dockerfile
 
-  migrate:
-    needs: [build-www, build-app]
-    uses: ./.github/workflows/reusable-migrate.yml
-
   deploy-www:
-    needs: migrate
+    needs: build-www
     environment: production
     runs-on: ubuntu-latest
     steps:
@@ -41,7 +37,7 @@ jobs:
         run: curl ${{ secrets.WWW_NIYYAH_SE_DEPLOY_WEBHOOK_URL }}
 
   deploy-app:
-    needs: migrate
+    needs: build-app
     environment: production
     runs-on: ubuntu-latest
     steps:
