@@ -30,24 +30,21 @@ jobs:
 
   migrate:
     needs: [build-www, build-app]
+    environment: production
     uses: ./.github/workflows/reusable-migrate.yml
-    with:
-      environment: production
     secrets:
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
   deploy-www:
     needs: migrate
+    environment: production
     uses: ./.github/workflows/reusable-deploy.yml
-    with:
-      environment: production
     secrets:
       WEBHOOK_URL: ${{ secrets.WWW_NIYYAH_SE_DEPLOY_WEBHOOK_URL }}
 
   deploy-app:
     needs: migrate
+    environment: production
     uses: ./.github/workflows/reusable-deploy.yml
-    with:
-      environment: production
     secrets:
       WEBHOOK_URL: ${{ secrets.APP_NIYYAH_SE_DEPLOY_WEBHOOK_URL }}
