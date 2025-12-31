@@ -15,6 +15,10 @@ RUN pnpm install --frozen-lockfile
 WORKDIR /app/apps/www-niyyah-se
 COPY libs/db ../../libs/db
 COPY apps/www-niyyah-se ./
+
+# Use .env.example for build-time environment variables (Zod validation)
+RUN cp .env.example .env
+
 RUN pnpm build
 
 # -----------------------------------------------------------------
