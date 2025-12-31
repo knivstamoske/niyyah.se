@@ -23,7 +23,7 @@ services:
     environment:
       NODE_ENV: production
       ORIGIN: ${WWW_NIYYAH_SE_ORIGIN}
-      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgresql:5432/${POSTGRES_DB}
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgresql:5432/${POSTGRES_DB}?options=-c%20search_path%3Dmarketing
     ports:
       - "8050:8050"
     depends_on:

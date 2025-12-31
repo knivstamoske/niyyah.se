@@ -42,9 +42,10 @@ WORKDIR /app/apps/www-niyyah-se
 EXPOSE 8050
 
 # Set environment variables
+ENV NODE_ENV=production
 ENV PORT=8050
 ENV ORIGIN=http://localhost:8050
-ENV NODE_ENV=production
+ENV DATABASE_URL="postgresql://niyyah:niyyah@localhost:5432/niyyah?options=-c%20search_path%3Dmarketing"
 
 # Start the application
 CMD ["node", "build"]
