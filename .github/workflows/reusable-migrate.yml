@@ -25,5 +25,5 @@ jobs:
       - name: Run database migrations
         working-directory: ./libs/db
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DATABASE_URL: ---${{ secrets.DATABASE_URL }}---
         run: pnpm exec drizzle-kit migrate
