@@ -11,9 +11,10 @@ const envSchema = z.object({
 	LINK_EXPIRY: z.coerce.number().int().positive(),
 	SMTP_HOST: z.string().min(1),
 	SMTP_PORT: z.coerce.number().int().positive(),
-	SMTP_FROM: z.email(),
+	SMTP_SECURE: z.boolean().optional(),
 	SMTP_USER: z.string().optional(),
-	SMTP_PASS: z.string().optional()
+	SMTP_PASS: z.string().optional(),
+	SMTP_FROM: z.email()
 });
 
 /**
@@ -41,6 +42,7 @@ export const config = {
 	smtp: {
 		host: parsedEnv.SMTP_HOST,
 		port: parsedEnv.SMTP_PORT,
+		secure: parsedEnv.SMTP_SECURE,
 		from: parsedEnv.SMTP_FROM,
 		user: parsedEnv.SMTP_USER,
 		pass: parsedEnv.SMTP_PASS

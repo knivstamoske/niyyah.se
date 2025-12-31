@@ -52,6 +52,9 @@ ENV ORIGIN=http://localhost:8020
 ENV DATABASE_URL="postgresql://niyyah:niyyah@localhost:5432/niyyah?options=-c%20search_path%3Dcandidate"
 ENV SMTP_HOST=localhost
 ENV SMTP_PORT=1025
+ENV SMTP_SECURE=false
+ENV SMTP_USER=username
+ENV SMTP_PASS=password
 ENV SMTP_FROM=noreply@niyyah.se
 ENV AUTH_SECRET=dev-secret-change-in-production-use-openssl-rand-base64-32
 ENV LINK_EXPIRY=600

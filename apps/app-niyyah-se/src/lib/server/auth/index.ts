@@ -15,7 +15,7 @@ import { createMagicLinkEmail, LINK_EXPIRY } from '$lib/server/email/magic-link-
 const transporter = nodemailer.createTransport({
 	host: config.smtp.host,
 	port: config.smtp.port,
-	secure: false,
+	secure: config.smtp.secure ?? false,
 	auth: config.smtp.user ? { user: config.smtp.user, pass: config.smtp.pass } : undefined
 });
 
