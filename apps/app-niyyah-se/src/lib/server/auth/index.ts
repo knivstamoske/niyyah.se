@@ -3,7 +3,7 @@ import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { magicLink } from 'better-auth/plugins/magic-link';
 import { sveltekitCookies } from 'better-auth/svelte-kit';
 import { getRequestEvent } from '$app/server';
-import { env } from '$env/dynamic/private';
+import { config } from '$lib/server/config';
 import { db } from '$lib/server/db';
 import { candidate } from '@niyyah/db/schema';
 import nodemailer from 'nodemailer';
@@ -13,15 +13,10 @@ import { createMagicLinkEmail, LINK_EXPIRY } from '$lib/server/email/magic-link-
  * Create SMTP transporter for sending emails
  */
 const transporter = nodemailer.createTransport({
-	host: env.SMTP_HOST || 'localhost',
-	port: parseInt(env.SMTP_PORT || '1025'),
+	host: config.smtp.host,
+	port: config.smtp.port,
 	secure: false,
-	auth: env.SMTP_USER
-		? {
-				user: env.SMTP_USER,
-				pass: env.SMTP_PASS
-			}
-		: undefined
+	auth: config.smtp.user ? { user: config.smtp.user, pass: config.smtp.pass } : undefined
 });
 
 /**
@@ -41,16 +36,16 @@ export const auth = betterAuth({
 		}
 	}),
 	// Secret for signing tokens (required for production)
-	secret: env.AUTH_SECRET,
+	secret: config.auth.secret,
 	// Session configuration
 	session: {
 		expiresIn: 60 * 60 * 24 * 7, // 7 days
 		updateAge: 60 * 60 * 24 // 1 day
 	},
 	// Base URL configuration
-	baseURL: env.ORIGIN || 'http://localhost:8020',
+	baseURL: config.server.origin,
 	// Trusted origins
-	trustedOrigins: env.ORIGIN ? [env.ORIGIN] : ['http://localhost:8020'],
+	trustedOrigins: config.server.trustedOrigins,
 	// Add plugins
 	plugins: [
 		magicLink({
@@ -59,7 +54,7 @@ export const auth = betterAuth({
 				const emailTemplate = await createMagicLinkEmail({ email, url });
 
 				const mailOptions = {
-					from: env.SMTP_FROM || 'noreply@niyyah.se',
+					from: config.smtp.from,
 					to: email,
 					subject: emailTemplate.subject,
 					html: emailTemplate.html,

@@ -3,9 +3,9 @@
  * Generates HTML and text email for magic link authentication
  */
 
-import { env } from '$env/dynamic/private';
+import { config } from '$lib/server/config';
 
-export const LINK_EXPIRY = parseInt(env.LINK_EXPIRY || '600');
+export const LINK_EXPIRY = config.auth.linkExpiry;
 export const MAGIC_LINK_EXPIRY_MINUTES = Math.floor(LINK_EXPIRY / 60);
 
 export async function createMagicLinkEmail({ url }: { email: string; url: string }) {
