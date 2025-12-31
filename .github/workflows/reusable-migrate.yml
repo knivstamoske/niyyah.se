@@ -1,14 +1,11 @@
 name: Reusable Migrate
 
-on:
-  workflow_call:
-    secrets:
-      DATABASE_URL:
-        required: true
+on: workflow_call
 
 jobs:
   migrate:
     runs-on: ubuntu-latest
+    environment: production
 
     steps:
       - name: Checkout repository

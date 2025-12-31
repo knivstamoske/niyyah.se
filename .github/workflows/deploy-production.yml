@@ -30,9 +30,7 @@ jobs:
 
   migrate:
     needs: [build-www, build-app]
-    environment: production
     uses: ./.github/workflows/reusable-migrate.yml
-    secrets: inherit
 
   deploy-www:
     needs: migrate
