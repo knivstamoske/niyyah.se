@@ -1,4 +1,11 @@
-import { boolean, pgSchema, text, timestamp } from "drizzle-orm/pg-core";
+import {
+  boolean,
+  integer,
+  pgSchema,
+  text,
+  timestamp,
+  uuid,
+} from "drizzle-orm/pg-core";
 
 /**
  * Candidate schema used by the candidate website
@@ -58,4 +65,34 @@ export const verification = schema.table("verification", {
   expiresAt: timestamp("expiresAt").notNull(),
   createdAt: timestamp("createdAt").defaultNow(),
   updatedAt: timestamp("updatedAt").defaultNow(),
+});
+
+/**
+ * Marital status enum for candidate profiles
+ */
+export const maritalStatus = schema.enum("marital_status", [
+  "single",
+  "married",
+  "divorced",
+  "widowed",
+]);
+
+/**
+ * Candidate profile table storing minimal personal information
+ */
+export const profile = schema.table("profile", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: text("user_id")
+    .notNull()
+    .unique()
+    .references(() => user.id, { onDelete: "cascade" }),
+  birthYear: integer("birth_year").notNull(),
+  kommun: text("kommun").notNull(),
+  maritalStatus: maritalStatus("marital_status").notNull(),
+  openToWidowed: boolean("open_to_widowed").notNull().default(false),
+  openToOlder: boolean("open_to_older").notNull().default(true),
+  openToYounger: boolean("open_to_younger").notNull().default(true),
+  openToSameAge: boolean("open_to_same_age").notNull().default(true),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
