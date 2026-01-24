@@ -140,3 +140,57 @@ interface LanguageOption {
 
 - Prefer loops over repeated markup when rendering lists
 - Use `{#each}` with index when you need positional logic (e.g., adding separators between items)
+
+### Remote Functions
+
+We strongly prefer using Svelte 5 remote functions for form handling and data mutations, unless third-party libraries require otherwise.
+
+**Example Implementation:**
+
+1. Define the remote function in a `.remote.ts` file (e.g., `src/routes/(remote)/waitlist.remote.ts`):
+
+```ts
+import { z } from 'zod';
+import { form } from '$app/server';
+import { db } from '$lib/server/db';
+import { marketing } from '@niyyah/db';
+
+export const joinWaitlist = form(
+	z.object({
+		email: z.email().min(1, 'Email is required')
+	}),
+	async ({ email }) => {
+		// Perform server-side logic
+		await db.insert(marketing.waitlist).values({
+			email: email.toLowerCase().trim()
+		});
+		return { success: true, message: 'Successfully joined the waitlist!' };
+	}
+);
+```
+
+2. Import and use it in your Svelte component:
+
+```svelte
+<script lang="ts">
+	import { joinWaitlist } from './(remote)/waitlist.remote';
+</script>
+
+<form {...joinWaitlist}>
+	<label>
+		Email
+		<input {...joinWaitlist.fields.email.as('email')} />
+		{#each joinWaitlist.fields.email.issues() as issue}
+			<p class="error">{issue.message}</p>
+		{/each}
+	</label>
+
+	<button disabled={!!joinWaitlist.pending}>
+		{joinWaitlist.pending ? 'Joining...' : 'Join Waitlist'}
+	</button>
+</form>
+
+{#if joinWaitlist.result}
+	<p>{joinWaitlist.result.message}</p>
+{/if}
+```
