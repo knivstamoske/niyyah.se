@@ -72,7 +72,6 @@ export const verification = schema.table("verification", {
  */
 export const maritalStatus = schema.enum("marital_status", [
   "single",
-  "married",
   "divorced",
   "widowed",
 ]);
