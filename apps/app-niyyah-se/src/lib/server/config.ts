@@ -11,7 +11,10 @@ const envSchema = z.object({
 	LINK_EXPIRY: z.coerce.number().int().positive(),
 	SMTP_HOST: z.string().min(1),
 	SMTP_PORT: z.coerce.number().int().positive(),
-	SMTP_SECURE: z.coerce.boolean().optional(),
+	SMTP_SECURE: z
+		.string()
+		.optional()
+		.transform((val) => val === 'true' || val === '1'),
 	SMTP_USER: z.string().optional(),
 	SMTP_PASS: z.string().optional(),
 	SMTP_FROM: z.email()
