@@ -213,9 +213,8 @@
 			</button>
 		{/if}
 
-		<button type="button" class="btn-next" onclick={handleNext} disabled={loading} class:loading>
+		<button type="button" class="btn-next" onclick={handleNext} disabled={loading}>
 			{#if loading}
-				<span class="loading-spinner"></span>
 				Processing...
 			{:else if isLastStep}
 				{submitText} →
@@ -349,21 +348,6 @@
 	.btn-next:disabled {
 		opacity: 0.6;
 		cursor: not-allowed;
-	}
-
-	.loading-spinner {
-		width: 1rem;
-		height: 1rem;
-		border: 2px solid rgba(255, 255, 255, 0.3);
-		border-top-color: white;
-		border-radius: 50%;
-		animation: spin 0.6s linear infinite;
-	}
-
-	@keyframes spin {
-		to {
-			transform: rotate(360deg);
-		}
 	}
 
 	/* Responsive */
