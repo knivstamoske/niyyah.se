@@ -2,7 +2,7 @@
  * Swedish kommuns grouped by län
  * Source: Official Swedish administrative divisions (290 municipalities across 21 counties)
  */
-export const kommunsByLan: Record<string, string[]> = {
+export const KOMMUNS_BY_LAN: Record<string, string[]> = {
 	Blekinge: ['Karlshamn', 'Karlskrona', 'Olofström', 'Ronneby', 'Sölvesborg'],
 	Dalarna: [
 		'Avesta',
