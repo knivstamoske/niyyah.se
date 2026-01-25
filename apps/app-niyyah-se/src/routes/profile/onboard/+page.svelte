@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { tick } from 'svelte';
+	import { goto } from '$app/navigation';
 	import {
 		StepForm,
 		type StepFieldConfig,
@@ -57,8 +57,6 @@
 		{ value: 'divorced', label: 'Divorced' },
 		{ value: 'widowed', label: 'Widowed' }
 	];
-
-
 
 	/**
 	 * Step configurations for the profile creation flow
@@ -120,17 +118,35 @@
 		openToWidowed: false
 	};
 
-	let formElement: HTMLFormElement;
-	let formData: Partial<ProfileData> = { ...initialValues };
+	let loading = false;
+	let errorMessage = '';
 
 	/**
-	 * Handle form submission using the form helper's submit method
+	 * Handle form submission
 	 */
 	async function handleSubmit(data: Record<string, unknown>) {
-		formData = data;
-		await tick();
-		if (formElement) {
-			formElement.requestSubmit();
+		loading = true;
+		errorMessage = '';
+		try {
+			// Call the remote function directly
+			await onboard({
+				birthYear: Number(data.birthYear),
+				kommun: String(data.kommun),
+				gender: data.gender as 'male' | 'female',
+				maritalStatus: data.maritalStatus as 'single' | 'divorced' | 'widowed'
+			});
+			// Redirect on success
+			await goto('/profile');
+		} catch (error) {
+			console.error('Failed to submit profile:', error);
+			// Show error message
+			if (error instanceof Error) {
+				errorMessage = error.message;
+			} else {
+				errorMessage = 'An unexpected error occurred. Please try again.';
+			}
+		} finally {
+			loading = false;
 		}
 	}
 </script>
@@ -145,28 +161,13 @@
 		{initialValues}
 		onSubmit={handleSubmit}
 		submitText="Complete Profile"
-		loading={!!onboard.pending}
+		loading={loading}
 	/>
 
-	<form {...onboard} bind:this={formElement} class="hidden">
-		<input type="hidden" name="birthYear" value={formData.birthYear} />
-		<input type="hidden" name="kommun" value={formData.kommun} />
-		<input type="hidden" name="gender" value={formData.gender} />
-		<input type="hidden" name="maritalStatus" value={formData.maritalStatus} />
-		<input type="hidden" name="openToWidowed" value={String(formData.openToWidowed)} />
-		<input type="hidden" name="openToOlder" value={String(formData.openToOlder)} />
-		<input type="hidden" name="openToYounger" value={String(formData.openToYounger)} />
-		<input type="hidden" name="openToSameAge" value={String(formData.openToSameAge)} />
-	</form>
-
-	{#if onboard.result}
+	{#if errorMessage}
 		<div class="max-w-md mx-auto px-4 py-4">
-			<p
-				class="text-center text-sm {onboard.result.success
-					? 'text-green-600'
-					: 'text-red-600'}"
-			>
-				{onboard.result.message}
+			<p class="text-center text-sm text-red-600">
+				{errorMessage}
 			</p>
 		</div>
 	{/if}
@@ -174,7 +175,7 @@
 
 <style>
 	.page-wrapper {
-		min-height: 100vh;
+		min-height: 100dvh;
 		background: white;
 	}
 </style>
