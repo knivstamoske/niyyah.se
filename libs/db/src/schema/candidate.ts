@@ -68,6 +68,14 @@ export const verification = schema.table("verification", {
 });
 
 /**
+ * Gender enum for candidate profiles
+ */
+export const gender = schema.enum("gender", [
+  "male",
+  "female",
+]);
+
+/**
  * Marital status enum for candidate profiles
  */
 export const maritalStatus = schema.enum("marital_status", [
@@ -87,6 +95,7 @@ export const profile = schema.table("profile", {
     .references(() => user.id, { onDelete: "cascade" }),
   birthYear: integer("birth_year").notNull(),
   kommun: text("kommun").notNull(),
+  gender: gender("gender").notNull(),
   maritalStatus: maritalStatus("marital_status").notNull(),
   openToWidowed: boolean("open_to_widowed").notNull().default(false),
   openToOlder: boolean("open_to_older").notNull().default(true),
