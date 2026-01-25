@@ -3,7 +3,7 @@ import { form } from '$app/server';
 import { db } from '$lib/server/db';
 import { marketing } from '@niyyah/db';
 
-export const joinWaitlist = form(
+export const subscribe = form(
 	z.object({
 		email: z.email().min(1, 'Email is required')
 	}),

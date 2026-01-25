@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { LanguagePicker, DefaultFooter } from '$lib/client/ui';
 	import { m } from '$lib/i18n/messages.js';
-	import { joinWaitlist } from './(remote)/waitlist.remote';
+	import { subscribe } from './subscribe.remote';
 </script>
 
 <svelte:head>
@@ -44,35 +44,35 @@
 		<!-- Waitlist Section -->
 		<div class="px-4 py-6 mt-6 lg:mt-8 lg:px-8">
 			<!-- Form -->
-			<form {...joinWaitlist} class="flex flex-col gap-4 max-w-sm mx-auto">
+			<form {...subscribe} class="flex flex-col gap-4 max-w-sm mx-auto">
 				<label class="flex flex-col w-full">
 					<span class="sr-only">{m.email_label()}</span>
 					<input
-						{...joinWaitlist.fields.email.as('email')}
+						{...subscribe.fields.email.as('email')}
 						placeholder={m.email_placeholder()}
 						class="input input-bordered w-full"
 					/>
-					{#each joinWaitlist.fields.email.issues() as issue, index (index)}
+					{#each subscribe.fields.email.issues() as issue, index (index)}
 						<p class="text-sm text-red-600 mt-1">{issue.message}</p>
 					{/each}
 				</label>
 				<button
 					type="submit"
 					class="btn bg-app-primary text-app-background border-0 w-full"
-					disabled={!!joinWaitlist.pending}
+					disabled={!!subscribe.pending}
 				>
-					{joinWaitlist.pending ? m.joining() : m.join_waitlist()}
+					{subscribe.pending ? m.joining() : m.join_waitlist()}
 				</button>
 			</form>
 
 			<!-- Success/Error Messages -->
-			{#if joinWaitlist.result}
+			{#if subscribe.result}
 				<p
-					class="text-center mt-4 text-sm {joinWaitlist.result.success
+					class="text-center mt-4 text-sm {subscribe.result.success
 						? 'text-green-600'
 						: 'text-red-600'}"
 				>
-					{joinWaitlist.result.message}
+					{subscribe.result.message}
 				</p>
 			{/if}
 
