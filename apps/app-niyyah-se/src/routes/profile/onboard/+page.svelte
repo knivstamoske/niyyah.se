@@ -7,8 +7,8 @@
 		type SelectGroup,
 		type RadioOption
 	} from '$lib/client/ui/StepForm';
-	import { kommunsByLan } from '$lib/shared/constants/kommuns';
-	import { createProfile } from './(remote)/profile.remote';
+	import { KOMMUNS_BY_LAN } from '$lib/shared/constants/kommuns';
+	import { onboard } from './onboard.remote';
 
 	/**
 	 * Profile data type matching the database schema
@@ -16,6 +16,7 @@
 	interface ProfileData {
 		birthYear: number;
 		kommun: string;
+		gender: 'male' | 'female';
 		maritalStatus: 'single' | 'divorced' | 'widowed';
 		openToWidowed: boolean;
 		openToOlder: boolean;
@@ -35,10 +36,18 @@
 	/**
 	 * Convert kommuns map to grouped select options
 	 */
-	const kommunOptions: SelectGroup[] = Object.entries(kommunsByLan).map(([lan, kommuns]) => ({
+	const kommunOptions: SelectGroup[] = Object.entries(KOMMUNS_BY_LAN).map(([lan, kommuns]) => ({
 		label: lan,
 		options: kommuns.map((kommun) => ({ value: kommun, label: kommun }))
 	}));
+
+	/**
+	 * Gender options
+	 */
+	const genderOptions: RadioOption[] = [
+		{ value: 'male', label: 'Man' },
+		{ value: 'female', label: 'Woman' }
+	];
 
 	/**
 	 * Marital status options
@@ -49,26 +58,26 @@
 		{ value: 'widowed', label: 'Widowed' }
 	];
 
-	/**
-	 * Open to widowed options
-	 */
-	const openToWidowedOptions: RadioOption[] = [
-		{ value: true, label: "Yes, I'm open to widowed" },
-		{ value: false, label: 'Not at this time' }
-	];
+
 
 	/**
 	 * Step configurations for the profile creation flow
 	 */
 	const steps: StepFieldConfig<keyof ProfileData & string>[] = [
 		{
+			id: 'gender',
+			question: 'I am a',
+			required: true,
+			fieldType: 'radio',
+			radioOptions: genderOptions
+		},
+		{
 			id: 'birthYear',
-			question: 'What year were you born?',
-			description: 'We use this to help you find compatible matches',
+			question: 'I was born in',
 			required: true,
 			fieldType: 'select',
 			selectOptions: birthYearOptions,
-			placeholder: 'Select your birth year',
+			placeholder: 'Select year',
 			validate: (value: unknown) => {
 				const year = Number(value);
 				const currentYear = new Date().getFullYear();
@@ -80,12 +89,11 @@
 		},
 		{
 			id: 'kommun',
-			question: 'Which kommun do you live in?',
-			description: 'This helps us connect you with people nearby',
+			question: 'I live in',
 			required: true,
 			fieldType: 'select',
 			selectOptions: kommunOptions,
-			placeholder: 'Select your kommun',
+			placeholder: 'Select kommun',
 			validate: (value: unknown) => {
 				if (typeof value === 'string' && value.trim().length < 2) {
 					return 'Please enter a valid kommun name';
@@ -95,16 +103,10 @@
 		},
 		{
 			id: 'maritalStatus',
-			question: 'What is your marital status?',
+			question: 'I am',
 			required: true,
 			fieldType: 'radio',
 			radioOptions: maritalStatusOptions
-		},
-		{
-			id: 'openToWidowed',
-			question: 'Are you open to matching with someone who is widowed?',
-			fieldType: 'radio',
-			radioOptions: openToWidowedOptions
 		}
 	];
 
@@ -143,12 +145,13 @@
 		{initialValues}
 		onSubmit={handleSubmit}
 		submitText="Complete Profile"
-		loading={!!createProfile.pending}
+		loading={!!onboard.pending}
 	/>
 
-	<form {...createProfile} bind:this={formElement} class="hidden">
+	<form {...onboard} bind:this={formElement} class="hidden">
 		<input type="hidden" name="birthYear" value={formData.birthYear} />
 		<input type="hidden" name="kommun" value={formData.kommun} />
+		<input type="hidden" name="gender" value={formData.gender} />
 		<input type="hidden" name="maritalStatus" value={formData.maritalStatus} />
 		<input type="hidden" name="openToWidowed" value={String(formData.openToWidowed)} />
 		<input type="hidden" name="openToOlder" value={String(formData.openToOlder)} />
@@ -156,14 +159,14 @@
 		<input type="hidden" name="openToSameAge" value={String(formData.openToSameAge)} />
 	</form>
 
-	{#if createProfile.result}
+	{#if onboard.result}
 		<div class="max-w-md mx-auto px-4 py-4">
 			<p
-				class="text-center text-sm {createProfile.result.success
+				class="text-center text-sm {onboard.result.success
 					? 'text-green-600'
 					: 'text-red-600'}"
 			>
-				{createProfile.result.message}
+				{onboard.result.message}
 			</p>
 		</div>
 	{/if}

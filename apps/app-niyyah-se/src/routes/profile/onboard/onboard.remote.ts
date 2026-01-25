@@ -9,25 +9,29 @@ import { candidate } from '@niyyah/db';
  */
 const profileSchema = z.object({
 	birthYear: z
-		.number()
-		.int()
-		.min(1940, 'Birth year must be 1940 or later')
-		.max(new Date().getFullYear() - 18, 'You must be at least 18 years old'),
+		.string()
+		.transform((val) => parseInt(val, 10))
+		.pipe(
+			z
+				.number()
+				.int()
+				.min(1940, 'Birth year must be 1940 or later')
+				.max(new Date().getFullYear() - 18, 'You must be at least 18 years old')
+		),
 	kommun: z.string().min(1, 'Kommun is required').trim(),
+	gender: z.enum(['male', 'female'], {
+		message: 'Please select a valid gender'
+	}),
 	maritalStatus: z.enum(['single', 'divorced', 'widowed'], {
 		message: 'Please select a valid marital status'
-	}),
-	openToWidowed: z.boolean().default(false),
-	openToOlder: z.boolean().default(true),
-	openToYounger: z.boolean().default(true),
-	openToSameAge: z.boolean().default(true)
+	})
 });
 
 /**
  * Remote function to create a candidate profile
  * Requires authentication
  */
-export const createProfile = form(profileSchema, async (data) => {
+export const onboard = form(profileSchema, async (data) => {
 	// Get the current session to ensure user is authenticated
 	const session = await auth.api.getSession();
 
@@ -41,11 +45,8 @@ export const createProfile = form(profileSchema, async (data) => {
 			userId: session.user.id,
 			birthYear: data.birthYear,
 			kommun: data.kommun,
+			gender: data.gender,
 			maritalStatus: data.maritalStatus,
-			openToWidowed: data.openToWidowed,
-			openToOlder: data.openToOlder,
-			openToYounger: data.openToYounger,
-			openToSameAge: data.openToSameAge
 		});
 
 		return {
