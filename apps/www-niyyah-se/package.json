@@ -10,7 +10,7 @@
 		"lint:eslint": "eslint .",
 		"lint:eslint:fix": "eslint --fix .",
 		"lint:svelte": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-		"test:vitest": "vitest",
+		"test:vitest": "vitest --passWithNoTests",
 		"test:e2e": "playwright test"
 	},
 	"devDependencies": {
