@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { tick } from 'svelte';
 	import {
 		StepForm,
 		type StepFieldConfig,
@@ -7,6 +8,7 @@
 		type RadioOption
 	} from '$lib/client/ui/StepForm';
 	import { kommunsByLan } from '$lib/shared/constants/kommuns';
+	import { createProfile } from './(remote)/profile.remote';
 
 	/**
 	 * Profile data type matching the database schema
@@ -116,20 +118,18 @@
 		openToWidowed: false
 	};
 
+	let formElement: HTMLFormElement;
+	let formData: Partial<ProfileData> = { ...initialValues };
+
 	/**
-	 * Handle form submission (mock for now)
+	 * Handle form submission using the form helper's submit method
 	 */
 	async function handleSubmit(data: Record<string, unknown>) {
-		const profileData = data as unknown as ProfileData;
-		console.log('Profile data:', profileData);
-
-		// Simulate API call
-		await new Promise((resolve) => setTimeout(resolve, 1500));
-
-		alert('Profile created successfully! (Mock)');
-
-		// Would redirect to dashboard in production
-		// goto('/my-pages');
+		formData = data;
+		await tick();
+		if (formElement) {
+			formElement.requestSubmit();
+		}
 	}
 </script>
 
@@ -138,7 +138,35 @@
 </svelte:head>
 
 <div class="page-wrapper">
-	<StepForm {steps} {initialValues} onSubmit={handleSubmit} submitText="Complete Profile" />
+	<StepForm
+		{steps}
+		{initialValues}
+		onSubmit={handleSubmit}
+		submitText="Complete Profile"
+		loading={!!createProfile.pending}
+	/>
+
+	<form {...createProfile} bind:this={formElement} class="hidden">
+		<input type="hidden" name="birthYear" value={formData.birthYear} />
+		<input type="hidden" name="kommun" value={formData.kommun} />
+		<input type="hidden" name="maritalStatus" value={formData.maritalStatus} />
+		<input type="hidden" name="openToWidowed" value={String(formData.openToWidowed)} />
+		<input type="hidden" name="openToOlder" value={String(formData.openToOlder)} />
+		<input type="hidden" name="openToYounger" value={String(formData.openToYounger)} />
+		<input type="hidden" name="openToSameAge" value={String(formData.openToSameAge)} />
+	</form>
+
+	{#if createProfile.result}
+		<div class="max-w-md mx-auto px-4 py-4">
+			<p
+				class="text-center text-sm {createProfile.result.success
+					? 'text-green-600'
+					: 'text-red-600'}"
+			>
+				{createProfile.result.message}
+			</p>
+		</div>
+	{/if}
 </div>
 
 <style>
