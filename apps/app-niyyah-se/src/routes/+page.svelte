@@ -49,18 +49,24 @@
 
 <div class="min-h-screen flex flex-col bg-app-background text-app-text">
 	<!-- Language Picker -->
-	<div class="flex justify-end px-4 py-4">
+	<div class="absolute top-0 right-0 p-4">
 		<LanguagePicker />
 	</div>
 
-	<main class="flex-1 flex flex-col items-center justify-center px-4 py-8">
+	<main class="flex-1 flex flex-col items-center justify-center px-4">
 		<div class="w-full max-w-md">
+			<!-- Logo -->
+			<div class="flex justify-center mb-10 -mt-36">
+				<img
+					src="/logo/logo-tall.png"
+					alt="Niyyah"
+					class="h-36 object-contain"
+				/>
+			</div>
+
 			{#if success}
 				<!-- Success Message -->
 				<div class="text-center">
-					<div class="mb-4">
-						<CircleCheck class="w-16 h-16 mx-auto text-app-primary" />
-					</div>
 					<h2 class="text-xl font-bold mb-2">Check Your Email</h2>
 					<p class="text-app-subtle-text">
 						We've sent a sign-in link to
@@ -74,18 +80,6 @@
 							Try again
 						</button>
 					</p>
-				</div>
-			{:else if $session.data?.user}
-				<div class="text-center mb-8">
-					<p class="text-app-subtle-text mb-4">
-						You are already logged in as {$session.data.user.email}
-					</p>
-					<a
-						href={resolve('/my-pages')}
-						class="btn bg-app-primary text-app-background border-0 w-full"
-					>
-						Go to My Pages
-					</a>
 				</div>
 			{:else}
 				<!-- Magic Link Request Form -->
