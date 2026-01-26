@@ -1,57 +1,23 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { authClient } from '$lib/client/auth';
 	import { goto } from '$app/navigation';
-	import { resolve } from '$app/paths';
 	import { LanguagePicker } from '$lib/client/ui';
 	import {
-		LogOut,
 		MapPin,
 		Calendar,
 		Heart,
-		Bell,
-		Mail,
 		User,
-		ChevronRight,
-		Settings
+		LogOut,
+		CheckCircle2,
+		Clock,
+		AlertCircle,
+		ArrowRight,
+		Pencil
 	} from 'lucide-svelte';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
-
-	// Mock Data
-	const notifications = [
-		{
-			id: 1,
-			title: 'Profile Verified',
-			message: 'Your profile has been verified successfully.',
-			time: '2 hours ago',
-			type: 'success'
-		},
-		{
-			id: 2,
-			title: 'New Match Suggestion',
-			message: 'We have found a potential match for you based on your preferences.',
-			time: '1 day ago',
-			type: 'info'
-		}
-	];
-
-	const messages = [
-		{
-			id: 1,
-			sender: 'Matchmaker',
-			preview: 'Hello! I have reviewed your profile and I have a few questions regarding...',
-			time: '3 hours ago',
-			unread: true
-		},
-		{
-			id: 2,
-			sender: 'Support Team',
-			preview: 'Welcome to Niyyah.se! Let us know if you need any help getting started.',
-			time: '2 days ago',
-			unread: false
-		}
-	];
 
 	async function handleLogout() {
 		await authClient.signOut({
@@ -69,165 +35,291 @@
 	function formatText(text: string) {
 		return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
 	}
+
+	// Status and action items logic
+	type UserStatus =
+		| 'profile_incomplete'
+		| 'waiting_for_match'
+		| 'match_found'
+		| 'waiting_for_meeting_acceptance'
+		| 'meeting_scheduled'
+		| 'waiting_for_feedback';
+
+	type ActionItem = {
+		title: string;
+		description: string;
+		href: string;
+		urgent: boolean;
+	};
+
+	// Mock status - in real app, this would come from the database
+	const currentStatus: UserStatus = data.profile ? 'waiting_for_match' : 'profile_incomplete';
+
+	const statusConfig: Record<
+		UserStatus,
+		{ label: string; description: string; icon: typeof Clock; color: string }
+	> = {
+		profile_incomplete: {
+			label: 'Profile Incomplete',
+			description: 'Complete your profile to start matching',
+			icon: AlertCircle,
+			color: 'text-amber-600'
+		},
+		waiting_for_match: {
+			label: 'Searching for Matches',
+			description: 'We are actively looking for compatible matches for you',
+			icon: Clock,
+			color: 'text-app-primary'
+		},
+		match_found: {
+			label: 'Match Found',
+			description: 'We found a compatible match for you',
+			icon: Heart,
+			color: 'text-app-secondary'
+		},
+		waiting_for_meeting_acceptance: {
+			label: 'Waiting for Response',
+			description: 'Your match is reviewing the meeting request',
+			icon: Clock,
+			color: 'text-app-primary'
+		},
+		meeting_scheduled: {
+			label: 'Meeting Scheduled',
+			description: 'Your meeting is confirmed',
+			icon: CheckCircle2,
+			color: 'text-green-600'
+		},
+		waiting_for_feedback: {
+			label: 'Feedback Required',
+			description: 'Please provide feedback about your meeting',
+			icon: AlertCircle,
+			color: 'text-amber-600'
+		}
+	};
+
+	// Action items based on status
+	const actionItems: ActionItem[] = $derived.by(() => {
+		const items: ActionItem[] = [];
+
+		if (!data.profile) {
+			items.push({
+				title: 'Complete Your Profile',
+				description: 'Fill in your basic information to start matching',
+				href: '/profile/onboard',
+				urgent: true
+			});
+		} else {
+			items.push({
+				title: 'Update Profile',
+				description: 'Keep your information up to date',
+				href: '/profile/edit',
+				urgent: false
+			});
+		}
+
+		// Mock action items - in real app, these would be dynamic
+		// items.push({
+		// 	title: 'Respond to Meeting Request',
+		// 	description: 'Review and accept the proposed meeting time',
+		// 	href: '/profile/meetings',
+		// 	urgent: true
+		// });
+
+		return items;
+	});
+
+	const status = $derived(statusConfig[currentStatus]);
 </script>
 
 <svelte:head>
 	<title>My Profile - Niyyah.se</title>
 </svelte:head>
 
-<div class="min-h-screen bg-app-background text-app-text font-sans selection:bg-app-primary selection:text-white">
+<div
+	class="min-h-screen bg-app-background text-app-text font-sans selection:bg-app-primary selection:text-white"
+>
 	<!-- Header -->
-	<header class="border-b border-app-border/40 bg-white/50 backdrop-blur-xl sticky top-0 z-50">
+	<header class="border-b border-app-primary/10 bg-white/95 backdrop-blur-sm sticky top-0 z-50">
 		<div class="max-w-5xl mx-auto px-6 h-20 flex items-center justify-between">
 			<div class="flex items-center gap-2">
-				<a href={resolve('/')} class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-app-primary to-app-primary/70 tracking-tight">
-					Niyyah.se
-				</a>
-			</div>
+			<a
+				href={resolve('/')}
+				class="flex items-center hover:opacity-80 transition-opacity"
+			>
+				<img
+					src="/logo/logo-wide.png"
+					alt="Niyyah.se"
+					class="h-8 object-contain"
+				/>
+			</a>
+		</div>
 
 			<div class="flex items-center gap-6">
 				<div class="hidden md:block">
 					<LanguagePicker />
 				</div>
-				<button
-					onclick={handleLogout}
-					class="flex items-center gap-2 text-sm font-medium text-app-subtle-text hover:text-app-primary transition-all duration-300 hover:bg-app-primary/5 px-4 py-2 rounded-full group"
-				>
-					<LogOut class="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-				</button>
 			</div>
 		</div>
 	</header>
 
-	<main class="max-w-5xl mx-auto px-6 py-12 space-y-16">
-		<!-- Welcome Section -->
-		<section class="space-y-2 animate-in fade-in slide-in-from-bottom-4 duration-700">
-			<h1 class="text-4xl md:text-5xl font-bold text-app-text tracking-tight">
-				Welcome back, <span class="text-app-primary">{data.user?.name}</span>
-			</h1>
-			<p class="text-lg text-app-subtle-text font-light max-w-2xl leading-relaxed">
-				Manage your profile, view your matches, and stay updated with your latest notifications.
-			</p>
-		</section>
+	<main class="max-w-5xl mx-auto px-6 py-12">
+		<div class="space-y-16">
+			<!-- Welcome Section -->
+			<section class="space-y-6">
+				<h1 class="text-4xl md:text-5xl font-light text-app-primary tracking-tight">
+					Welcome back, <span class="font-semibold text-app-text">{data.user?.name}</span>
+				</h1>
+			</section>
 
-		<!-- Dashboard Grid -->
-		<div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
-			<!-- Left Column: Profile Overview -->
-			<div class="lg:col-span-4 space-y-12">
-				<section class="space-y-6 animate-in fade-in slide-in-from-bottom-6 duration-700 delay-100">
-					<div class="flex items-center gap-3 mb-2">
-						<div class="p-2 bg-app-primary/10 rounded-xl text-app-primary">
-							<User class="w-5 h-5" />
-						</div>
-						<h2 class="text-xl font-semibold tracking-tight">My Profile</h2>
+			<!-- Status Section -->
+			<section class="space-y-4">
+				<h2 class="text-sm uppercase tracking-widest text-app-subtle-text font-medium">
+					Current Status
+				</h2>
+				<div
+					class="bg-white border-l-4 border-app-primary p-6 flex items-start gap-4 hover:border-app-secondary transition-colors duration-300"
+				>
+					<svelte:component this={status.icon} class="w-6 h-6 {status.color} flex-shrink-0 mt-1" />
+					<div class="flex-1">
+						<h3 class="text-xl font-semibold text-app-text mb-1">{status.label}</h3>
+						<p class="text-app-subtle-text leading-relaxed">{status.description}</p>
 					</div>
+				</div>
+			</section>
 
-					<div class="bg-white rounded-3xl p-8 border border-app-border/40 hover:border-app-primary/20 transition-all duration-500 group relative overflow-hidden">
-                        <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-app-primary/5 to-transparent rounded-bl-[60px] -mr-8 -mt-8 transition-transform duration-700 group-hover:scale-110"></div>
-
-						{#if data.profile}
-							<div class="space-y-6 relative">
-								<div class="flex items-start gap-4">
-									<div class="flex-1 space-y-1">
-										<p class="text-sm text-app-subtle-text font-medium uppercase tracking-wider">Location</p>
-										<div class="flex items-center gap-2 text-app-text">
-											<MapPin class="w-4 h-4 text-app-primary" />
-											<span class="font-medium">{formatText(data.profile.kommun)}</span>
+			<!-- Action Items -->
+			{#if actionItems.length > 0}
+				<section class="space-y-4">
+					<h2 class="text-sm uppercase tracking-widest text-app-subtle-text font-medium">
+						Action Items
+					</h2>
+					<div class="space-y-3">
+						{#each actionItems as item}
+							<a
+								href={resolve(item.href)}
+								class="block group bg-white border border-app-primary/20 p-6 hover:border-app-secondary transition-all duration-300"
+							>
+								<div class="flex items-center justify-between">
+									<div class="flex-1">
+										<div class="flex items-center gap-3 mb-1">
+											<h3 class="text-lg font-semibold text-app-text group-hover:text-app-primary transition-colors">
+												{item.title}
+											</h3>
+											{#if item.urgent}
+												<span
+													class="px-2 py-0.5 text-xs font-medium bg-amber-100 text-amber-800 rounded-sm"
+												>
+													URGENT
+												</span>
+											{/if}
 										</div>
+										<p class="text-app-subtle-text">{item.description}</p>
 									</div>
+									<ArrowRight
+										class="w-5 h-5 text-app-subtle-text group-hover:text-app-secondary group-hover:translate-x-1 transition-all flex-shrink-0 ml-4"
+									/>
 								</div>
-
-								<div class="w-full h-px bg-app-border/30"></div>
-
-								<div class="flex items-start gap-4">
-									<div class="flex-1 space-y-1">
-										<p class="text-sm text-app-subtle-text font-medium uppercase tracking-wider">Personal Details</p>
-										<div class="space-y-2">
-											<div class="flex items-center gap-2 text-app-text">
-												<Calendar class="w-4 h-4 text-app-primary" />
-												<span class="font-medium">{getAge(data.profile.birthYear)} years old</span>
-											</div>
-											<div class="flex items-center gap-2 text-app-text">
-												<User class="w-4 h-4 text-app-primary" />
-												<span class="font-medium">{formatText(data.profile.gender)}</span>
-											</div>
-											<div class="flex items-center gap-2 text-app-text">
-												<Heart class="w-4 h-4 text-app-primary" />
-												<span class="font-medium">{formatText(data.profile.maritalStatus)}</span>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						{:else}
-							<div class="text-center py-8">
-								<p class="text-app-subtle-text">Profile incomplete</p>
-								<a href={resolve('/profile/onboard')} class="text-app-primary hover:underline mt-2 inline-block">Complete Setup</a>
-							</div>
-						{/if}
-					</div>
-				</section>
-			</div>
-
-			<!-- Right Column: Notifications & Messages -->
-			<div class="lg:col-span-8 space-y-12">
-
-				<!-- Notifications -->
-				<section class="space-y-6 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-200">
-					<div class="flex items-center justify-between mb-2">
-						<div class="flex items-center gap-3">
-							<div class="p-2 bg-orange-50 rounded-xl text-orange-600">
-								<Bell class="w-5 h-5" />
-							</div>
-							<h2 class="text-xl font-semibold tracking-tight">Notifications</h2>
-						</div>
-						<span class="text-xs font-semibold px-2.5 py-1 bg-orange-100 text-orange-700 rounded-full">{notifications.length} New</span>
-					</div>
-
-					<div class="space-y-4">
-						{#each notifications as notification}
-							<div class="group bg-white rounded-2xl p-6 border border-app-border/40 hover:border-app-primary/20 transition-all duration-300 hover:bg-gray-50/50 cursor-pointer flex gap-4 items-start">
-								<div class={`w-2 h-2 rounded-full mt-2.5 flex-shrink-0 ${notification.type === 'success' ? 'bg-green-500' : 'bg-blue-500'}`}></div>
-								<div class="flex-1">
-									<h3 class="font-semibold text-app-text group-hover:text-app-primary transition-colors">{notification.title}</h3>
-									<p class="text-app-subtle-text text-sm mt-1 leading-relaxed">{notification.message}</p>
-									<p class="text-xs text-app-subtle-text/70 mt-3 font-medium">{notification.time}</p>
-								</div>
-								<ChevronRight class="w-5 h-5 text-gray-300 group-hover:text-app-primary transition-colors opacity-0 group-hover:opacity-100" />
-							</div>
+							</a>
 						{/each}
 					</div>
 				</section>
+			{/if}
 
-				<!-- Messages -->
-				<section class="space-y-6 animate-in fade-in slide-in-from-bottom-10 duration-700 delay-300">
-					<div class="flex items-center justify-between mb-2">
-						<div class="flex items-center gap-3">
-							<div class="p-2 bg-purple-50 rounded-xl text-purple-600">
-								<Mail class="w-5 h-5" />
+			<!-- Profile Information -->
+			{#if data.profile}
+				<section class="space-y-4">
+					<div class="flex items-center justify-between">
+						<h2 class="text-sm uppercase tracking-widest text-app-subtle-text font-medium">
+							Profile Information
+						</h2>
+						<a
+							href="/profile/edit"
+							class="text-sm font-medium text-app-primary hover:text-app-secondary flex items-center gap-1.5 transition-colors"
+						>
+							<Pencil class="w-3.5 h-3.5" />
+							Edit
+						</a>
+					</div>
+
+					<div class="bg-white border border-app-primary/20 p-8">
+						<div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
+							<!-- Location -->
+							<div class="space-y-2">
+								<div class="flex items-center gap-2 text-app-subtle-text">
+									<MapPin class="w-4 h-4 text-app-secondary" />
+									<p class="text-xs uppercase tracking-widest font-medium">Location</p>
+								</div>
+								<p class="text-lg font-medium text-app-text pl-6">
+									{formatText(data.profile.kommun)}
+								</p>
 							</div>
-							<h2 class="text-xl font-semibold tracking-tight">Messages</h2>
+
+							<!-- Age -->
+							<div class="space-y-2">
+								<div class="flex items-center gap-2 text-app-subtle-text">
+									<Calendar class="w-4 h-4 text-app-secondary" />
+									<p class="text-xs uppercase tracking-widest font-medium">Age</p>
+								</div>
+								<p class="text-lg font-medium text-app-text pl-6">
+									{getAge(data.profile.birthYear)} years
+								</p>
+							</div>
+
+							<!-- Gender -->
+							<div class="space-y-2">
+								<div class="flex items-center gap-2 text-app-subtle-text">
+									<User class="w-4 h-4 text-app-secondary" />
+									<p class="text-xs uppercase tracking-widest font-medium">Gender</p>
+								</div>
+								<p class="text-lg font-medium text-app-text pl-6">
+									{formatText(data.profile.gender)}
+								</p>
+							</div>
+
+							<!-- Marital Status -->
+							<div class="space-y-2">
+								<div class="flex items-center gap-2 text-app-subtle-text">
+									<Heart class="w-4 h-4 text-app-secondary" />
+									<p class="text-xs uppercase tracking-widest font-medium">Marital Status</p>
+								</div>
+								<p class="text-lg font-medium text-app-text pl-6">
+									{formatText(data.profile.maritalStatus)}
+								</p>
+							</div>
 						</div>
 					</div>
-
-					<div class="space-y-4">
-						{#each messages as message}
-							<div class="group bg-white rounded-2xl p-6 border border-app-border/40 hover:border-app-primary/20 transition-all duration-300 hover:bg-gray-50/50 cursor-pointer">
-								<div class="flex justify-between items-start mb-2">
-									<div class="flex items-center gap-2">
-										<h3 class="font-semibold text-app-text group-hover:text-app-primary transition-colors">{message.sender}</h3>
-										{#if message.unread}
-											<span class="w-2 h-2 bg-app-primary rounded-full animate-pulse"></span>
-										{/if}
-									</div>
-									<span class="text-xs text-app-subtle-text font-medium">{message.time}</span>
-								</div>
-								<p class="text-app-subtle-text text-sm line-clamp-1 leading-relaxed group-hover:text-app-text transition-colors">{message.preview}</p>
-							</div>
-						{/each}
+				</section>
+			{:else}
+				<section class="space-y-4">
+					<h2 class="text-sm uppercase tracking-widest text-app-subtle-text font-medium">
+						Profile Information
+					</h2>
+					<div
+						class="bg-white border border-app-primary/20 p-12 text-center hover:border-app-secondary/50 transition-colors duration-300"
+					>
+						<User class="w-12 h-12 text-app-subtle-text mx-auto mb-4" />
+						<p class="text-app-subtle-text mb-4">Your profile is incomplete</p>
+						<a
+							href={resolve('/profile/onboard')}
+							class="inline-flex items-center gap-2 px-6 py-3 bg-app-primary text-white font-medium hover:bg-app-secondary transition-colors"
+						>
+							Complete Profile
+							<ArrowRight class="w-4 h-4" />
+						</a>
 					</div>
 				</section>
-			</div>
+			{/if}
+
+			<!-- Logout Section -->
+			<section class="pt-8 border-t border-app-primary/10">
+				<button
+					onclick={handleLogout}
+					class="flex items-center gap-3 px-6 py-3 text-app-subtle-text hover:text-app-primary hover:bg-app-primary/5 transition-all rounded-sm group"
+				>
+					<LogOut class="w-5 h-5 group-hover:scale-110 transition-transform" />
+					<span class="font-medium">Sign Out</span>
+				</button>
+			</section>
 		</div>
 	</main>
 </div>
