@@ -28,10 +28,14 @@
 			</div>
 		</div>
 
-		<!-- Headline -->
-		<h1 class="text-3xl font-bold leading-tight px-4 text-center pb-3 pt-8 lg:pt-8">
-			{m.headline()}
-		</h1>
+		<!-- Logo -->
+		<div class="px-4 pt-6 pb-3 flex justify-center">
+			<img
+				src="/logo/logo-wide.png"
+				alt="Niyyah"
+				class="h-10 object-contain"
+			/>
+		</div>
 
 		<!-- Description -->
 		<p
