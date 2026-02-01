@@ -16,7 +16,7 @@ We use a curated set of earth tones to evoke warmth and stability. These colors 
 
 **Primary Palette:**
 - **taupe** (`#8D7B6C`): A warm, earthy neutral used for grounding elements, secondary backgrounds, or subtle borders.
-- **cream** (`#F9EFDA`): A soft, off-white background color that serves as the canvas. It reduces eye strain compared to pure white and provides a "paper-like" feel.
+- **cream** (`#F9EFDA`): A soft, off-white color used for **secondary backgrounds**, highlighted sections, or "paper" surfaces on top of the white canvas.
 - **slate** (`#7C8C9A`): A cool, balanced grey-blue used for secondary text, metadata, and neutral UI elements.
 - **midnyt** (`#36495B`): A deep, rich blue-grey. This is our primary ink color for text and strong definitions, replacing standard black.
 - **bronze** (`#B58D54`): A metallic, warm accent used for highlights, call-to-actions, and key focal points.
@@ -35,6 +35,7 @@ We use a curated set of earth tones to evoke warmth and stability. These colors 
 
 - **Borders**: Sharp, defined borders to convey precision.
 - **Corners**: Slightly rounded corners (approx. 2px - 4px radius) to soften the harshness of sharp squares while avoiding the overly bubbly look of fully pill-shaped elements. This strikes a balance between professional and friendly.
+- **Depth**: **Do not use shadows** (`box-shadow`, `drop-shadow`). Depth should be communicated through layout, borders, and color contrast, not artificial shading.
 
 ### Iconography & Graphics
 
