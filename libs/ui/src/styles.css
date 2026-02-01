@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand Colors */
+  --color-taupe: #8D7B6C;
+  --color-cream: #F9EFDA;
+  --color-slate: #7C8C9A;
+  --color-midnyt: #36495B;
+  --color-bronze: #B58D54;
+
+  /* Semantic Colors */
+  --color-success: #10B981;
+  --color-warning: #F59E0B;
+  --color-error: #EF4444;
+
+  /* Border Radius */
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+}
+
+/*
+  Global Reset / Base Styles
+  PDR: "Organic Minimalism", "Single Column"
+*/
+@layer base {
+  body {
+    @apply bg-white text-midnyt antialiased;
+    font-family: system-ui, -apple-system, sans-serif;
+  }
+
+  /* PDR: "Sharp borders but only slightly rounded at corners" */
+  input, textarea, select, button {
+    @apply rounded-[var(--radius-md)];
+  }
+}
