@@ -1,12 +1,8 @@
 @import 'tailwindcss';
+@import '@niyyah/ui/styles.css';
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
 
-@plugin "daisyui" {
-	themes: wireframe --default;
-	root: ':root';
-	logs: false;
-}
 
 @theme {
 	--color-app-primary: #003d6b;
