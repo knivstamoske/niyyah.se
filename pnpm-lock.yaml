@@ -149,9 +149,9 @@ importers:
       '@niyyah/db':
         specifier: workspace:*
         version: link:../../libs/db
-      daisyui:
-        specifier: ^5.5.14
-        version: 5.5.14
+      '@niyyah/ui':
+        specifier: workspace:*
+        version: link:../../libs/ui
       drizzle-orm:
         specifier: ^0.45.1
         version: 0.45.1(@cloudflare/workers-types@4.20251128.0)(kysely@0.28.9)(postgres@3.4.7)
@@ -289,13 +289,16 @@ importers:
   libs/ui:
     devDependencies:
       svelte:
-        specifier: ^5.0.0
+        specifier: ^5.46.1
         version: 5.46.1
       svelte-check:
-        specifier: ^4.0.0
+        specifier: ^4.3.5
         version: 4.3.5(picomatch@4.0.3)(svelte@5.46.1)(typescript@5.9.3)
+      tailwindcss:
+        specifier: ^4.1.18
+        version: 4.1.18
       typescript:
-        specifier: ^5.0.0
+        specifier: ^5.9.3
         version: 5.9.3
 
 packages:
