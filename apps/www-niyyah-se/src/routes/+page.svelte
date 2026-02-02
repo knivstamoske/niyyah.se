@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { LanguagePicker, DefaultFooter } from '$lib/client/ui';
 	import { m } from '$lib/i18n/messages.js';
-	import { subscribe } from './subscribe.remote';
+	import { PUBLIC_CANDIDATE_APP_URL } from '$env/static/public';
 </script>
 
 <svelte:head>
@@ -30,60 +30,26 @@
 
 		<!-- Logo -->
 		<div class="px-4 pt-6 pb-3 flex justify-center">
-			<img
-				src="/logo/logo-wide.png"
-				alt="Niyyah"
-				class="h-10 object-contain"
-			/>
+			<img src="/logo/logo-wide.png" alt="Niyyah" class="h-10 object-contain" />
 		</div>
 
 		<!-- Description -->
-		<p
-			class="text-slate text-base leading-relaxed pb-3 pt-1 px-4 text-center max-w-md mx-auto"
-		>
+		<p class="text-slate text-base leading-relaxed pb-3 pt-1 px-4 text-center max-w-md mx-auto">
 			{m.description()}
 		</p>
 		<div class="grow lg:grow-0"></div>
 
 		<!-- Waitlist Section -->
 		<div class="px-4 py-6 mt-6 lg:mt-8 lg:px-8">
-			<!-- Form -->
-			<form {...subscribe} class="flex flex-col gap-4 max-w-sm mx-auto">
-				<label class="flex flex-col w-full">
-					<span class="sr-only">{m.email_label()}</span>
-					<input
-						{...subscribe.fields.email.as('email')}
-						placeholder={m.email_placeholder()}
-						class="w-full px-3 py-2 border border-slate/30 rounded-md focus:outline-none focus:ring-2 focus:ring-bronze/20 focus:border-bronze transition-all"
-					/>
-					{#each subscribe.fields.email.issues() as issue, index (index)}
-						<p class="text-sm text-error mt-1">{issue.message}</p>
-					{/each}
-				</label>
-				<button
-					type="submit"
-					class="bg-midnyt text-cream px-6 py-2.5 rounded-md hover:bg-midnyt/90 transition-colors font-medium w-full"
-					disabled={!!subscribe.pending}
+			<!-- CTA Button -->
+			<div class="flex justify-center">
+				<a
+					href={PUBLIC_CANDIDATE_APP_URL}
+					class="bg-midnyt text-cream px-6 py-2.5 rounded-md hover:bg-midnyt/90 transition-colors font-medium inline-block"
 				>
-					{subscribe.pending ? m.joining() : m.join_waitlist()}
-				</button>
-			</form>
-
-			<!-- Success/Error Messages -->
-			{#if subscribe.result}
-				<p
-					class="text-center mt-4 text-sm {subscribe.result.success
-						? 'text-success'
-						: 'text-error'}"
-				>
-					{subscribe.result.message}
-				</p>
-			{/if}
-
-			<!-- Social Proof -->
-			<p class="text-slate text-sm pt-4 px-4 text-center">
-				{m.social_proof()}
-			</p>
+					{m.create_profile()}
+				</a>
+			</div>
 
 			<!-- Privacy Notice -->
 			<p class="text-slate text-xs pt-2 px-4 text-center">

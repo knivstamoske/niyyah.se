@@ -28,7 +28,9 @@
 	}
 </script>
 
-<div class="flex items-center text-xs font-medium border border-slate/20 rounded-md overflow-hidden">
+<div
+	class="flex items-center text-xs font-medium border border-slate/20 rounded-md overflow-hidden"
+>
 	{#each options as option, index (option.code)}
 		{#if index > 0}
 			<div class="w-px bg-slate/20 h-full"></div>
