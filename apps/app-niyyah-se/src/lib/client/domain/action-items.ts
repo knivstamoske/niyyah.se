@@ -1,3 +1,5 @@
+import { m } from '$lib/i18n/messages.js';
+
 /**
  * ActionItemKey represents the possible action items a user can have.
  */
@@ -17,8 +19,8 @@ export interface ActionItemPresentation {
  */
 export const ACTION_ITEM_MAP = {
 	complete_profile: {
-		title: 'Complete Your Profile',
-		description: 'Fill in your basic information to start matching',
+		title: m.action_complete_profile_title(),
+		description: m.action_complete_profile_description(),
 		href: '/profile/onboard'
 	}
 } satisfies Record<ActionItemKey, ActionItemPresentation>;

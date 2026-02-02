@@ -14,7 +14,7 @@
 
 	async function handleSendMagicLink() {
 		if (!email) {
-			error = 'Please enter your email address';
+			error = m.login_error_email_required();
 			return;
 		}
 
@@ -29,12 +29,12 @@
 						success = true;
 					},
 					onError: (ctx) => {
-						error = ctx.error.message || 'Failed to send link. Please try again.';
+						error = ctx.error.message || m.login_error_failed();
 					}
 				}
 			);
 		} catch (err) {
-			error = 'An unexpected error occurred. Please try again.';
+			error = m.login_error_unexpected();
 			console.error('Sign-in link error:', err);
 		} finally {
 			loading = false;
@@ -67,17 +67,17 @@
 			{#if success}
 				<!-- Success Message -->
 				<div class="text-center">
-					<h2 class="text-xl font-bold mb-2">Check Your Email</h2>
+					<h2 class="text-xl font-bold mb-2">{m.login_check_email()}</h2>
 					<p class="text-slate">
-						We've sent a sign-in link to
+						{m.login_sent_link_to()}
 						<span class="font-medium text-midnyt">{email}</span>.<br />
-						Didn't get it?
+						{m.login_didnt_get_it()}
 						<button
 							type="button"
 							class="text-bronze hover:underline"
 							on:click={() => (success = false)}
 						>
-							Try again
+							{m.login_try_again()}
 						</button>
 					</p>
 				</div>
@@ -86,12 +86,12 @@
 				<form on:submit|preventDefault={handleSendMagicLink} class="space-y-4">
 					<!-- Email Input -->
 					<div>
-						<label for="email" class="block text-sm font-medium mb-2"> Email </label>
+						<label for="email" class="block text-sm font-medium mb-2">{m.login_email_label()}</label>
 						<input
 							id="email"
 							type="email"
 							bind:value={email}
-							placeholder="you@example.com"
+							placeholder={m.login_email_placeholder()}
 							class="w-full px-3 py-2 border border-slate/30 rounded-md focus:outline-none focus:ring-2 focus:ring-bronze/20 focus:border-bronze transition-all"
 							required
 							disabled={loading}
@@ -111,7 +111,7 @@
 						class="bg-midnyt text-cream px-6 py-2.5 rounded-md hover:bg-midnyt/90 transition-colors font-medium w-full"
 						disabled={loading}
 					>
-						{loading ? 'Sending...' : 'Continue'}
+						{loading ? m.login_sending() : m.login_continue()}
 					</button>
 				</form>
 			{/if}

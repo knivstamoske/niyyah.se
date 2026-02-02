@@ -9,6 +9,7 @@
 	} from '$lib/client/ui/StepForm';
 	import { KOMMUNS_BY_LAN } from '$lib/shared/constants/kommuns';
 	import { onboard } from './onboard.remote';
+	import { m } from '$lib/i18n/messages.js';
 
 	/**
 	 * Profile data type matching the database schema
@@ -45,17 +46,17 @@
 	 * Gender options
 	 */
 	const genderOptions: RadioOption[] = [
-		{ value: 'male', label: 'Man' },
-		{ value: 'female', label: 'Woman' }
+		{ value: 'male', label: m.onboarding_gender_man() },
+		{ value: 'female', label: m.onboarding_gender_woman() }
 	];
 
 	/**
 	 * Marital status options
 	 */
 	const maritalStatusOptions: RadioOption[] = [
-		{ value: 'single', label: 'Single' },
-		{ value: 'divorced', label: 'Divorced' },
-		{ value: 'widowed', label: 'Widowed' }
+		{ value: 'single', label: m.onboarding_marital_status_single() },
+		{ value: 'divorced', label: m.onboarding_marital_status_divorced() },
+		{ value: 'widowed', label: m.onboarding_marital_status_widowed() }
 	];
 
 	/**
@@ -64,44 +65,44 @@
 	const steps: StepFieldConfig<keyof ProfileData & string>[] = [
 		{
 			id: 'gender',
-			question: 'I am a',
+			question: m.onboarding_gender_question(),
 			required: true,
 			fieldType: 'radio',
 			radioOptions: genderOptions
 		},
 		{
 			id: 'birthYear',
-			question: 'I was born in',
+			question: m.onboarding_birth_year_question(),
 			required: true,
 			fieldType: 'select',
 			selectOptions: birthYearOptions,
-			placeholder: 'Select year',
+			placeholder: m.onboarding_birth_year_placeholder(),
 			validate: (value: unknown) => {
 				const year = Number(value);
 				const currentYear = new Date().getFullYear();
 				if (year < 1940 || year > currentYear - 18) {
-					return 'Please enter a valid birth year (you must be at least 18)';
+					return m.onboarding_birth_year_error();
 				}
 				return true;
 			}
 		},
 		{
 			id: 'kommun',
-			question: 'I live in',
+			question: m.onboarding_kommun_question(),
 			required: true,
 			fieldType: 'select',
 			selectOptions: kommunOptions,
-			placeholder: 'Select kommun',
+			placeholder: m.onboarding_kommun_placeholder(),
 			validate: (value: unknown) => {
 				if (typeof value === 'string' && value.trim().length < 2) {
-					return 'Please enter a valid kommun name';
+					return m.onboarding_kommun_error();
 				}
 				return true;
 			}
 		},
 		{
 			id: 'maritalStatus',
-			question: 'I am',
+			question: m.onboarding_marital_status_question(),
 			required: true,
 			fieldType: 'radio',
 			radioOptions: maritalStatusOptions
@@ -143,7 +144,7 @@
 			if (error instanceof Error) {
 				errorMessage = error.message;
 			} else {
-				errorMessage = 'An unexpected error occurred. Please try again.';
+				errorMessage = m.onboarding_error_unexpected();
 			}
 		} finally {
 			loading = false;
@@ -152,7 +153,7 @@
 </script>
 
 <svelte:head>
-	<title>Create Your Profile - Niyyah</title>
+	<title>{m.onboarding_title()}</title>
 </svelte:head>
 
 <div class="page-wrapper">
@@ -160,7 +161,7 @@
 		{steps}
 		{initialValues}
 		onSubmit={handleSubmit}
-		submitText="Complete Profile"
+		submitText={m.onboarding_submit()}
 		loading={loading}
 	/>
 
