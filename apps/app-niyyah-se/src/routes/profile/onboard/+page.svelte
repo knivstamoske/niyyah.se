@@ -3,6 +3,7 @@
 	import { KOMMUNS_BY_LAN } from '$lib/shared/constants/kommuns';
 	import { onboard } from './onboard.remote';
 	import { m } from '$lib/i18n/messages.js';
+	import type { PageData } from './$types';
 
 	/**
 	 * Profile data type matching the database schema
@@ -19,6 +20,8 @@
 		selfDescription: string;
 		partnerExpectations: string;
 	}
+
+	let { data }: { data: PageData } = $props();
 
 	/**
 	 * Current year for birth year selector
@@ -37,9 +40,24 @@
 	);
 
 	/**
-	 * Form state
+	 * Form state - populate with existing profile data if available
 	 */
-	let formData: Partial<ProfileData> = $state({});
+	let formData: Partial<ProfileData> = $state(
+		data.profile
+			? {
+					fullName: data.profile.fullName,
+					birthYear: data.profile.birthYear,
+					kommun: data.profile.kommun,
+					gender: data.profile.gender,
+					maritalStatus: data.profile.maritalStatus,
+					fluentLanguages: data.profile.fluentLanguages,
+					mobileNumber: data.profile.mobileNumber ?? undefined,
+					nationality: data.profile.nationality,
+					selfDescription: data.profile.selfDescription ?? '',
+					partnerExpectations: data.profile.partnerExpectations ?? ''
+				}
+			: {}
+	);
 	let loading = $state(false);
 	let errors = $state<Record<string, string>>({});
 
@@ -50,7 +68,7 @@
 		errors = {};
 
 		if (!formData.fullName || formData.fullName.trim().length < 2) {
-			errors.fullName = 'Name must be at least 2 characters';
+			errors.fullName = m.onboarding_name_error();
 		}
 
 		if (!formData.gender) {
@@ -75,23 +93,23 @@
 		}
 
 		if (!formData.fluentLanguages || formData.fluentLanguages.trim().length < 1) {
-			errors.fluentLanguages = 'Please specify at least one language';
+			errors.fluentLanguages = m.onboarding_fluent_languages_error();
 		}
 
 		if (formData.mobileNumber && !/^\+?[0-9\s\-()]+$/.test(formData.mobileNumber)) {
-			errors.mobileNumber = 'Invalid phone number format';
+			errors.mobileNumber = m.onboarding_mobile_number_error();
 		}
 
 		if (!formData.nationality || formData.nationality.trim().length < 2) {
-			errors.nationality = 'Nationality is required';
+			errors.nationality = m.onboarding_nationality_error();
 		}
 
 		if (formData.selfDescription && formData.selfDescription.length > 500) {
-			errors.selfDescription = 'Description must be 500 characters or less';
+			errors.selfDescription = m.onboarding_self_description_error();
 		}
 
 		if (formData.partnerExpectations && formData.partnerExpectations.length > 500) {
-			errors.partnerExpectations = 'Expectations must be 500 characters or less';
+			errors.partnerExpectations = m.onboarding_partner_expectations_error();
 		}
 
 		return Object.keys(errors).length === 0;
@@ -147,13 +165,13 @@
 			<!-- Full Name -->
 			<div class="space-y-3">
 				<label for="fullName" class="block text-sm font-medium text-midnyt">
-					Full Name <span class="text-error">*</span>
+					{m.onboarding_name_label()} <span class="text-error">*</span>
 				</label>
 				<input
 					id="fullName"
 					type="text"
 					bind:value={formData.fullName}
-					placeholder="Enter your full name"
+					placeholder={m.onboarding_name_placeholder()}
 					class="w-full px-4 py-3 border-2 rounded-md transition-all {errors.fullName
 						? 'border-error'
 						: 'border-taupe/20 hover:border-taupe/40 focus:border-bronze focus:outline-none'}"
@@ -285,18 +303,18 @@
 			<!-- Fluent Languages -->
 			<div class="space-y-3">
 				<label for="fluentLanguages" class="block text-sm font-medium text-midnyt">
-					Fluent Languages <span class="text-error">*</span>
+					{m.onboarding_fluent_languages_label()} <span class="text-error">*</span>
 				</label>
 				<input
 					id="fluentLanguages"
 					type="text"
 					bind:value={formData.fluentLanguages}
-					placeholder="e.g. Swedish, English, Arabic"
+					placeholder={m.onboarding_fluent_languages_placeholder()}
 					class="w-full px-4 py-3 border-2 rounded-md transition-all {errors.fluentLanguages
 						? 'border-error'
 						: 'border-taupe/20 hover:border-taupe/40 focus:border-bronze focus:outline-none'}"
 				/>
-				<p class="text-xs text-slate">Separate multiple languages with commas</p>
+				<p class="text-xs text-slate">{m.onboarding_fluent_languages_helper()}</p>
 				{#if errors.fluentLanguages}
 					<p class="text-sm text-error">{errors.fluentLanguages}</p>
 				{/if}
@@ -305,13 +323,13 @@
 			<!-- Nationality -->
 			<div class="space-y-3">
 				<label for="nationality" class="block text-sm font-medium text-midnyt">
-					Nationality <span class="text-error">*</span>
+					{m.onboarding_nationality_label()} <span class="text-error">*</span>
 				</label>
 				<input
 					id="nationality"
 					type="text"
 					bind:value={formData.nationality}
-					placeholder="e.g. Swedish, Moroccan, Syrian"
+					placeholder={m.onboarding_nationality_placeholder()}
 					class="w-full px-4 py-3 border-2 rounded-md transition-all {errors.nationality
 						? 'border-error'
 						: 'border-taupe/20 hover:border-taupe/40 focus:border-bronze focus:outline-none'}"
@@ -324,13 +342,13 @@
 			<!-- Mobile Number -->
 			<div class="space-y-3">
 				<label for="mobileNumber" class="block text-sm font-medium text-midnyt">
-					Mobile Number (Optional)
+					{m.onboarding_mobile_number_label()}
 				</label>
 				<input
 					id="mobileNumber"
 					type="tel"
 					bind:value={formData.mobileNumber}
-					placeholder="+46 70 123 45 67"
+					placeholder={m.onboarding_mobile_number_placeholder()}
 					class="w-full px-4 py-3 border-2 rounded-md transition-all {errors.mobileNumber
 						? 'border-error'
 						: 'border-taupe/20 hover:border-taupe/40 focus:border-bronze focus:outline-none'}"
@@ -343,12 +361,12 @@
 			<!-- Self Description -->
 			<div class="space-y-3">
 				<label for="selfDescription" class="block text-sm font-medium text-midnyt">
-					Describe Yourself
+					{m.onboarding_self_description_label()}
 				</label>
 				<textarea
 					id="selfDescription"
 					bind:value={formData.selfDescription}
-					placeholder="Tell us about yourself, your interests, values, and what makes you unique..."
+					placeholder={m.onboarding_self_description_placeholder()}
 					rows="4"
 					maxlength="500"
 					class="w-full px-4 py-3 border-2 rounded-md transition-all resize-none {errors.selfDescription
@@ -356,7 +374,7 @@
 						: 'border-taupe/20 hover:border-taupe/40 focus:border-bronze focus:outline-none'}"
 				></textarea>
 				<p class="text-xs text-slate">
-					{formData.selfDescription?.length || 0}/500 characters
+					{m.onboarding_self_description_helper({ length: formData.selfDescription?.length || 0 })}
 				</p>
 				{#if errors.selfDescription}
 					<p class="text-sm text-error">{errors.selfDescription}</p>
@@ -366,12 +384,12 @@
 			<!-- Partner Expectations -->
 			<div class="space-y-3">
 				<label for="partnerExpectations" class="block text-sm font-medium text-midnyt">
-					What Are You Looking For?
+					{m.onboarding_partner_expectations_label()}
 				</label>
 				<textarea
 					id="partnerExpectations"
 					bind:value={formData.partnerExpectations}
-					placeholder="Describe what you're looking for in a partner, including qualities, values, and preferences..."
+					placeholder={m.onboarding_partner_expectations_placeholder()}
 					rows="4"
 					maxlength="500"
 					class="w-full px-4 py-3 border-2 rounded-md transition-all resize-none {errors.partnerExpectations
@@ -379,7 +397,7 @@
 						: 'border-taupe/20 hover:border-taupe/40 focus:border-bronze focus:outline-none'}"
 				></textarea>
 				<p class="text-xs text-slate">
-					{formData.partnerExpectations?.length || 0}/500 characters
+					{m.onboarding_partner_expectations_helper({ length: formData.partnerExpectations?.length || 0 })}
 				</p>
 				{#if errors.partnerExpectations}
 					<p class="text-sm text-error">{errors.partnerExpectations}</p>
