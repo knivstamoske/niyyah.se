@@ -87,7 +87,7 @@
 					{m.profile_information()}
 				</h2>
 				<a
-					href="/profile/edit"
+					href="/profile/onboard"
 					class="text-sm font-medium text-bronze hover:text-midnyt flex items-center gap-1.5 transition-colors"
 				>
 					<Pencil class="w-3.5 h-3.5" />
