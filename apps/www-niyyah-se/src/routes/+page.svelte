@@ -9,7 +9,7 @@
 	<meta name="description" content={m.meta_description()} />
 </svelte:head>
 
-<div class="min-h-screen flex flex-col bg-app-background text-app-text">
+<div class="min-h-screen flex flex-col bg-white text-midnyt">
 	<!-- Language Picker -->
 	<div class="flex justify-end px-4 py-4">
 		<LanguagePicker />
@@ -39,7 +39,7 @@
 
 		<!-- Description -->
 		<p
-			class="text-app-subtle-text text-base leading-relaxed pb-3 pt-1 px-4 text-center max-w-md mx-auto"
+			class="text-slate text-base leading-relaxed pb-3 pt-1 px-4 text-center max-w-md mx-auto"
 		>
 			{m.description()}
 		</p>
@@ -54,15 +54,15 @@
 					<input
 						{...subscribe.fields.email.as('email')}
 						placeholder={m.email_placeholder()}
-						class="input input-bordered w-full"
+						class="w-full px-3 py-2 border border-slate/30 rounded-md focus:outline-none focus:ring-2 focus:ring-bronze/20 focus:border-bronze transition-all"
 					/>
 					{#each subscribe.fields.email.issues() as issue, index (index)}
-						<p class="text-sm text-red-600 mt-1">{issue.message}</p>
+						<p class="text-sm text-error mt-1">{issue.message}</p>
 					{/each}
 				</label>
 				<button
 					type="submit"
-					class="btn bg-app-primary text-app-background border-0 w-full"
+					class="bg-midnyt text-cream px-6 py-2.5 rounded-md hover:bg-midnyt/90 transition-colors font-medium w-full"
 					disabled={!!subscribe.pending}
 				>
 					{subscribe.pending ? m.joining() : m.join_waitlist()}
@@ -73,20 +73,20 @@
 			{#if subscribe.result}
 				<p
 					class="text-center mt-4 text-sm {subscribe.result.success
-						? 'text-green-600'
-						: 'text-red-600'}"
+						? 'text-success'
+						: 'text-error'}"
 				>
 					{subscribe.result.message}
 				</p>
 			{/if}
 
 			<!-- Social Proof -->
-			<p class="text-app-subtle-text text-sm pt-4 px-4 text-center">
+			<p class="text-slate text-sm pt-4 px-4 text-center">
 				{m.social_proof()}
 			</p>
 
 			<!-- Privacy Notice -->
-			<p class="text-app-subtle-text text-xs pt-2 px-4 text-center">
+			<p class="text-slate text-xs pt-2 px-4 text-center">
 				{m.privacy_notice()}
 			</p>
 		</div>

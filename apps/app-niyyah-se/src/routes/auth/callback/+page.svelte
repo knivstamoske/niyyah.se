@@ -28,28 +28,28 @@
 	<title>Verifying - Niyyah</title>
 </svelte:head>
 
-<div class="min-h-screen flex flex-col bg-app-background text-app-text">
+<div class="min-h-screen flex flex-col bg-white text-midnyt">
 	<main class="flex-1 flex flex-col items-center justify-center px-4 py-8">
 		<div class="w-full max-w-md">
-			<div class="bg-white rounded-lg shadow-sm border border-app-border p-8">
+			<div class="bg-white rounded-lg border border-taupe/20 p-8">
 				{#if verifying}
 					<!-- Verifying State -->
 					<div class="text-center">
 						<div class="mb-4">
-							<Loader2 class="w-16 h-16 mx-auto text-app-primary animate-spin" />
+							<Loader2 class="w-16 h-16 mx-auto text-bronze animate-spin" />
 						</div>
 						<h2 class="text-xl font-bold mb-2">Verifying...</h2>
-						<p class="text-app-subtle-text">Please wait while we sign you in</p>
+						<p class="text-slate">Please wait while we sign you in</p>
 					</div>
 				{:else if error}
 					<!-- Error State -->
 					<div class="text-center">
 						<div class="mb-4">
-							<AlertCircle class="w-16 h-16 mx-auto text-red-500" />
+							<AlertCircle class="w-16 h-16 mx-auto text-error" />
 						</div>
-						<h2 class="text-xl font-bold mb-2 text-red-600">Verification Failed</h2>
-						<p class="text-app-subtle-text mb-6">{error}</p>
-						<a href={resolve('/')} class="btn bg-app-primary text-app-background border-0 w-full">
+						<h2 class="text-xl font-bold mb-2 text-error">Verification Failed</h2>
+						<p class="text-slate mb-6">{error}</p>
+						<a href={resolve('/')} class="inline-flex items-center justify-center w-full bg-midnyt text-cream px-6 py-2.5 rounded-md hover:bg-midnyt/90 transition-colors font-medium">
 							Request New Link
 						</a>
 					</div>
@@ -58,9 +58,9 @@
 
 			<!-- Back to Home -->
 			<div class="mt-6 text-center">
-				<a href={resolve('/')} class="text-app-subtle-text text-sm hover:text-app-text">
-					← Back to Home
-				</a>
+			<a href={resolve('/')} class="text-slate text-sm hover:text-midnyt">
+				← Back to Home
+			</a>
 			</div>
 		</div>
 	</main>

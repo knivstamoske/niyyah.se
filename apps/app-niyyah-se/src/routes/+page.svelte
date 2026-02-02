@@ -47,7 +47,7 @@
 	<meta name="description" content={m.meta_description()} />
 </svelte:head>
 
-<div class="min-h-screen flex flex-col bg-app-background text-app-text">
+<div class="min-h-screen flex flex-col bg-white text-midnyt">
 	<!-- Language Picker -->
 	<div class="absolute top-0 right-0 p-4">
 		<LanguagePicker />
@@ -68,13 +68,13 @@
 				<!-- Success Message -->
 				<div class="text-center">
 					<h2 class="text-xl font-bold mb-2">Check Your Email</h2>
-					<p class="text-app-subtle-text">
+					<p class="text-slate">
 						We've sent a sign-in link to
-						<span class="font-medium text-app-text">{email}</span>.<br />
+						<span class="font-medium text-midnyt">{email}</span>.<br />
 						Didn't get it?
 						<button
 							type="button"
-							class="text-app-primary hover:underline"
+							class="text-bronze hover:underline"
 							on:click={() => (success = false)}
 						>
 							Try again
@@ -92,7 +92,7 @@
 							type="email"
 							bind:value={email}
 							placeholder="you@example.com"
-							class="input input-bordered w-full"
+							class="w-full px-3 py-2 border border-slate/30 rounded-md focus:outline-none focus:ring-2 focus:ring-bronze/20 focus:border-bronze transition-all"
 							required
 							disabled={loading}
 						/>
@@ -100,15 +100,15 @@
 
 					<!-- Error Message -->
 					{#if error}
-						<div class="alert alert-error bg-red-50 text-red-600 border-red-200">
-							<p class="text-sm">{error}</p>
+						<div class="bg-cream border-l-4 border-error p-4">
+							<p class="text-sm text-error">{error}</p>
 						</div>
 					{/if}
 
 					<!-- Submit Button -->
 					<button
 						type="submit"
-						class="btn bg-app-primary text-app-background border-0 w-full"
+						class="bg-midnyt text-cream px-6 py-2.5 rounded-md hover:bg-midnyt/90 transition-colors font-medium w-full"
 						disabled={loading}
 					>
 						{loading ? 'Sending...' : 'Continue'}
