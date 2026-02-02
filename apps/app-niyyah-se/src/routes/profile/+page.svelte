@@ -20,7 +20,7 @@
 	<!-- Welcome Section -->
 	<section class="space-y-6">
 	<h1 class="text-4xl md:text-5xl font-light text-taupe tracking-tight">
-		{@html m.profile_welcome_back({ name: `<span class="font-semibold text-midnyt">${data.user?.name}</span>` })}
+		{@html m.profile_welcome_back({ name: `<span class="font-semibold text-midnyt">${data.profile?.fullName}</span>` })}
 	</h1>
 	</section>
 

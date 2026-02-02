@@ -40,10 +40,17 @@
 				</a>
 			</div>
 
-			<div class="flex items-center gap-6">
+			<div class="flex items-center gap-4">
 				<div class="hidden md:block">
 					<LanguagePicker />
 				</div>
+				<button
+					onclick={handleLogout}
+					class="flex items-center gap-2 p-2 text-app-subtle-text hover:text-app-primary hover:bg-app-primary/5 transition-all rounded-sm group"
+					title={m.sign_out()}
+				>
+					<LogOut class="w-5 h-5 group-hover:scale-110 transition-transform" />
+				</button>
 			</div>
 		</div>
 	</header>
@@ -52,17 +59,4 @@
 	<main class="max-w-5xl mx-auto px-6 py-12">
 		{@render children()}
 	</main>
-
-	<!-- Footer with Logout -->
-	<footer class="max-w-5xl mx-auto px-6 pb-12">
-		<section class="pt-8 border-t border-app-primary/10">
-			<button
-				onclick={handleLogout}
-				class="flex items-center gap-3 px-6 py-3 text-app-subtle-text hover:text-app-primary hover:bg-app-primary/5 transition-all rounded-sm group"
-			>
-				<LogOut class="w-5 h-5 group-hover:scale-110 transition-transform" />
-				<span class="font-medium">{m.sign_out()}</span>
-			</button>
-		</section>
-	</footer>
 </div>

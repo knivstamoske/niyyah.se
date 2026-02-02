@@ -8,6 +8,7 @@ import { candidate } from '@niyyah/db';
  * Validation schema for profile creation
  */
 const profileSchema = z.object({
+	fullName: z.string().min(2, 'Name must be at least 2 characters').max(100, 'Name is too long').trim(),
 	birthYear: z
 		.number()
 		.int()
@@ -19,7 +20,12 @@ const profileSchema = z.object({
 	}),
 	maritalStatus: z.enum(['single', 'divorced', 'widowed'], {
 		message: 'Please select a valid marital status'
-	})
+	}),
+	fluentLanguages: z.string().min(1, 'Please specify at least one language').max(200, 'Too many languages listed').trim(),
+	mobileNumber: z.string().regex(/^\+?[0-9\s\-()]+$/, 'Invalid phone number format').optional().or(z.literal('')),
+	nationality: z.string().min(2, 'Nationality is required').max(100, 'Nationality is too long').trim(),
+	selfDescription: z.string().max(500, 'Description must be 500 characters or less').trim(),
+	partnerExpectations: z.string().max(500, 'Expectations must be 500 characters or less').trim()
 });
 
 /**
@@ -43,18 +49,30 @@ export const onboard = command(profileSchema, async (data) => {
 			.insert(candidate.profile)
 			.values({
 				userId: session.user.id,
+				fullName: data.fullName,
 				birthYear: data.birthYear,
 				kommun: data.kommun,
 				gender: data.gender,
-				maritalStatus: data.maritalStatus
+				maritalStatus: data.maritalStatus,
+				fluentLanguages: data.fluentLanguages,
+				mobileNumber: data.mobileNumber || null,
+				nationality: data.nationality,
+				selfDescription: data.selfDescription,
+				partnerExpectations: data.partnerExpectations
 			})
 			.onConflictDoUpdate({
 				target: candidate.profile.userId,
 				set: {
+					fullName: data.fullName,
 					birthYear: data.birthYear,
 					kommun: data.kommun,
 					gender: data.gender,
 					maritalStatus: data.maritalStatus,
+					fluentLanguages: data.fluentLanguages,
+					mobileNumber: data.mobileNumber || null,
+					nationality: data.nationality,
+					selfDescription: data.selfDescription,
+					partnerExpectations: data.partnerExpectations,
 					updatedAt: new Date()
 				}
 			});
