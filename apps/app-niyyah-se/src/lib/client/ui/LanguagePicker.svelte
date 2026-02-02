@@ -13,26 +13,34 @@
 	 * options is the list of available language options.
 	 */
 	const options: LanguageOption[] = [
-		{ code: 'en', label: 'English' },
-		{ code: 'sv', label: 'Svenska' },
-		{ code: 'ar', label: 'العربية' }
+		{ code: 'en', label: 'EN' },
+		{ code: 'sv', label: 'SV' },
+		{ code: 'ar', label: 'AR' }
 	];
+
+	const currentLocale = $derived(getLocale());
 
 	/**
 	 * handleLanguageChange handles the language selection change.
 	 */
-	function handleLanguageChange(event: Event): void {
-		const target = event.target as HTMLSelectElement;
-		setLocale(target.value as 'en' | 'sv' | 'ar');
+	function handleLanguageChange(code: 'en' | 'sv' | 'ar'): void {
+		setLocale(code);
 	}
 </script>
 
-<select
-	class="select select-sm select-ghost w-24"
-	value={getLocale()}
-	onchange={handleLanguageChange}
->
-	{#each options as option (option.code)}
-		<option value={option.code}>{option.label}</option>
+<div class="flex items-center text-xs font-medium border border-slate/20 rounded-md overflow-hidden">
+	{#each options as option, index (option.code)}
+		{#if index > 0}
+			<div class="w-px bg-slate/20 h-full"></div>
+		{/if}
+		<button
+			type="button"
+			class="px-3 py-1.5 {currentLocale === option.code
+				? 'bg-cream text-midnyt'
+				: 'bg-white text-slate hover:text-midnyt hover:bg-cream/50'} transition-colors"
+			onclick={() => handleLanguageChange(option.code)}
+		>
+			{option.label}
+		</button>
 	{/each}
-</select>
+</div>

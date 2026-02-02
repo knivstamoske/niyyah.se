@@ -248,7 +248,7 @@
 
 	.progress-bar {
 		height: 100%;
-		background: var(--color-app-primary);
+		background: var(--color-bronze);
 		transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 	}
 
@@ -336,7 +336,7 @@
 	.btn-next {
 		flex: 1;
 		justify-content: center;
-		background: var(--color-app-primary);
+		background: var(--color-midnyt);
 		color: white;
 	}
 

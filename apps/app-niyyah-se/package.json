@@ -51,9 +51,9 @@
 	},
 	"dependencies": {
 		"@niyyah/db": "workspace:*",
+		"@niyyah/ui": "workspace:*",
 		"@types/nodemailer": "^7.0.4",
 		"better-auth": "^1.4.9",
-		"daisyui": "^5.5.14",
 		"drizzle-orm": "^0.45.1",
 		"lodash": "^4.17.23",
 		"lucide-svelte": "^0.562.0",

@@ -166,7 +166,7 @@
 
 	{#if errorMessage}
 		<div class="max-w-md mx-auto px-4 py-4">
-			<p class="text-center text-sm text-red-600">
+			<p class="text-center text-sm text-error">
 				{errorMessage}
 			</p>
 		</div>
