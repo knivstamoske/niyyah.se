@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { LanguagePicker, DefaultFooter } from '$lib/client/ui';
 	import { m } from '$lib/i18n/messages.js';
-	import { PUBLIC_CANDIDATE_APP_URL } from '$env/static/public';
+	import { env } from '$env/dynamic/public';
 </script>
 
 <svelte:head>
@@ -44,7 +44,7 @@
 			<!-- CTA Button -->
 			<div class="flex justify-center">
 				<a
-					href={PUBLIC_CANDIDATE_APP_URL}
+					href={env.PUBLIC_CANDIDATE_APP_URL}
 					class="bg-midnyt text-cream px-6 py-2.5 rounded-md hover:bg-midnyt/90 transition-colors font-medium inline-block"
 				>
 					{m.create_profile()}
