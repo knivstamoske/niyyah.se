@@ -8,12 +8,14 @@ RUN corepack enable && corepack prepare pnpm@latest --activate
 WORKDIR /app
 COPY pnpm-workspace.yaml package.json pnpm-lock.yaml ./
 COPY libs/db/package.json ./libs/db/
+COPY libs/ui/package.json ./libs/ui/
 COPY apps/www-niyyah-se/package.json ./apps/www-niyyah-se/
 RUN pnpm install --frozen-lockfile
 
 # Build the application
 WORKDIR /app/apps/www-niyyah-se
 COPY libs/db ../../libs/db
+COPY libs/ui ../../libs/ui
 COPY apps/www-niyyah-se ./
 
 # Use .env.example for build-time environment variables (Zod validation)
@@ -33,6 +35,7 @@ RUN corepack enable && corepack prepare pnpm@latest --activate
 WORKDIR /app
 COPY --from=builder /app/package.json /app/pnpm-workspace.yaml /app/pnpm-lock.yaml ./
 COPY --from=builder /app/libs/db/package.json ./libs/db/
+COPY --from=builder /app/libs/ui/package.json ./libs/ui/
 COPY --from=builder /app/apps/www-niyyah-se/package.json ./apps/www-niyyah-se/
 RUN pnpm install --prod --frozen-lockfile
 
@@ -50,6 +53,7 @@ ENV NODE_ENV=production
 ENV PORT=8050
 ENV ORIGIN=http://localhost:8050
 ENV DATABASE_URL="postgresql://niyyah:niyyah@localhost:5432/niyyah?options=-c%20search_path%3Dmarketing"
+ENV PUBLIC_CANDIDATE_APP_URL=http://localhost:8020
 
 # Start the application
 CMD ["node", "build"]

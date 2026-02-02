@@ -8,12 +8,14 @@ RUN corepack enable && corepack prepare pnpm@latest --activate
 WORKDIR /app
 COPY pnpm-workspace.yaml package.json pnpm-lock.yaml ./
 COPY libs/db/package.json ./libs/db/
+COPY libs/ui/package.json ./libs/ui/
 COPY apps/app-niyyah-se/package.json ./apps/app-niyyah-se/
 RUN pnpm install --frozen-lockfile
 
 # Build the application
 WORKDIR /app/apps/app-niyyah-se
 COPY libs/db ../../libs/db
+COPY libs/ui ../../libs/ui
 COPY apps/app-niyyah-se ./
 
 # Use .env.example for build-time environment variables (Zod validation)
@@ -33,6 +35,7 @@ RUN corepack enable && corepack prepare pnpm@latest --activate
 WORKDIR /app
 COPY --from=builder /app/package.json /app/pnpm-workspace.yaml /app/pnpm-lock.yaml ./
 COPY --from=builder /app/libs/db/package.json ./libs/db/
+COPY --from=builder /app/libs/ui/package.json ./libs/ui/
 COPY --from=builder /app/apps/app-niyyah-se/package.json ./apps/app-niyyah-se/
 RUN pnpm install --prod --frozen-lockfile
 
