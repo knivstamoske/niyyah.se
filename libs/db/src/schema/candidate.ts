@@ -85,7 +85,7 @@ export const maritalStatus = schema.enum("marital_status", [
 ]);
 
 /**
- * Candidate profile table storing minimal personal information
+ * Candidate profile table storing personal information and preferences
  */
 export const profile = schema.table("profile", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -93,14 +93,16 @@ export const profile = schema.table("profile", {
     .notNull()
     .unique()
     .references(() => user.id, { onDelete: "cascade" }),
+  fullName: text("full_name").notNull(),
   birthYear: integer("birth_year").notNull(),
   kommun: text("kommun").notNull(),
   gender: gender("gender").notNull(),
   maritalStatus: maritalStatus("marital_status").notNull(),
-  openToWidowed: boolean("open_to_widowed").notNull().default(false),
-  openToOlder: boolean("open_to_older").notNull().default(true),
-  openToYounger: boolean("open_to_younger").notNull().default(true),
-  openToSameAge: boolean("open_to_same_age").notNull().default(true),
+  fluentLanguages: text("fluent_languages").notNull(),
+  mobileNumber: text("mobile_number"),
+  nationality: text("nationality").notNull(),
+  selfDescription: text("self_description").notNull(),
+  partnerExpectations: text("partner_expectations").notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
