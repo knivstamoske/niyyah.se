@@ -4,6 +4,7 @@
 	import { goto } from '$app/navigation';
 	import { LanguagePicker } from '$lib/client/ui';
 	import { LogOut } from 'lucide-svelte';
+	import { m } from '$lib/i18n/messages.js';
 
 	let { children } = $props();
 
@@ -17,7 +18,7 @@
 </script>
 
 <svelte:head>
-	<title>My Profile - Niyyah.se</title>
+	<title>{m.profile_layout_title()}</title>
 </svelte:head>
 
 <div
@@ -60,7 +61,7 @@
 				class="flex items-center gap-3 px-6 py-3 text-app-subtle-text hover:text-app-primary hover:bg-app-primary/5 transition-all rounded-sm group"
 			>
 				<LogOut class="w-5 h-5 group-hover:scale-110 transition-transform" />
-				<span class="font-medium">Sign Out</span>
+				<span class="font-medium">{m.sign_out()}</span>
 			</button>
 		</section>
 	</footer>

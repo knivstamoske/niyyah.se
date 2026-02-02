@@ -3,8 +3,10 @@
 	import { MapPin, Calendar, User, ArrowRight, Pencil, Heart } from 'lucide-svelte';
 	import { STATUS_CONFIG } from '$lib/client/domain/user-status';
 	import { getAge, capitalize } from '$lib/shared/utils/formatters';
+	import { getGenderLabel, getMaritalStatusLabel } from '$lib/shared/utils/profile-labels';
 	import { ACTION_ITEM_MAP } from '$lib/client/domain/action-items';
 	import { getActions } from './getActions.remote';
+	import { m } from '$lib/i18n/messages.js';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
@@ -18,7 +20,7 @@
 	<!-- Welcome Section -->
 	<section class="space-y-6">
 	<h1 class="text-4xl md:text-5xl font-light text-taupe tracking-tight">
-		Welcome back, <span class="font-semibold text-midnyt">{data.user?.name}</span>
+		{@html m.profile_welcome_back({ name: `<span class="font-semibold text-midnyt">${data.user?.name}</span>` })}
 	</h1>
 	</section>
 
@@ -71,7 +73,7 @@
 			class="bg-white border border-taupe/20 p-12 text-center hover:border-bronze/50 transition-colors duration-300"
 		>
 			<p class="text-slate">
-				We'll notify you when there's something to do!
+				{m.profile_no_action_items()}
 			</p>
 		</div>
 		{/if}
@@ -82,14 +84,14 @@
 		<section class="space-y-4">
 			<div class="flex items-center justify-between">
 				<h2 class="text-sm uppercase tracking-widest text-slate font-medium">
-					Profile Information
+					{m.profile_information()}
 				</h2>
 				<a
 					href="/profile/edit"
 					class="text-sm font-medium text-bronze hover:text-midnyt flex items-center gap-1.5 transition-colors"
 				>
 					<Pencil class="w-3.5 h-3.5" />
-					Edit
+					{m.profile_edit()}
 				</a>
 			</div>
 
@@ -99,7 +101,7 @@
 					<div class="space-y-2">
 					<div class="flex items-center gap-2 text-slate">
 						<MapPin class="w-4 h-4 text-bronze" />
-						<p class="text-xs uppercase tracking-widest font-medium">Location</p>
+						<p class="text-xs uppercase tracking-widest font-medium">{m.profile_location()}</p>
 					</div>
 					<p class="text-lg font-medium text-midnyt pl-6">
 							{capitalize(data.profile.kommun)}
@@ -110,10 +112,10 @@
 					<div class="space-y-2">
 					<div class="flex items-center gap-2 text-slate">
 						<Calendar class="w-4 h-4 text-bronze" />
-						<p class="text-xs uppercase tracking-widest font-medium">Age</p>
+						<p class="text-xs uppercase tracking-widest font-medium">{m.profile_age()}</p>
 					</div>
 					<p class="text-lg font-medium text-midnyt pl-6">
-							{getAge(data.profile.birthYear)} years
+							{m.profile_age_years({ age: getAge(data.profile.birthYear) })}
 						</p>
 					</div>
 
@@ -121,10 +123,10 @@
 					<div class="space-y-2">
 					<div class="flex items-center gap-2 text-slate">
 						<User class="w-4 h-4 text-bronze" />
-						<p class="text-xs uppercase tracking-widest font-medium">Gender</p>
+						<p class="text-xs uppercase tracking-widest font-medium">{m.profile_gender()}</p>
 					</div>
 					<p class="text-lg font-medium text-midnyt pl-6">
-							{capitalize(data.profile.gender)}
+							{getGenderLabel(data.profile.gender)}
 						</p>
 					</div>
 
@@ -132,10 +134,10 @@
 					<div class="space-y-2">
 					<div class="flex items-center gap-2 text-slate">
 						<Heart class="w-4 h-4 text-bronze" />
-						<p class="text-xs uppercase tracking-widest font-medium">Marital Status</p>
+						<p class="text-xs uppercase tracking-widest font-medium">{m.profile_marital_status()}</p>
 					</div>
 					<p class="text-lg font-medium text-midnyt pl-6">
-							{capitalize(data.profile.maritalStatus)}
+							{getMaritalStatusLabel(data.profile.maritalStatus)}
 						</p>
 					</div>
 				</div>
@@ -144,18 +146,18 @@
 	{:else}
 		<section class="space-y-4">
 		<h2 class="text-sm uppercase tracking-widest text-slate font-medium">
-			Profile Information
+			{m.profile_information()}
 		</h2>
 		<div
 			class="bg-white border border-taupe/20 p-12 text-center hover:border-bronze/50 transition-colors duration-300"
 		>
 			<User class="w-12 h-12 text-slate mx-auto mb-4" />
-			<p class="text-slate mb-4">Your profile is incomplete</p>
+			<p class="text-slate mb-4">{m.profile_incomplete_message()}</p>
 			<a
 				href={resolve('/profile/onboard')}
 				class="inline-flex items-center gap-2 px-6 py-3 bg-midnyt text-white font-medium hover:bg-midnyt/90 transition-colors rounded-md"
 			>
-				Complete Profile
+				{m.complete_profile_cta()}
 				<ArrowRight class="w-4 h-4" />
 			</a>
 			</div>

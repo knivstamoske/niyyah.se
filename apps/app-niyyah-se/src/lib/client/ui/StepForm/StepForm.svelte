@@ -3,6 +3,7 @@
 	import { cubicOut } from 'svelte/easing';
 	import type { StepFieldConfig } from './types';
 	import { SelectField, RadioGroupField } from './fields';
+	import { m } from '$lib/i18n/messages.js';
 
 	/**
 	 * Props for the StepForm component
@@ -60,7 +61,7 @@
 
 		// Check required
 		if (step.required && (value === undefined || value === null || value === '')) {
-			error = 'This field is required';
+			error = m.step_form_field_required();
 			return false;
 		}
 
@@ -72,7 +73,7 @@
 				return false;
 			}
 			if (!validationResult) {
-				error = 'Please provide a valid answer';
+				error = m.step_form_please_valid();
 				return false;
 			}
 		}
@@ -209,17 +210,17 @@
 				disabled={loading}
 				transition:fade={{ duration: 200 }}
 			>
-				← Back
+				← {m.step_form_back()}
 			</button>
 		{/if}
 
 		<button type="button" class="btn-next" onclick={handleNext} disabled={loading}>
 			{#if loading}
-				Processing...
+				{m.step_form_processing()}
 			{:else if isLastStep}
 				{submitText} →
 			{:else}
-				Continue →
+				{m.step_form_continue()} →
 			{/if}
 		</button>
 	</div>
