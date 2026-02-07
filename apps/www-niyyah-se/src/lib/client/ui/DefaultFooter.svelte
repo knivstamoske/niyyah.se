@@ -22,7 +22,7 @@
 				<ul class="space-y-3">
 					<li>
 						<a href={resolve('/')} class="text-slate hover:text-bronze transition-colors text-sm"
-							>Home</a
+							>{m.home()}</a
 						>
 					</li>
 					<li>
@@ -62,7 +62,7 @@
 
 			<!-- Social (Placeholder) -->
 			<div>
-				<h3 class="text-midnyt font-semibold mb-4 uppercase tracking-wider text-xs">Social</h3>
+				<h3 class="text-midnyt font-semibold mb-4 uppercase tracking-wider text-xs">{m.social()}</h3>
 				<ul class="space-y-3">
 					<li>
 						<a href={resolve('/')} class="text-slate hover:text-bronze transition-colors text-sm"
