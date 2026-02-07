@@ -8,7 +8,7 @@
 		{m.contact_under_construction()}
 	</p>
 	<div class="bg-cream p-8 rounded-lg">
-		<p class="font-medium mb-4">In the meantime, you can reach us at:</p>
+		<p class="font-medium mb-4">{m.contact_reach_us_at()}</p>
 		<div class="space-y-3">
 			<p>
 				<span class="font-semibold">{m.contact_address_label()}:</span>
