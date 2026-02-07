@@ -40,7 +40,7 @@ We will implement a privacy-first approach with the following principles:
 ### Data Retention
 
 - User data automatically deleted after one year of account inactivity
-- Immediate deletion when user requests account deletion
+- When a user requests deletion or leaves, the profile is archived for 30 days before permanent deletion to ensure safety
 - Audit logs retained for legal compliance requirements only
 
 ### User Rights (GDPR)

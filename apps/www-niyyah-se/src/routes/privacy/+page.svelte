@@ -134,7 +134,8 @@
 						User data is automatically deleted after one year of account inactivity
 					</li>
 					<li class="leading-relaxed text-midnyt list-disc">
-						Immediate deletion when user requests account deletion
+						When a user requests deletion or leaves the service, the profile is archived for 30 days
+						before permanent deletion to ensure safety and allow for reactivation
 					</li>
 					<li class="leading-relaxed text-midnyt list-disc">
 						Audit logs are retained only for legal compliance requirements

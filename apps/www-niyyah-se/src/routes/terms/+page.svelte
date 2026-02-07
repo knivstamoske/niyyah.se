@@ -58,6 +58,9 @@
 						Users must provide accurate information about themselves and their guardians
 					</li>
 					<li class="leading-relaxed text-midnyt list-disc">
+						Female candidates must have a guardian (Wali) who accompanies them to all meetings
+					</li>
+					<li class="leading-relaxed text-midnyt list-disc">
 						Guardians must have legitimate authority according to Islamic principles
 					</li>
 					<li class="leading-relaxed text-midnyt list-disc">
@@ -107,6 +110,19 @@
 					Users must respect the privacy and dignity of others and maintain appropriate Islamic
 					etiquette (adab) in all interactions.
 				</p>
+				<div class="mt-4 p-4 bg-bronze/5 rounded-md border border-bronze/20">
+					<h3 class="font-semibold text-midnyt mb-2">Strict Conduct Policy</h3>
+					<ul class="space-y-2 pl-6">
+						<li class="leading-relaxed text-midnyt list-disc">
+							<strong class="font-medium">No-Show Policy:</strong> Candidates who agree to a meeting and fail
+							to attend will be permanently banned after a single warning.
+						</li>
+						<li class="leading-relaxed text-midnyt list-disc">
+							<strong class="font-medium">Zero Tolerance:</strong> Any misconduct, harassment, or inappropriate
+							behavior during a meeting will result in an immediate and permanent ban from the platform.
+						</li>
+					</ul>
+				</div>
 			</section>
 
 			<section class="space-y-4">
@@ -144,11 +160,16 @@
 
 			<section class="space-y-4">
 				<h2 class="text-2xl font-semibold text-midnyt border-b border-taupe/20 pb-2">
-					Service Availability and Changes
+					Availability and Fees
 				</h2>
 				<ul class="space-y-2 pl-6">
 					<li class="leading-relaxed text-midnyt list-disc">
-						Service is currently free of charge with no fees
+						Niyyah operates on a non-profit basis but charges a fee to candidates to prevent abuse and
+						ensure seriousness
+					</li>
+					<li class="leading-relaxed text-midnyt list-disc">
+						Fees may be waived for candidates unable to pay; requests must be made through customer
+						support
 					</li>
 					<li class="leading-relaxed text-midnyt list-disc">
 						We reserve the right to modify, suspend, or discontinue the service at any time

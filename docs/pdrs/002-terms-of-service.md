@@ -17,6 +17,7 @@ We will implement terms of service with the following key provisions:
 - Service only available to individuals who are currently unmarried (single, divorced, or widowed)
 - Married individuals must immediately deactivate or delete their accounts
 - Users must provide accurate information about themselves and their guardians
+- Female candidates must have a guardian (Wali) who accompanies them to all meetings
 - Guardians must have legitimate authority according to Islamic principles
 - Users must be acting in good faith to seek marriage
 
@@ -37,6 +38,11 @@ We will implement terms of service with the following key provisions:
 - Users must respect the privacy and dignity of others
 - Users must maintain appropriate Islamic etiquette (adab) in all interactions
 
+#### Strict Conduct Policy
+
+- **No-Show Policy**: Candidates who agree to a meeting and fail to attend will be permanently banned after a single warning
+- **Zero Tolerance**: Any misconduct, harassment, or inappropriate behavior during a meeting will result in an immediate and permanent ban from the platform
+
 ### Service Nature and Limitations
 
 - Niyyah is a facilitator only - we connect users but do not guarantee outcomes
@@ -51,9 +57,10 @@ We will implement terms of service with the following key provisions:
   - Actions or conduct of facilitators, guardians, or other users
   - Compatibility assessments or match quality
 
-### Service Availability and Changes
+### Availability and Fees
 
-- Service is currently free of charge with no fees
+- Niyyah operates on a non-profit basis but charges a fee to candidates to prevent abuse and ensure seriousness
+- Fees may be waived for candidates unable to pay; requests must be made through customer support
 - We reserve the right to modify, suspend, or discontinue the service at any time
 - We reserve the right to change these terms with notice to users
 - Material changes will be communicated through the platform and email
