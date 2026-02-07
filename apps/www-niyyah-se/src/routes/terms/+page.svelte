@@ -10,11 +10,11 @@
 </svelte:head>
 
 <!-- Content -->
-<main class="px-4 py-8 max-w-4xl mx-auto mb-16">
+<main class="max-w-4xl mx-auto py-20 px-6">
 	<article class="space-y-8">
 		<div class="space-y-2">
-			<h1 class="text-4xl font-bold text-midnyt">Terms of Service</h1>
-			<p class="text-sm text-slate">Last updated: December 7, 2025</p>
+			<h1 class="text-4xl font-bold mb-8 text-taupe">Terms of Service</h1>
+			<p class="text-lg text-slate mb-6">Last updated: December 7, 2025</p>
 		</div>
 
 		<section class="space-y-4">
