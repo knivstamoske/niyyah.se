@@ -57,6 +57,13 @@
       "when": 1770573170593,
       "tag": "0007_standardize_field_names",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1770581062122,
+      "tag": "0008_add_administrator_auth_tables",
+      "breakpoints": true
     }
   ]
 }
