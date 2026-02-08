@@ -9,14 +9,14 @@ WORKDIR /app
 COPY pnpm-workspace.yaml package.json pnpm-lock.yaml ./
 COPY libs/db/package.json ./libs/db/
 COPY libs/ui/package.json ./libs/ui/
-COPY apps/app-niyyah-se/package.json ./apps/app-niyyah-se/
+COPY apps/admin-niyyah-se/package.json ./apps/admin-niyyah-se/
 RUN pnpm install --frozen-lockfile
 
 # Build the application
-WORKDIR /app/apps/app-niyyah-se
+WORKDIR /app/apps/admin-niyyah-se
 COPY libs/db ../../libs/db
 COPY libs/ui ../../libs/ui
-COPY apps/app-niyyah-se ./
+COPY apps/admin-niyyah-se ./
 
 # Use .env.example for build-time environment variables (Zod validation)
 RUN cp .env.example .env
@@ -36,14 +36,14 @@ WORKDIR /app
 COPY --from=builder /app/package.json /app/pnpm-workspace.yaml /app/pnpm-lock.yaml ./
 COPY --from=builder /app/libs/db/package.json ./libs/db/
 COPY --from=builder /app/libs/ui/package.json ./libs/ui/
-COPY --from=builder /app/apps/app-niyyah-se/package.json ./apps/app-niyyah-se/
+COPY --from=builder /app/apps/admin-niyyah-se/package.json ./apps/admin-niyyah-se/
 RUN pnpm install --prod --frozen-lockfile
 
 # Copy built application
-COPY --from=builder /app/apps/app-niyyah-se/build ./apps/app-niyyah-se/build
+COPY --from=builder /app/apps/admin-niyyah-se/build ./apps/admin-niyyah-se/build
 
 # Set working directory to the app
-WORKDIR /app/apps/app-niyyah-se
+WORKDIR /app/apps/admin-niyyah-se
 
 # Expose port 8020
 EXPOSE 8020
@@ -61,6 +61,8 @@ ENV SMTP_PASS=password
 ENV SMTP_FROM=noreply@niyyah.se
 ENV AUTH_SECRET=dev-secret-change-in-production-use-openssl-rand-base64-32
 ENV LINK_EXPIRY=600
+ENV ADMIN_EMAIL=admin@niyyah.se
+ENV ADMIN_PASSWORD=change-this
 
 # Start the application
 CMD ["node", "build"]
