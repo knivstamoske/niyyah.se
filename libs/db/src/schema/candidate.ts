@@ -85,6 +85,19 @@ export const maritalStatus = schema.enum("marital_status", [
 ]);
 
 /**
+ * Candidate status enum tracking user journey stages
+ */
+export const candidateStatus = schema.enum("candidate_status", [
+  "onboarding",
+  "verifying",
+  "active",
+  "paused",
+  "matched",
+  "archived",
+  "banned",
+]);
+
+/**
  * Candidate profile table storing personal information and preferences
  */
 export const profile = schema.table("profile", {
@@ -93,16 +106,37 @@ export const profile = schema.table("profile", {
     .notNull()
     .unique()
     .references(() => user.id, { onDelete: "cascade" }),
-  fullName: text("full_name").notNull(),
+  name: text("name").notNull(),
   birthYear: integer("birth_year").notNull(),
   kommun: text("kommun").notNull(),
   gender: gender("gender").notNull(),
   maritalStatus: maritalStatus("marital_status").notNull(),
-  fluentLanguages: text("fluent_languages").notNull(),
-  mobileNumber: text("mobile_number"),
+  languages: text("languages").notNull(),
+  phone: text("phone"),
   nationality: text("nationality").notNull(),
-  selfDescription: text("self_description").notNull(),
-  partnerExpectations: text("partner_expectations").notNull(),
+  bio: text("bio").notNull(),
+  seeking: text("seeking").notNull(),
+  status: candidateStatus("status").notNull().default("onboarding"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
+/**
+ * Message table for candidate notifications and communications
+ * Candidates cannot delete messages
+ */
+export const message = schema.table("message", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+  fromId: text("from_id"), // Facilitator user ID, null means system-generated
+  parentId: uuid("parent_id").references((): any => message.id, {
+    onDelete: "set null",
+  }),
+  title: text("title").notNull(),
+  body: text("body").notNull(),
+  readAt: timestamp("read_at"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });

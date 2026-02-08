@@ -9,16 +9,16 @@
 	 * Profile data type matching the database schema
 	 */
 	interface ProfileData {
-		fullName: string;
+		name: string;
 		birthYear: number;
 		kommun: string;
 		gender: 'male' | 'female';
 		maritalStatus: 'single' | 'divorced' | 'widowed';
-		fluentLanguages: string;
-		mobileNumber?: string;
+		languages: string;
+		phone?: string;
 		nationality: string;
-		selfDescription: string;
-		partnerExpectations: string;
+		bio: string;
+		seeking: string;
 	}
 
 	let { data }: { data: PageData } = $props();
@@ -45,16 +45,16 @@
 	let formData: Partial<ProfileData> = $state(
 		data.profile
 			? {
-					fullName: data.profile.fullName,
+					name: data.profile.name,
 					birthYear: data.profile.birthYear,
 					kommun: data.profile.kommun,
 					gender: data.profile.gender,
 					maritalStatus: data.profile.maritalStatus,
-					fluentLanguages: data.profile.fluentLanguages,
-					mobileNumber: data.profile.mobileNumber ?? undefined,
+					languages: data.profile.languages,
+					phone: data.profile.phone ?? undefined,
 					nationality: data.profile.nationality,
-					selfDescription: data.profile.selfDescription ?? '',
-					partnerExpectations: data.profile.partnerExpectations ?? ''
+					bio: data.profile.bio ?? '',
+					seeking: data.profile.seeking ?? ''
 				}
 			: {}
 	);
@@ -67,8 +67,8 @@
 	function validate(): boolean {
 		errors = {};
 
-		if (!formData.fullName || formData.fullName.trim().length < 2) {
-			errors.fullName = m.onboarding_name_error();
+		if (!formData.name || formData.name.trim().length < 2) {
+			errors.name = m.onboarding_name_error();
 		}
 
 		if (!formData.gender) {
@@ -92,24 +92,24 @@
 			errors.maritalStatus = m.step_form_field_required();
 		}
 
-		if (!formData.fluentLanguages || formData.fluentLanguages.trim().length < 1) {
-			errors.fluentLanguages = m.onboarding_fluent_languages_error();
+		if (!formData.languages || formData.languages.trim().length < 1) {
+			errors.languages = m.onboarding_fluent_languages_error();
 		}
 
-		if (formData.mobileNumber && !/^\+?[0-9\s\-()]+$/.test(formData.mobileNumber)) {
-			errors.mobileNumber = m.onboarding_mobile_number_error();
+		if (formData.phone && !/^\+?[0-9\s\-()]+$/.test(formData.phone)) {
+			errors.phone = m.onboarding_mobile_number_error();
 		}
 
 		if (!formData.nationality || formData.nationality.trim().length < 2) {
 			errors.nationality = m.onboarding_nationality_error();
 		}
 
-		if (formData.selfDescription && formData.selfDescription.length > 500) {
-			errors.selfDescription = m.onboarding_self_description_error();
+		if (formData.bio && formData.bio.length > 500) {
+			errors.bio = m.onboarding_self_description_error();
 		}
 
-		if (formData.partnerExpectations && formData.partnerExpectations.length > 500) {
-			errors.partnerExpectations = m.onboarding_partner_expectations_error();
+		if (formData.seeking && formData.seeking.length > 500) {
+			errors.seeking = m.onboarding_partner_expectations_error();
 		}
 
 		return Object.keys(errors).length === 0;
@@ -128,16 +128,16 @@
 		loading = true;
 		try {
 			await onboard({
-				fullName: String(formData.fullName).trim(),
+				name: String(formData.name).trim(),
 				birthYear: Number(formData.birthYear),
 				kommun: String(formData.kommun),
 				gender: formData.gender as 'male' | 'female',
 				maritalStatus: formData.maritalStatus as 'single' | 'divorced' | 'widowed',
-				fluentLanguages: String(formData.fluentLanguages).trim(),
-				mobileNumber: formData.mobileNumber?.trim() || '',
+				languages: String(formData.languages).trim(),
+				phone: formData.phone?.trim() || '',
 				nationality: String(formData.nationality).trim(),
-				selfDescription: String(formData.selfDescription || '').trim(),
-				partnerExpectations: String(formData.partnerExpectations || '').trim()
+				bio: String(formData.bio || '').trim(),
+				seeking: String(formData.seeking || '').trim()
 			});
 			await goto('/profile');
 		} catch (error) {
@@ -161,28 +161,29 @@
 			<p class="text-slate">{m.complete_profile_text()}</p>
 		</div>
 
-		<form on:submit={handleSubmit} class="space-y-8">
+		<form onsubmit={handleSubmit} class="space-y-8">
 			<!-- Full Name -->
 			<div class="space-y-3">
-				<label for="fullName" class="block text-sm font-medium text-midnyt">
+				<label for="name" class="block text-sm font-medium text-midnyt">
 					{m.onboarding_name_label()} <span class="text-error">*</span>
 				</label>
 				<input
-					id="fullName"
+					id="name"
 					type="text"
-					bind:value={formData.fullName}
+					bind:value={formData.name}
 					placeholder={m.onboarding_name_placeholder()}
-					class="w-full px-4 py-3 border-2 rounded-md transition-all {errors.fullName
+					class="w-full px-4 py-3 border-2 rounded-md transition-all {errors.name
 						? 'border-error'
 						: 'border-taupe/20 hover:border-taupe/40 focus:border-bronze focus:outline-none'}"
 				/>
-				{#if errors.fullName}
-					<p class="text-sm text-error">{errors.fullName}</p>
+				{#if errors.name}
+					<p class="text-sm text-error">{errors.name}</p>
 				{/if}
 			</div>
 
 			<!-- Gender -->
 			<div class="space-y-3">
+				<!-- svelte-ignore a11y_label_has_associated_control -->
 				<label class="block text-sm font-medium text-midnyt">
 					{m.onboarding_gender_question()} <span class="text-error">*</span>
 				</label>
@@ -302,21 +303,21 @@
 
 			<!-- Fluent Languages -->
 			<div class="space-y-3">
-				<label for="fluentLanguages" class="block text-sm font-medium text-midnyt">
+				<label for="languages" class="block text-sm font-medium text-midnyt">
 					{m.onboarding_fluent_languages_label()} <span class="text-error">*</span>
 				</label>
 				<input
-					id="fluentLanguages"
+					id="languages"
 					type="text"
-					bind:value={formData.fluentLanguages}
+					bind:value={formData.languages}
 					placeholder={m.onboarding_fluent_languages_placeholder()}
-					class="w-full px-4 py-3 border-2 rounded-md transition-all {errors.fluentLanguages
+					class="w-full px-4 py-3 border-2 rounded-md transition-all {errors.languages
 						? 'border-error'
 						: 'border-taupe/20 hover:border-taupe/40 focus:border-bronze focus:outline-none'}"
 				/>
 				<p class="text-xs text-slate">{m.onboarding_fluent_languages_helper()}</p>
-				{#if errors.fluentLanguages}
-					<p class="text-sm text-error">{errors.fluentLanguages}</p>
+				{#if errors.languages}
+					<p class="text-sm text-error">{errors.languages}</p>
 				{/if}
 			</div>
 
@@ -341,66 +342,66 @@
 
 			<!-- Mobile Number -->
 			<div class="space-y-3">
-				<label for="mobileNumber" class="block text-sm font-medium text-midnyt">
+				<label for="phone" class="block text-sm font-medium text-midnyt">
 					{m.onboarding_mobile_number_label()}
 				</label>
 				<input
-					id="mobileNumber"
+					id="phone"
 					type="tel"
-					bind:value={formData.mobileNumber}
+					bind:value={formData.phone}
 					placeholder={m.onboarding_mobile_number_placeholder()}
-					class="w-full px-4 py-3 border-2 rounded-md transition-all {errors.mobileNumber
+					class="w-full px-4 py-3 border-2 rounded-md transition-all {errors.phone
 						? 'border-error'
 						: 'border-taupe/20 hover:border-taupe/40 focus:border-bronze focus:outline-none'}"
 				/>
-				{#if errors.mobileNumber}
-					<p class="text-sm text-error">{errors.mobileNumber}</p>
+				{#if errors.phone}
+					<p class="text-sm text-error">{errors.phone}</p>
 				{/if}
 			</div>
 
 			<!-- Self Description -->
 			<div class="space-y-3">
-				<label for="selfDescription" class="block text-sm font-medium text-midnyt">
+				<label for="bio" class="block text-sm font-medium text-midnyt">
 					{m.onboarding_self_description_label()}
 				</label>
 				<textarea
-					id="selfDescription"
-					bind:value={formData.selfDescription}
+					id="bio"
+					bind:value={formData.bio}
 					placeholder={m.onboarding_self_description_placeholder()}
 					rows="4"
 					maxlength="500"
-					class="w-full px-4 py-3 border-2 rounded-md transition-all resize-none {errors.selfDescription
+					class="w-full px-4 py-3 border-2 rounded-md transition-all resize-none {errors.bio
 						? 'border-error'
 						: 'border-taupe/20 hover:border-taupe/40 focus:border-bronze focus:outline-none'}"
 				></textarea>
 				<p class="text-xs text-slate">
-					{m.onboarding_self_description_helper({ length: formData.selfDescription?.length || 0 })}
+					{m.onboarding_self_description_helper({ length: formData.bio?.length || 0 })}
 				</p>
-				{#if errors.selfDescription}
-					<p class="text-sm text-error">{errors.selfDescription}</p>
+				{#if errors.bio}
+					<p class="text-sm text-error">{errors.bio}</p>
 				{/if}
 			</div>
 
 			<!-- Partner Expectations -->
 			<div class="space-y-3">
-				<label for="partnerExpectations" class="block text-sm font-medium text-midnyt">
+				<label for="seeking" class="block text-sm font-medium text-midnyt">
 					{m.onboarding_partner_expectations_label()}
 				</label>
 				<textarea
-					id="partnerExpectations"
-					bind:value={formData.partnerExpectations}
+					id="seeking"
+					bind:value={formData.seeking}
 					placeholder={m.onboarding_partner_expectations_placeholder()}
 					rows="4"
 					maxlength="500"
-					class="w-full px-4 py-3 border-2 rounded-md transition-all resize-none {errors.partnerExpectations
+					class="w-full px-4 py-3 border-2 rounded-md transition-all resize-none {errors.seeking
 						? 'border-error'
 						: 'border-taupe/20 hover:border-taupe/40 focus:border-bronze focus:outline-none'}"
 				></textarea>
 				<p class="text-xs text-slate">
-					{m.onboarding_partner_expectations_helper({ length: formData.partnerExpectations?.length || 0 })}
+					{m.onboarding_partner_expectations_helper({ length: formData.seeking?.length || 0 })}
 				</p>
-				{#if errors.partnerExpectations}
-					<p class="text-sm text-error">{errors.partnerExpectations}</p>
+				{#if errors.seeking}
+					<p class="text-sm text-error">{errors.seeking}</p>
 				{/if}
 			</div>
 

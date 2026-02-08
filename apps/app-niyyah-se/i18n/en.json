@@ -148,5 +148,11 @@
 	"gender_female": "Female",
 	"marital_status_single": "Single",
 	"marital_status_divorced": "Divorced",
-	"marital_status_widowed": "Widowed"
+	"marital_status_widowed": "Widowed",
+	"profile_name": "Name",
+	"profile_languages": "Languages",
+	"profile_phone": "Phone",
+	"profile_nationality": "Nationality",
+	"profile_bio": "About Me",
+	"profile_seeking": "Looking For"
 }

@@ -75,7 +75,7 @@ export const user = schema.table('user', {
 
 ## Naming Conventions
 
-- **SQL column names**: Use snake_case (e.g., `birth_year`, `created_at`)
+- **SQL column names**: Use snake_case (e.g., `birth_year`, `created_at`). Prefer short single word names and do not repeat the table name.
 - **TypeScript property names**: Use camelCase (e.g., `birthYear`, `createdAt`)
 - **Table names**: Use singular form (e.g., `user`, not `users`)
 

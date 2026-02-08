@@ -148,5 +148,11 @@
 	"gender_female": "أنثى",
 	"marital_status_single": "أعزب/عزباء",
 	"marital_status_divorced": "مطلق/مطلقة",
-	"marital_status_widowed": "أرمل/أرملة"
+	"marital_status_widowed": "أرمل/أرملة",
+	"profile_name": "الاسم",
+	"profile_languages": "اللغات",
+	"profile_phone": "رقم الهاتف",
+	"profile_nationality": "الجنسية",
+	"profile_bio": "نبذة عني",
+	"profile_seeking": "أبحث عن"
 }

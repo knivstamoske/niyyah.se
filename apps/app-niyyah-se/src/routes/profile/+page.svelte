@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
-	import { MapPin, Calendar, User, ArrowRight, Pencil, Heart } from 'lucide-svelte';
+	import { MapPin, Calendar, User, ArrowRight, Pencil, Heart, Flag, Languages, Phone } from 'lucide-svelte';
 	import { STATUS_CONFIG } from '$lib/client/domain/user-status';
 	import { getAge, capitalize } from '$lib/shared/utils/formatters';
 	import { getGenderLabel, getMaritalStatusLabel } from '$lib/shared/utils/profile-labels';
@@ -20,14 +20,14 @@
 	<!-- Welcome Section -->
 	<section class="space-y-6">
 	<h1 class="text-4xl md:text-5xl font-light text-taupe tracking-tight">
-		{@html m.profile_welcome_back({ name: `<span class="font-semibold text-midnyt">${data.profile?.fullName}</span>` })}
+		{@html m.profile_welcome_back({ name: `<span class="font-semibold text-midnyt">${data.profile?.name}</span>` })}
 	</h1>
 	</section>
 
 	<!-- Status Section -->
 	<section class="space-y-4">
 	<h2 class="text-sm uppercase tracking-widest text-slate font-medium">
-		Current Status
+		{m.profile_current_status()}
 	</h2>
 	<div
 		class="bg-white border-l-4 border-bronze p-6 flex items-start gap-4 hover:border-bronze/70 transition-colors duration-300"
@@ -43,7 +43,7 @@
 	<!-- Action Items -->
 	<section class="space-y-4">
 	<h2 class="text-sm uppercase tracking-widest text-slate font-medium">
-		Action Items
+		{m.profile_action_items()}
 	</h2>
 		{#if actionItems.length > 0}
 			<div class="space-y-3">
@@ -95,54 +95,129 @@
 				</a>
 			</div>
 
-		<div class="bg-white border border-taupe/20 p-8">
-			<div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
-					<!-- Location -->
-					<div class="space-y-2">
-					<div class="flex items-center gap-2 text-slate">
-						<MapPin class="w-4 h-4 text-bronze" />
-						<p class="text-xs uppercase tracking-widest font-medium">{m.profile_location()}</p>
-					</div>
-					<p class="text-lg font-medium text-midnyt pl-6">
-							{capitalize(data.profile.kommun)}
-						</p>
+				<div class="bg-white border border-taupe/20 p-8 space-y-8">
+					<!-- Personal Info Grid -->
+					<div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
+						<!-- Name -->
+						<div class="space-y-2">
+							<div class="flex items-center gap-2 text-slate">
+								<User class="w-4 h-4 text-bronze" />
+								<p class="text-xs uppercase tracking-widest font-medium">{m.profile_name()}</p>
+							</div>
+							<p class="text-lg font-medium text-midnyt pl-6">
+								{data.profile.name}
+							</p>
+						</div>
+
+						<!-- Age -->
+						<div class="space-y-2">
+							<div class="flex items-center gap-2 text-slate">
+								<Calendar class="w-4 h-4 text-bronze" />
+								<p class="text-xs uppercase tracking-widest font-medium">{m.profile_age()}</p>
+							</div>
+							<p class="text-lg font-medium text-midnyt pl-6">
+								{m.profile_age_years({ age: getAge(data.profile.birthYear) })}
+							</p>
+						</div>
+
+						<!-- Location -->
+						<div class="space-y-2">
+							<div class="flex items-center gap-2 text-slate">
+								<MapPin class="w-4 h-4 text-bronze" />
+								<p class="text-xs uppercase tracking-widest font-medium">{m.profile_location()}</p>
+							</div>
+							<p class="text-lg font-medium text-midnyt pl-6">
+								{capitalize(data.profile.kommun)}
+							</p>
+						</div>
+
+						<!-- Nationality -->
+						<div class="space-y-2">
+							<div class="flex items-center gap-2 text-slate">
+								<Flag class="w-4 h-4 text-bronze" />
+								<p class="text-xs uppercase tracking-widest font-medium">
+									{m.profile_nationality()}
+								</p>
+							</div>
+							<p class="text-lg font-medium text-midnyt pl-6">
+								{data.profile.nationality}
+							</p>
+						</div>
+
+						<!-- Gender -->
+						<div class="space-y-2">
+							<div class="flex items-center gap-2 text-slate">
+								<User class="w-4 h-4 text-bronze" />
+								<p class="text-xs uppercase tracking-widest font-medium">{m.profile_gender()}</p>
+							</div>
+							<p class="text-lg font-medium text-midnyt pl-6">
+								{getGenderLabel(data.profile.gender)}
+							</p>
+						</div>
+
+						<!-- Marital Status -->
+						<div class="space-y-2">
+							<div class="flex items-center gap-2 text-slate">
+								<Heart class="w-4 h-4 text-bronze" />
+								<p class="text-xs uppercase tracking-widest font-medium">
+									{m.profile_marital_status()}
+								</p>
+							</div>
+							<p class="text-lg font-medium text-midnyt pl-6">
+								{getMaritalStatusLabel(data.profile.maritalStatus)}
+							</p>
+						</div>
+
+						<!-- Languages -->
+						<div class="space-y-2">
+							<div class="flex items-center gap-2 text-slate">
+								<Languages class="w-4 h-4 text-bronze" />
+								<p class="text-xs uppercase tracking-widest font-medium">{m.profile_languages()}</p>
+							</div>
+							<p class="text-lg font-medium text-midnyt pl-6">
+								{data.profile.languages}
+							</p>
+						</div>
+
+						<!-- Phone (Optional) -->
+						{#if data.profile.phone}
+							<div class="space-y-2">
+								<div class="flex items-center gap-2 text-slate">
+									<Phone class="w-4 h-4 text-bronze" />
+									<p class="text-xs uppercase tracking-widest font-medium">{m.profile_phone()}</p>
+								</div>
+								<p class="text-lg font-medium text-midnyt pl-6">
+									{data.profile.phone}
+								</p>
+							</div>
+						{/if}
 					</div>
 
-					<!-- Age -->
-					<div class="space-y-2">
-					<div class="flex items-center gap-2 text-slate">
-						<Calendar class="w-4 h-4 text-bronze" />
-						<p class="text-xs uppercase tracking-widest font-medium">{m.profile_age()}</p>
-					</div>
-					<p class="text-lg font-medium text-midnyt pl-6">
-							{m.profile_age_years({ age: getAge(data.profile.birthYear) })}
+					<hr class="border-taupe/10" />
+
+					<!-- Bio -->
+					<div class="space-y-3">
+						<p class="text-xs uppercase tracking-widest font-medium text-slate">
+							{m.profile_bio()}
 						</p>
+						<div class="prose prose-slate max-w-none text-midnyt leading-relaxed">
+							{data.profile.bio}
+						</div>
 					</div>
 
-					<!-- Gender -->
-					<div class="space-y-2">
-					<div class="flex items-center gap-2 text-slate">
-						<User class="w-4 h-4 text-bronze" />
-						<p class="text-xs uppercase tracking-widest font-medium">{m.profile_gender()}</p>
-					</div>
-					<p class="text-lg font-medium text-midnyt pl-6">
-							{getGenderLabel(data.profile.gender)}
-						</p>
-					</div>
+					<hr class="border-taupe/10" />
 
-					<!-- Marital Status -->
-					<div class="space-y-2">
-					<div class="flex items-center gap-2 text-slate">
-						<Heart class="w-4 h-4 text-bronze" />
-						<p class="text-xs uppercase tracking-widest font-medium">{m.profile_marital_status()}</p>
-					</div>
-					<p class="text-lg font-medium text-midnyt pl-6">
-							{getMaritalStatusLabel(data.profile.maritalStatus)}
+					<!-- Seeking -->
+					<div class="space-y-3">
+						<p class="text-xs uppercase tracking-widest font-medium text-slate">
+							{m.profile_seeking()}
 						</p>
+						<div class="prose prose-slate max-w-none text-midnyt leading-relaxed">
+							{data.profile.seeking}
+						</div>
 					</div>
 				</div>
-			</div>
-		</section>
+			</section>
 	{:else}
 		<section class="space-y-4">
 		<h2 class="text-sm uppercase tracking-widest text-slate font-medium">

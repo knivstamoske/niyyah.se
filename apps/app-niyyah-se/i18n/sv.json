@@ -148,5 +148,11 @@
 	"gender_female": "Kvinna",
 	"marital_status_single": "Ogift",
 	"marital_status_divorced": "Skild",
-	"marital_status_widowed": "Änka/änkling"
+	"marital_status_widowed": "Änka/änkling",
+	"profile_name": "Namn",
+	"profile_languages": "Språk",
+	"profile_phone": "Telefon",
+	"profile_nationality": "Nationalitet",
+	"profile_bio": "Om mig",
+	"profile_seeking": "Söker"
 }

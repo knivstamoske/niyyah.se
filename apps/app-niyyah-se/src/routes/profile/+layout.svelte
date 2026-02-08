@@ -41,7 +41,7 @@
 			</div>
 
 			<div class="flex items-center gap-4">
-				<div class="hidden md:block">
+				<div>
 					<LanguagePicker />
 				</div>
 				<button
