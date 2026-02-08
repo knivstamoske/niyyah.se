@@ -36,19 +36,13 @@ export const deleteCandidateData = command(
 		});
 
 		// Delete guardian data if exists
-		await db
-			.delete(niyyah.guardian)
-			.where(eq(niyyah.guardian.candidateProfileId, profileId));
+		await db.delete(niyyah.guardian).where(eq(niyyah.guardian.candidateProfileId, profileId));
 
 		// Delete messages
-		await db
-			.delete(candidate.message)
-			.where(eq(candidate.message.userId, profile.userId));
+		await db.delete(candidate.message).where(eq(candidate.message.userId, profile.userId));
 
 		// Delete profile (this will cascade to user via foreign key)
-		await db
-			.delete(candidate.profile)
-			.where(eq(candidate.profile.id, profileId));
+		await db.delete(candidate.profile).where(eq(candidate.profile.id, profileId));
 
 		return { success: true };
 	}

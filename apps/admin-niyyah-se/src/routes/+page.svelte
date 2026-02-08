@@ -54,11 +54,7 @@
 		<div class="w-full max-w-md">
 			<!-- Logo -->
 			<div class="flex justify-center mb-10 -mt-36">
-				<img
-					src="/logo/logo-tall.png"
-					alt="Niyyah"
-					class="h-36 object-contain"
-				/>
+				<img src="/logo/logo-tall.png" alt="Niyyah" class="h-36 object-contain" />
 			</div>
 
 			<div class="text-center mb-8">
@@ -85,10 +81,17 @@
 				</div>
 			{:else}
 				<!-- Magic Link Request Form -->
-				<form onsubmit={(e) => { e.preventDefault(); handleSendMagicLink(); }} class="space-y-4">
+				<form
+					onsubmit={(e) => {
+						e.preventDefault();
+						handleSendMagicLink();
+					}}
+					class="space-y-4"
+				>
 					<!-- Email Input -->
 					<div>
-						<label for="email" class="block text-sm font-medium mb-2">{m.login_email_label()}</label>
+						<label for="email" class="block text-sm font-medium mb-2">{m.login_email_label()}</label
+						>
 						<input
 							id="email"
 							type="email"

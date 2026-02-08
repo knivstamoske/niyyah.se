@@ -1,12 +1,18 @@
 <script lang="ts">
-	import { getCandidates } from '../candidates/getCandidates.remote';
+	import type { PageData } from './$types';
+	// getCandidates removed, now loaded in +page.server.ts
 	import { updateCandidateStatus } from '../candidates/[id]/updateCandidateStatus.remote';
 	import { goto } from '$app/navigation';
+	import { m } from '$lib/i18n/messages.js';
+	import { ArrowLeft, Check, X, CheckCircle, Eye } from 'lucide-svelte';
 
-	/**
-	 * filters is the static filter for pending verification candidates.
-	 */
-	const filters = { status: 'verifying' as any, gender: 'all' as any, search: '' };
+	let { data }: { data: PageData } = $props();
+	const candidates = $derived(data.candidates);
+
+	// ... (rest of script remains mostly same, remove filters definition if unused or keep for consistency)
+
+	// Since filters are handled in server load, we might not need them here unless for UI state.
+    // But data is already loaded.
 
 	let approvingIds = $state(new Set<string>());
 	let rejectingIds = $state(new Set<string>());
@@ -83,104 +89,129 @@
 </script>
 
 <svelte:head>
-	<title>Verification Queue | Admin Portal</title>
+	<title>{m.admin_verification_title()} | {m.admin_portal_title()}</title>
 </svelte:head>
 
-<div class="min-h-screen bg-white text-midnyt">
-	<div class="mx-auto max-w-7xl px-4 py-8">
-		<!-- Header -->
-		<div class="mb-8">
-			<button
-				onclick={() => goto('/dashboard/candidates')}
-				class="text-bronze hover:underline text-sm font-medium mb-4"
-			>
-				← Back to Candidates
-			</button>
-			<h1 class="text-3xl font-bold">Verification Queue</h1>
-			<p class="text-slate mt-2">Approve or reject candidates awaiting manual verification</p>
+<div class="px-4 py-8">
+	<!-- Header -->
+	<div class="mb-8">
+		<button
+			onclick={() => goto('/dashboard/candidates')}
+			class="text-bronze hover:underline text-sm font-medium mb-4 flex items-center gap-1"
+		>
+			<ArrowLeft class="w-4 h-4" />
+			{m.admin_verification_back()}
+		</button>
+		<h1 class="text-3xl font-bold">{m.admin_verification_title()}</h1>
+		<p class="text-slate mt-2">{m.admin_verification_subtitle()}</p>
+	</div>
+
+	<!-- Verification Queue -->
+	{#if candidates.length === 0}
+		<div
+			class="text-center py-12 bg-cream border border-taupe/20 rounded-md flex flex-col items-center gap-4"
+		>
+			<CheckCircle class="w-12 h-12 text-success/50" />
+			<div>
+				<p class="text-slate font-medium">{m.admin_verification_empty()}</p>
+				<p class="text-slate text-sm mt-1">{m.admin_verification_empty_message()}</p>
+			</div>
+		</div>
+	{:else}
+		<div class="mb-4 text-sm text-slate">
+			{m.admin_verification_count({
+				count: candidates.length,
+				plural: candidates.length !== 1 ? 's' : ''
+			})}
 		</div>
 
-		<!-- Verification Queue -->
-		{#await getCandidates(filters)}
-			<div class="text-center py-12">
-				<p class="text-slate">Loading verification queue...</p>
-			</div>
-		{:then candidates}
-			{#if candidates.length === 0}
-				<div class="text-center py-12 bg-cream border border-taupe/20 rounded-md">
-					<p class="text-slate">No candidates pending verification</p>
-					<p class="text-slate text-sm mt-2">All caught up! 🎉</p>
-				</div>
-			{:else}
-				<div class="mb-4 text-sm text-slate">
-					{candidates.length} candidate{candidates.length !== 1 ? 's' : ''} awaiting verification
-				</div>
-
-				<div class="space-y-4">
-					{#each candidates as candidate}
-						<div class="bg-white border border-taupe/20 rounded-md p-6">
-							<div class="flex justify-between items-start mb-4">
-								<div>
-									<h2 class="text-xl font-bold">{candidate.name}</h2>
-									<p class="text-sm text-slate mt-1">{candidate.email}</p>
-								</div>
-								<div class="flex gap-2">
-									<button
-										onclick={() => handleViewProfile(candidate.id)}
-										class="px-4 py-2 bg-cream text-midnyt rounded-md hover:bg-cream/80 transition-colors text-sm font-medium"
-									>
-										View Full Profile
-									</button>
-								</div>
+		<div class="space-y-4">
+			{#each candidates as candidate (candidate.id)}
+				<div class="bg-white border border-taupe/20 rounded-md p-6">
+					<div class="flex justify-between items-start mb-4">
+						<div>
+							<div class="flex items-center gap-2">
+								<h2 class="text-xl font-bold">{candidate.name}</h2>
+								{#if candidate.emailVerified}
+									<div title="Email Verified">
+										<CheckCircle class="w-4 h-4 text-success" />
+									</div>
+								{/if}
 							</div>
+							<p class="text-sm text-slate mt-1">{candidate.email}</p>
+						</div>
+						<div class="flex gap-2">
+							<button
+								onclick={() => handleViewProfile(candidate.id)}
+								class="px-4 py-2 bg-cream text-midnyt rounded-md hover:bg-cream/80 transition-colors text-sm font-medium flex items-center gap-2"
+							>
+								<Eye class="w-4 h-4" />
+								{m.admin_verification_view_profile()}
+							</button>
+						</div>
+					</div>
 
-							<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-								<div>
-									<div class="text-xs text-slate mb-1">Age</div>
-									<div class="text-sm font-medium">{calculateAge(candidate.birthYear)} years old</div>
-								</div>
-								<div>
-									<div class="text-xs text-slate mb-1">Gender</div>
-									<div class="text-sm font-medium capitalize">{candidate.gender}</div>
-								</div>
-								<div>
-									<div class="text-xs text-slate mb-1">Marital Status</div>
-									<div class="text-sm font-medium capitalize">{candidate.maritalStatus}</div>
-								</div>
-								<div>
-									<div class="text-xs text-slate mb-1">Kommun</div>
-									<div class="text-sm font-medium">{candidate.kommun}</div>
-								</div>
-							</div>
-
-							<div class="mb-4 text-xs text-slate">
-								Registered: {formatDate(candidate.createdAt)}
-							</div>
-
-							<div class="flex gap-3">
-								<button
-									onclick={() => handleApprove(candidate.id)}
-									disabled={approvingIds.has(candidate.id)}
-									class="bg-success text-white px-6 py-2 rounded-md hover:bg-success/90 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
-								>
-									{approvingIds.has(candidate.id) ? 'Approving...' : 'Approve'}
-								</button>
-								<button
-									onclick={() => handleReject(candidate.id, candidate.name)}
-									disabled={rejectingIds.has(candidate.id)}
-									class="bg-error text-white px-6 py-2 rounded-md hover:bg-error/90 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
-								>
-									{rejectingIds.has(candidate.id) ? 'Rejecting...' : 'Reject'}
-								</button>
+					<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6 text-sm">
+						<div>
+							<div class="text-xs text-slate mb-1">{m.admin_table_age()}</div>
+							<div class="font-medium text-midnyt">{calculateAge(candidate.birthYear)}</div>
+						</div>
+						<div>
+							<div class="text-xs text-slate mb-1">{m.admin_table_gender()}</div>
+							<div class="font-medium capitalize text-midnyt">
+								{candidate.gender === 'male'
+									? m.gender_male_capitalized()
+									: m.gender_female_capitalized()}
 							</div>
 						</div>
-					{/each}
+						<div>
+							<div class="text-xs text-slate mb-1">{m.admin_profile_marital_status()}</div>
+							<div class="font-medium capitalize text-midnyt">{candidate.maritalStatus}</div>
+						</div>
+						<div>
+							<div class="text-xs text-slate mb-1">{m.admin_table_kommun()}</div>
+							<div class="font-medium text-midnyt">{candidate.kommun}</div>
+						</div>
+					</div>
+
+					<div class="mb-4 text-xs text-slate">
+						{m.admin_profile_registered()}: {formatDate(candidate.createdAt)}
+					</div>
+
+					<div class="flex gap-3">
+						<button
+							onclick={() => handleApprove(candidate.id)}
+							disabled={approvingIds.has(candidate.id)}
+							class="bg-midnyt text-white px-6 py-2 rounded-md hover:bg-midnyt/90 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+						>
+							{#if approvingIds.has(candidate.id)}
+								<span
+									class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"
+								></span>
+								{m.admin_action_approving()}
+							{:else}
+								<Check class="w-4 h-4" />
+								{m.admin_action_approve()}
+							{/if}
+						</button>
+						<button
+							onclick={() => handleReject(candidate.id, candidate.name)}
+							disabled={rejectingIds.has(candidate.id)}
+							class="bg-white border border-taupe/20 text-midnyt px-6 py-2 rounded-md hover:bg-cream transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+						>
+							{#if rejectingIds.has(candidate.id)}
+								<span
+									class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"
+								></span>
+								{m.admin_action_rejecting()}
+							{:else}
+								<X class="w-4 h-4" />
+								{m.admin_action_reject()}
+							{/if}
+						</button>
+					</div>
 				</div>
-			{/if}
-		{:catch error}
-			<div class="bg-cream border-l-4 border-error p-4">
-				<p class="text-sm text-error">Failed to load verification queue</p>
-			</div>
-		{/await}
-	</div>
+			{/each}
+		</div>
+	{/if}
 </div>

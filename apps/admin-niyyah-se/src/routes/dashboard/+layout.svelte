@@ -2,6 +2,9 @@
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
 	import { authClient } from '$lib/client/auth';
+	import { LanguagePicker } from '$lib/client/ui';
+	import { m } from '$lib/i18n/messages.js';
+	import { LayoutDashboard, Users, CheckCircle, Scale, LogOut } from 'lucide-svelte';
 
 	let { children } = $props();
 
@@ -9,70 +12,88 @@
 	 * NAV_ITEMS are the navigation menu items for the admin dashboard.
 	 */
 	const NAV_ITEMS = [
-		{ href: '/dashboard', label: 'Dashboard', icon: '📊' },
-		{ href: '/dashboard/candidates', label: 'Candidates', icon: '👥' },
-		{ href: '/dashboard/verification', label: 'Verification Queue', icon: '✓' },
-		{ href: '/dashboard/compliance', label: 'Compliance', icon: '⚖️' }
+		{ path: '/dashboard', label: () => m.admin_nav_dashboard(), icon: LayoutDashboard },
+		{ path: '/dashboard/candidates', label: () => m.admin_nav_candidates(), icon: Users },
+		{ path: '/dashboard/compliance', label: () => m.admin_nav_compliance(), icon: Scale }
 	];
 
 	/**
-	 * isActive checks if a navigation item is currently active.
-	 */
-	function isActive(href: string): boolean {
-		if (href === '/dashboard') {
-			return page.url.pathname === '/dashboard';
-		}
-		return page.url.pathname.startsWith(href);
-	}
-
-	/**
-	 * handleLogout logs out the current admin user.
+	 * handleLogout logs the user out and redirects to the home page.
 	 */
 	async function handleLogout() {
-		await authClient.signOut();
-		goto('/');
+		await authClient.signOut({
+			fetchOptions: {
+				onSuccess: () => goto('/')
+			}
+		});
 	}
 </script>
 
-<div class="min-h-screen bg-white flex">
-	<!-- Sidebar -->
-	<aside class="w-64 bg-cream border-r border-taupe/20 flex flex-col">
-		<!-- Logo -->
-		<div class="p-6 border-b border-taupe/20">
-			<h1 class="text-xl font-bold text-midnyt">Niyyah Admin</h1>
-			<p class="text-xs text-slate mt-1">Administrator Portal</p>
-		</div>
+<svelte:head>
+	<title>{m.admin_portal_title()}</title>
+</svelte:head>
 
-		<!-- Navigation -->
-		<nav class="flex-1 p-4">
-			<ul class="space-y-1">
-				{#each NAV_ITEMS as item}
-					<li>
+<div
+	class="min-h-screen bg-app-background text-app-text font-sans selection:bg-app-primary selection:text-white"
+>
+	<!-- Header -->
+	<header class="border-b border-app-primary/10 bg-white/95 backdrop-blur-sm sticky top-0 z-50">
+		<div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+			<div class="flex items-center gap-8">
+				<a href="/dashboard" class="flex items-center hover:opacity-80 transition-opacity">
+					<img src="/logo/logo-wide.png" alt="Niyyah.se" class="h-8 object-contain" />
+				</a>
+
+				<!-- Navigation -->
+				<nav class="hidden md:flex items-center gap-1">
+					{#each NAV_ITEMS as item}
+						{@const isActive = page.url.pathname === item.path}
 						<a
-							href={item.href}
-							class="flex items-center gap-3 px-4 py-2.5 rounded-md transition-colors text-sm font-medium {isActive(item.href) ? 'bg-bronze/20 text-bronze' : 'text-midnyt hover:bg-taupe/10'}"
+							href={item.path}
+							class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors {isActive
+								? 'bg-cream text-midnyt'
+								: 'text-slate hover:text-midnyt hover:bg-cream/50'}"
 						>
-							<span class="text-lg">{item.icon}</span>
-							<span>{item.label}</span>
+							<svelte:component this={item.icon} class="w-4 h-4" />
+							{item.label()}
 						</a>
-					</li>
-				{/each}
-			</ul>
-		</nav>
+					{/each}
+				</nav>
+			</div>
 
-		<!-- User Info & Logout -->
-		<div class="p-4 border-t border-taupe/20">
-			<button
-				onclick={handleLogout}
-				class="w-full px-4 py-2 bg-midnyt text-cream rounded-md hover:bg-midnyt/90 transition-colors text-sm font-medium"
-			>
-				Logout
-			</button>
+			<div class="flex items-center gap-4">
+				<div>
+					<LanguagePicker />
+				</div>
+				<button
+					onclick={handleLogout}
+					class="flex items-center gap-2 p-2 text-app-subtle-text hover:text-app-primary hover:bg-app-primary/5 transition-all rounded-sm group"
+					title={m.admin_logout()}
+				>
+					<LogOut class="w-5 h-5 group-hover:scale-110 transition-transform" />
+				</button>
+			</div>
 		</div>
-	</aside>
+
+		<!-- Mobile Navigation -->
+		<nav class="md:hidden border-t border-app-primary/10 px-4 py-2 flex gap-1 overflow-x-auto">
+			{#each NAV_ITEMS as item}
+				{@const isActive = page.url.pathname === item.path}
+				<a
+					href={item.path}
+					class="flex items-center gap-2 px-3 py-2 rounded-md text-xs font-medium transition-colors whitespace-nowrap {isActive
+						? 'bg-cream text-midnyt'
+						: 'text-slate hover:text-midnyt hover:bg-cream/50'}"
+				>
+					<svelte:component this={item.icon} class="w-4 h-4" />
+					{item.label()}
+				</a>
+			{/each}
+		</nav>
+	</header>
 
 	<!-- Main Content -->
-	<main class="flex-1 overflow-y-auto">
+	<main class="max-w-7xl mx-auto px-6 py-12">
 		{@render children()}
 	</main>
 </div>

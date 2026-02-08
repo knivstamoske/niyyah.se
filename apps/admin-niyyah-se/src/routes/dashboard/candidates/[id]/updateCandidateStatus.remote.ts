@@ -9,7 +9,15 @@ import { eq } from 'drizzle-orm';
  */
 const UpdateCandidateStatusSchema = z.object({
 	profileId: z.string().uuid(),
-	newStatus: z.enum(['onboarding', 'verifying', 'active', 'paused', 'matched', 'archived', 'banned']),
+	newStatus: z.enum([
+		'onboarding',
+		'verifying',
+		'active',
+		'paused',
+		'matched',
+		'archived',
+		'banned'
+	]),
 	reason: z.string().optional()
 });
 
@@ -39,12 +47,18 @@ export const updateCandidateStatus = command(
 			.where(eq(candidate.profile.id, profileId));
 
 		// Log the status change event
-		const eventType = newStatus === 'banned' ? 'ban'
-			: newStatus === 'archived' ? 'archive'
-			: newStatus === 'paused' ? 'pause'
-			: newStatus === 'active' && profile.currentStatus === 'paused' ? 'resume'
-			: newStatus === 'active' && profile.currentStatus === 'verifying' ? 'verify'
-			: null;
+		const eventType =
+			newStatus === 'banned'
+				? 'ban'
+				: newStatus === 'archived'
+					? 'archive'
+					: newStatus === 'paused'
+						? 'pause'
+						: newStatus === 'active' && profile.currentStatus === 'paused'
+							? 'resume'
+							: newStatus === 'active' && profile.currentStatus === 'verifying'
+								? 'verify'
+								: null;
 
 		if (eventType) {
 			await db.insert(niyyah.userEvent).values({

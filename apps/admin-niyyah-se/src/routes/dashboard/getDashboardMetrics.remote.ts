@@ -18,9 +18,9 @@ export const getDashboardMetrics = query(async () => {
 
 	// Calculate totals
 	const totalCandidates = candidatesByStatus.reduce((acc, curr) => acc + curr.count, 0);
-	const pendingVerifications = candidatesByStatus.find(s => s.status === 'verifying')?.count || 0;
-	const activeCandidates = candidatesByStatus.find(s => s.status === 'active')?.count || 0;
-	const pausedCandidates = candidatesByStatus.find(s => s.status === 'paused')?.count || 0;
+	const pendingVerifications = candidatesByStatus.find((s) => s.status === 'verifying')?.count || 0;
+	const activeCandidates = candidatesByStatus.find((s) => s.status === 'active')?.count || 0;
+	const pausedCandidates = candidatesByStatus.find((s) => s.status === 'paused')?.count || 0;
 
 	// Gender distribution
 	const candidatesByGender = await db
@@ -31,8 +31,8 @@ export const getDashboardMetrics = query(async () => {
 		.from(candidate.profile)
 		.groupBy(candidate.profile.gender);
 
-	const maleCandidates = candidatesByGender.find(g => g.gender === 'male')?.count || 0;
-	const femaleCandidates = candidatesByGender.find(g => g.gender === 'female')?.count || 0;
+	const maleCandidates = candidatesByGender.find((g) => g.gender === 'male')?.count || 0;
+	const femaleCandidates = candidatesByGender.find((g) => g.gender === 'female')?.count || 0;
 
 	// Geographic distribution (top 10 kommuner)
 	const candidatesByKommun = await db
@@ -63,7 +63,7 @@ export const getDashboardMetrics = query(async () => {
 		pausedCandidates,
 		maleCandidates,
 		femaleCandidates,
-		candidatesByStatus: candidatesByStatus.map(s => ({
+		candidatesByStatus: candidatesByStatus.map((s) => ({
 			status: s.status,
 			count: s.count
 		})),
