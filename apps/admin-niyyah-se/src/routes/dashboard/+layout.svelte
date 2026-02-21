@@ -4,7 +4,7 @@
 	import { authClient } from '$lib/client/auth';
 	import { LanguagePicker } from '$lib/client/ui';
 	import { m } from '$lib/i18n/messages.js';
-	import { LayoutDashboard, Users, CheckCircle, Scale, LogOut } from 'lucide-svelte';
+	import { LayoutDashboard, Users, CheckCircle, Scale, LogOut, Shield } from 'lucide-svelte';
 
 	let { children } = $props();
 
@@ -14,6 +14,7 @@
 	const NAV_ITEMS = [
 		{ path: '/dashboard', label: () => m.admin_nav_dashboard(), icon: LayoutDashboard },
 		{ path: '/dashboard/candidates', label: () => m.admin_nav_candidates(), icon: Users },
+		{ path: '/dashboard/facilitators', label: () => m.admin_nav_facilitators(), icon: Shield },
 		{ path: '/dashboard/compliance', label: () => m.admin_nav_compliance(), icon: Scale }
 	];
 
@@ -48,13 +49,14 @@
 				<nav class="hidden md:flex items-center gap-1">
 					{#each NAV_ITEMS as item}
 						{@const isActive = page.url.pathname === item.path}
+						{@const Icon = item.icon}
 						<a
 							href={item.path}
 							class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors {isActive
 								? 'bg-cream text-midnyt'
 								: 'text-slate hover:text-midnyt hover:bg-cream/50'}"
 						>
-							<svelte:component this={item.icon} class="w-4 h-4" />
+							<Icon class="w-4 h-4" />
 							{item.label()}
 						</a>
 					{/each}
@@ -79,13 +81,14 @@
 		<nav class="md:hidden border-t border-app-primary/10 px-4 py-2 flex gap-1 overflow-x-auto">
 			{#each NAV_ITEMS as item}
 				{@const isActive = page.url.pathname === item.path}
+				{@const Icon = item.icon}
 				<a
 					href={item.path}
 					class="flex items-center gap-2 px-3 py-2 rounded-md text-xs font-medium transition-colors whitespace-nowrap {isActive
 						? 'bg-cream text-midnyt'
 						: 'text-slate hover:text-midnyt hover:bg-cream/50'}"
 				>
-					<svelte:component this={item.icon} class="w-4 h-4" />
+					<Icon class="w-4 h-4" />
 					{item.label()}
 				</a>
 			{/each}

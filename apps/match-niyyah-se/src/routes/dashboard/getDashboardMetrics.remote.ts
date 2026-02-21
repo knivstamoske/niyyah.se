@@ -1,13 +1,14 @@
 import { query } from '$app/server';
 import { db } from '$lib/server/db';
-import { candidate } from '@niyyah/db';
-import { sql, count } from 'drizzle-orm';
+import { candidate, niyyah } from '@niyyah/db';
+import { count } from 'drizzle-orm';
 
 /**
- * getDashboardMetrics is a query that fetches platform-wide metrics for the facilitator dashboard.
+ * getDashboardMetrics is a query that fetches facilitator-specific work queue metrics.
+ * This includes candidate action items and meeting status counts.
  */
 export const getDashboardMetrics = query(async () => {
-	// Total users by status
+	// Candidate counts by status (for action items)
 	const candidatesByStatus = await db
 		.select({
 			status: candidate.profile.status,
@@ -16,58 +17,36 @@ export const getDashboardMetrics = query(async () => {
 		.from(candidate.profile)
 		.groupBy(candidate.profile.status);
 
-	// Calculate totals
-	const totalCandidates = candidatesByStatus.reduce((acc, curr) => acc + curr.count, 0);
-	const pendingVerifications = candidatesByStatus.find((s) => s.status === 'verifying')?.count || 0;
-	const activeCandidates = candidatesByStatus.find((s) => s.status === 'active')?.count || 0;
-	const pausedCandidates = candidatesByStatus.find((s) => s.status === 'paused')?.count || 0;
+	const pendingVerification = candidatesByStatus.find((s) => s.status === 'verifying')?.count || 0;
+	const readyToMatch = candidatesByStatus.find((s) => s.status === 'active')?.count || 0;
+	const inMatching = candidatesByStatus.find((s) => s.status === 'matching')?.count || 0;
+	const totalMatched = candidatesByStatus.find((s) => s.status === 'matched')?.count || 0;
 
-	// Gender distribution
-	const candidatesByGender = await db
+	// Meeting counts by status (for meetings overview)
+	const meetingsByStatus = await db
 		.select({
-			gender: candidate.profile.gender,
+			status: niyyah.meeting.status,
 			count: count()
 		})
-		.from(candidate.profile)
-		.groupBy(candidate.profile.gender);
+		.from(niyyah.meeting)
+		.groupBy(niyyah.meeting.status);
 
-	const maleCandidates = candidatesByGender.find((g) => g.gender === 'male')?.count || 0;
-	const femaleCandidates = candidatesByGender.find((g) => g.gender === 'female')?.count || 0;
-
-	// Geographic distribution (top 10 kommuner)
-	const candidatesByKommun = await db
-		.select({
-			kommun: candidate.profile.kommun,
-			count: count()
-		})
-		.from(candidate.profile)
-		.groupBy(candidate.profile.kommun)
-		.orderBy(sql`count(*) DESC`)
-		.limit(10);
-
-	// Recent registrations (last 30 days)
-	const thirtyDaysAgo = new Date();
-	thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-
-	const [recentRegistrations] = await db
-		.select({ count: count() })
-		.from(candidate.user)
-		.where(sql`${candidate.user.createdAt} >= ${thirtyDaysAgo.toISOString()}`);
-
-	const newRegistrations30d = recentRegistrations?.count || 0;
+	const meetingsScheduling =
+		meetingsByStatus.find((s) => s.status === 'scheduling')?.count || 0;
+	const meetingsScheduled =
+		meetingsByStatus.find((s) => s.status === 'scheduled')?.count || 0;
+	const meetingsPendingFeedback =
+		meetingsByStatus.find((s) => s.status === 'pending_feedback')?.count || 0;
 
 	return {
-		totalCandidates,
-		pendingVerifications,
-		activeCandidates,
-		pausedCandidates,
-		maleCandidates,
-		femaleCandidates,
-		candidatesByStatus: candidatesByStatus.map((s) => ({
-			status: s.status,
-			count: s.count
-		})),
-		candidatesByKommun,
-		newRegistrations30d
+		// Candidate action items
+		pendingVerification,
+		readyToMatch,
+		inMatching,
+		totalMatched,
+		// Meeting overview
+		meetingsScheduling,
+		meetingsScheduled,
+		meetingsPendingFeedback
 	};
 });

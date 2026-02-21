@@ -5,7 +5,7 @@ import { sveltekitCookies } from 'better-auth/svelte-kit';
 import { getRequestEvent } from '$app/server';
 import { config } from '$lib/server/config';
 import { db } from '$lib/server/db';
-import { administrator } from '@niyyah/db/schema';
+import { facilitator } from '@niyyah/db/schema';
 import nodemailer from 'nodemailer';
 import { createMagicLinkEmail, LINK_EXPIRY } from '$lib/server/email/magic-link-template';
 
@@ -20,8 +20,8 @@ const transporter = nodemailer.createTransport({
 });
 
 /**
- * auth is the better-auth instance configured for the administrator application.
- * It uses the 'administrator' PostgreSQL schema for storing authentication data.
+ * auth is the better-auth instance configured for the match/facilitator application.
+ * It uses the 'facilitator' PostgreSQL schema for storing authentication data.
  *
  * Authentication: Magic link (passwordless) via email
  */
@@ -29,10 +29,10 @@ export const auth = betterAuth({
 	database: drizzleAdapter(db, {
 		provider: 'pg',
 		schema: {
-			user: administrator.user,
-			session: administrator.session,
-			account: administrator.account,
-			verification: administrator.verification
+			user: facilitator.user,
+			session: facilitator.session,
+			account: facilitator.account,
+			verification: facilitator.verification
 		}
 	}),
 	// Secret for signing tokens (required for production)

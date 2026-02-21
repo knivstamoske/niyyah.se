@@ -16,6 +16,7 @@ const envSchema = z.object({
 		.optional()
 		.transform((val) => val === 'true' || val === '1'),
 	SMTP_USER: z.string().optional(),
+	SMTP_PASS: z.string().optional(),
 	SMTP_FROM: z.email()
 });
 

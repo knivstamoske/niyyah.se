@@ -2,24 +2,18 @@
 	import { getDashboardMetrics } from './getDashboardMetrics.remote';
 	import { getRecentActivity } from './getRecentActivity.remote';
 	import { m } from '$lib/i18n/messages.js';
-	import { Users, UserCheck, CheckCircle, PauseCircle, Activity, Clock } from 'lucide-svelte';
-
-	/**
-	 * STATUS_LABELS maps candidate status metrics to their translation keys.
-	 */
-	const STATUS_LABELS: Record<string, () => string> = {
-		onboarding: () => m.match_status_onboarding(),
-		verifying: () => m.match_status_verifying(),
-		active: () => m.match_status_active(),
-		paused: () => m.match_status_paused(),
-		matched: () => m.match_status_matched(),
-		archived: () => m.match_status_archived(),
-		banned: () => m.match_status_banned()
-	};
+	import {
+		Clock,
+		UserCheck,
+		HeartHandshake,
+		CalendarClock,
+		CalendarCheck,
+		MessageSquareDot,
+		Activity
+	} from 'lucide-svelte';
 
 	/**
 	 * EVENT_TYPE_LABELS maps user event types to human-readable labels.
-	 * TODO: Add specific translations for event types in next phase
 	 */
 	const EVENT_TYPE_LABELS: Record<string, string> = {
 		register: 'Registered',
@@ -57,14 +51,6 @@
 		if (diffHour < 24) return m.match_activity_time_ago({ time: `${diffHour}h` });
 		return m.match_activity_time_ago({ time: `${diffDay}d` });
 	}
-
-	/**
-	 * calculatePercentage calculates percentage with safe division by zero.
-	 */
-	function calculatePercentage(part: number, total: number): number {
-		if (total === 0) return 0;
-		return Math.round((part / total) * 100);
-	}
 </script>
 
 <svelte:head>
@@ -80,165 +66,114 @@
 
 	{#await getDashboardMetrics()}
 		<div class="text-center py-12">
-			<p class="text-slate">{m.match_loading_metrics()}</p>
+			<p class="text-slate">{m.match_loading_dashboard()}</p>
 		</div>
 	{:then metrics}
-		<!-- Platform Metrics Cards -->
-		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-			<!-- Total Candidates -->
-			<div class="bg-white border border-taupe/20 rounded-md p-6 relative overflow-hidden">
-				<div class="absolute top-4 right-4 text-taupe/20">
-					<Users class="w-12 h-12" />
-				</div>
-				<div class="relative z-10">
-					<div class="text-sm text-slate mb-1">{m.match_metric_total_candidates()}</div>
-					<div class="text-3xl font-bold text-midnyt">{metrics.totalCandidates}</div>
-					<div class="text-xs text-slate mt-2">
-						{m.match_metric_new_registrations({ count: metrics.newRegistrations30d })}
+		<!-- Candidates Needing Attention -->
+		<div class="mb-8">
+			<h2 class="text-lg font-semibold mb-4">{m.match_section_candidates()}</h2>
+			<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+				<!-- Pending Verification -->
+				<a
+					href="/dashboard/candidates?status=verifying"
+					class="bg-white border border-taupe/20 rounded-md p-6 relative overflow-hidden block transition-colors hover:bg-cream/50 cursor-pointer"
+				>
+					<div class="absolute top-4 right-4 text-warning/20">
+						<Clock class="w-12 h-12" />
 					</div>
-				</div>
-			</div>
+					<div class="relative z-10">
+						<div class="text-sm text-slate mb-1">{m.match_metric_pending_verification()}</div>
+						<div class="text-3xl font-bold text-warning">{metrics.pendingVerification}</div>
+						<div class="text-xs text-slate mt-2">{m.match_metric_pending_verification_sub()}</div>
+					</div>
+				</a>
 
-			<!-- Pending Verifications -->
-			<!-- Pending Verifications -->
-			<a
-				href="/dashboard/candidates?status=verifying"
-				class="bg-white border border-taupe/20 rounded-md p-6 relative overflow-hidden block transition-colors hover:bg-cream/50 cursor-pointer"
-			>
-				<div class="absolute top-4 right-4 text-warning/20">
-					<Clock class="w-12 h-12" />
-				</div>
-				<div class="relative z-10">
-					<div class="text-sm text-slate mb-1">{m.match_metric_pending_verifications()}</div>
-					<div class="text-3xl font-bold text-warning">{metrics.pendingVerifications}</div>
-					<div class="text-xs text-slate mt-2">{m.match_metric_requires_attention()}</div>
-				</div>
-			</a>
+				<!-- Ready to Match -->
+				<a
+					href="/dashboard/candidates?status=active"
+					class="bg-white border border-taupe/20 rounded-md p-6 relative overflow-hidden block transition-colors hover:bg-cream/50 cursor-pointer"
+				>
+					<div class="absolute top-4 right-4 text-success/20">
+						<UserCheck class="w-12 h-12" />
+					</div>
+					<div class="relative z-10">
+						<div class="text-sm text-slate mb-1">{m.match_metric_ready_to_match()}</div>
+						<div class="text-3xl font-bold text-success">{metrics.readyToMatch}</div>
+						<div class="text-xs text-slate mt-2">{m.match_metric_ready_to_match_sub()}</div>
+					</div>
+				</a>
 
-			<!-- Active Candidates -->
-			<div class="bg-white border border-taupe/20 rounded-md p-6 relative overflow-hidden">
-				<div class="absolute top-4 right-4 text-success/20">
-					<UserCheck class="w-12 h-12" />
-				</div>
-				<div class="relative z-10">
-					<div class="text-sm text-slate mb-1">{m.match_metric_active_candidates()}</div>
-					<div class="text-3xl font-bold text-success">{metrics.activeCandidates}</div>
-					<div class="text-xs text-slate mt-2">{m.match_metric_ready_for_matching()}</div>
-				</div>
-			</div>
-
-			<!-- Paused Candidates -->
-			<div class="bg-white border border-taupe/20 rounded-md p-6 relative overflow-hidden">
-				<div class="absolute top-4 right-4 text-slate/10">
-					<PauseCircle class="w-12 h-12" />
-				</div>
-				<div class="relative z-10">
-					<div class="text-sm text-slate mb-1">{m.match_metric_paused_candidates()}</div>
-					<div class="text-3xl font-bold text-slate">{metrics.pausedCandidates}</div>
-					<div class="text-xs text-slate mt-2">{m.match_metric_temporarily_inactive()}</div>
-				</div>
+				<!-- In Matching -->
+				<a
+					href="/dashboard/candidates?status=matching"
+					class="bg-white border border-taupe/20 rounded-md p-6 relative overflow-hidden block transition-colors hover:bg-cream/50 cursor-pointer"
+				>
+					<div class="absolute top-4 right-4 text-bronze/20">
+						<HeartHandshake class="w-12 h-12" />
+					</div>
+					<div class="relative z-10">
+						<div class="text-sm text-slate mb-1">{m.match_metric_in_matching()}</div>
+						<div class="text-3xl font-bold text-bronze">{metrics.inMatching}</div>
+						<div class="text-xs text-slate mt-2">{m.match_metric_in_matching_sub()}</div>
+					</div>
+				</a>
 			</div>
 		</div>
 
-		<!-- Two Column Layout for Charts -->
-		<div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-			<!-- Candidate Lifecycle Funnel -->
-			<div class="bg-white border border-taupe/20 rounded-md p-6">
-				<h2 class="text-xl font-bold mb-4">{m.match_chart_lifecycle()}</h2>
-				<div class="space-y-3">
-					{#each metrics.candidatesByStatus as { status, count }}
-						{@const percentage = calculatePercentage(count, metrics.totalCandidates)}
-						<div>
-							<div class="flex justify-between text-sm mb-1">
-								<span class="font-medium">{STATUS_LABELS[status]?.() || status}</span>
-								<span class="text-slate">{count} ({percentage}%)</span>
-							</div>
-							<div class="bg-cream rounded-sm h-2">
-								<div
-									class="bg-bronze rounded-sm h-2 transition-all"
-									style="width: {percentage}%"
-								></div>
-							</div>
-						</div>
-					{/each}
-				</div>
-			</div>
-
-			<!-- Gender Distribution -->
-			<div class="bg-white border border-taupe/20 rounded-md p-6">
-				<h2 class="text-xl font-bold mb-4">{m.match_chart_gender_distribution()}</h2>
-				<div class="space-y-4">
-					<!-- Male -->
-					<div>
-						<div class="flex justify-between text-sm mb-1">
-							<span class="font-medium">{m.gender_male_capitalized()}</span>
-							<span class="text-slate">
-								{metrics.maleCandidates} ({calculatePercentage(
-									metrics.maleCandidates,
-									metrics.totalCandidates
-								)}%)
-							</span>
-						</div>
-						<div class="bg-cream rounded-sm h-2">
-							<div
-								class="bg-midnyt rounded-sm h-2 transition-all"
-								style="width: {calculatePercentage(
-									metrics.maleCandidates,
-									metrics.totalCandidates
-								)}%"
-							></div>
-						</div>
+		<!-- Meetings Overview -->
+		<div class="mb-8">
+			<h2 class="text-lg font-semibold mb-4">{m.match_section_meetings()}</h2>
+			<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+				<!-- Scheduling -->
+				<div class="bg-white border border-taupe/20 rounded-md p-6 relative overflow-hidden">
+					<div class="absolute top-4 right-4 text-slate/10">
+						<CalendarClock class="w-12 h-12" />
 					</div>
+					<div class="relative z-10">
+						<div class="text-sm text-slate mb-1">{m.match_meeting_scheduling()}</div>
+						<div class="text-3xl font-bold text-midnyt">{metrics.meetingsScheduling}</div>
+						<div class="text-xs text-slate mt-2">{m.match_meeting_scheduling_sub()}</div>
+					</div>
+				</div>
 
-					<!-- Female -->
-					<div>
-						<div class="flex justify-between text-sm mb-1">
-							<span class="font-medium">{m.gender_female_capitalized()}</span>
-							<span class="text-slate">
-								{metrics.femaleCandidates} ({calculatePercentage(
-									metrics.femaleCandidates,
-									metrics.totalCandidates
-								)}%)
-							</span>
+				<!-- Scheduled / Upcoming -->
+				<div class="bg-white border border-taupe/20 rounded-md p-6 relative overflow-hidden">
+					<div class="absolute top-4 right-4 text-success/20">
+						<CalendarCheck class="w-12 h-12" />
+					</div>
+					<div class="relative z-10">
+						<div class="text-sm text-slate mb-1">{m.match_meeting_scheduled()}</div>
+						<div class="text-3xl font-bold text-success">{metrics.meetingsScheduled}</div>
+						<div class="text-xs text-slate mt-2">{m.match_meeting_scheduled_sub()}</div>
+					</div>
+				</div>
+
+				<!-- Awaiting Feedback -->
+				<div
+					class="bg-white border border-taupe/20 rounded-md p-6 relative overflow-hidden"
+					class:border-warning={metrics.meetingsPendingFeedback > 0}
+					class:border-l-4={metrics.meetingsPendingFeedback > 0}
+				>
+					<div class="absolute top-4 right-4 text-warning/20">
+						<MessageSquareDot class="w-12 h-12" />
+					</div>
+					<div class="relative z-10">
+						<div class="text-sm text-slate mb-1">{m.match_meeting_pending_feedback()}</div>
+						<div
+							class="text-3xl font-bold"
+							class:text-warning={metrics.meetingsPendingFeedback > 0}
+							class:text-midnyt={metrics.meetingsPendingFeedback === 0}
+						>
+							{metrics.meetingsPendingFeedback}
 						</div>
-						<div class="bg-cream rounded-sm h-2">
-							<div
-								class="bg-bronze rounded-sm h-2 transition-all"
-								style="width: {calculatePercentage(
-									metrics.femaleCandidates,
-									metrics.totalCandidates
-								)}%"
-							></div>
-						</div>
+						<div class="text-xs text-slate mt-2">{m.match_meeting_pending_feedback_sub()}</div>
 					</div>
 				</div>
 			</div>
 		</div>
-
-		<!-- Geographic Distribution -->
-		<div class="bg-white border border-taupe/20 rounded-md p-6 mb-8">
-			<h2 class="text-xl font-bold mb-4">{m.match_chart_geographic_distribution()}</h2>
-			<div class="space-y-3">
-				{#each metrics.candidatesByKommun as { kommun, count }}
-					{@const percentage = calculatePercentage(count, metrics.totalCandidates)}
-					<div>
-						<div class="flex justify-between text-sm mb-1">
-							<span class="font-medium">{kommun}</span>
-							<span class="text-slate">{count} ({percentage}%)</span>
-						</div>
-						<div class="bg-cream rounded-sm h-2">
-							<div
-								class="bg-taupe rounded-sm h-2 transition-all"
-								style="width: {percentage}%"
-							></div>
-						</div>
-					</div>
-				{/each}
-			</div>
-		</div>
-	{:catch error}
+	{:catch}
 		<div class="bg-cream border-l-4 border-error p-4 mb-8">
-			<p class="text-sm text-error">{m.match_error_load_metrics()}</p>
+			<p class="text-sm text-error">{m.match_error_load_dashboard()}</p>
 		</div>
 	{/await}
 
@@ -251,7 +186,7 @@
 
 		{#await getRecentActivity()}
 			<div class="text-center py-8">
-				<p class="text-slate">Loading recent activity...</p>
+				<p class="text-slate">{m.match_activity_time_ago({ time: '...' })}</p>
 			</div>
 		{:then activities}
 			{#if activities.length === 0}
@@ -274,9 +209,9 @@
 					{/each}
 				</div>
 			{/if}
-		{:catch error}
+		{:catch}
 			<div class="bg-cream border-l-4 border-error p-4">
-				<p class="text-sm text-error">Failed to load recent activity</p>
+				<p class="text-sm text-error">{m.match_error_load_dashboard()}</p>
 			</div>
 		{/await}
 	</div>

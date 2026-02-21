@@ -74,3 +74,6 @@ export const auth = betterAuth({
 		sveltekitCookies(getRequestEvent)
 	]
 });
+
+export * from './app-client';
+export * from './match-client';

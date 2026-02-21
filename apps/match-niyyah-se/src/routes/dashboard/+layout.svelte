@@ -4,7 +4,7 @@
 	import { authClient } from '$lib/client/auth';
 	import { LanguagePicker } from '$lib/client/ui';
 	import { m } from '$lib/i18n/messages.js';
-	import { LayoutDashboard, Users, CheckCircle, Scale, LogOut } from 'lucide-svelte';
+	import { LayoutDashboard, Users, CheckCircle, Scale, LogOut, CalendarDays } from 'lucide-svelte';
 
 	let { children } = $props();
 
@@ -14,6 +14,7 @@
 	const NAV_ITEMS = [
 		{ path: '/dashboard', label: () => m.match_nav_dashboard(), icon: LayoutDashboard },
 		{ path: '/dashboard/candidates', label: () => m.match_nav_candidates(), icon: Users },
+		{ path: '/dashboard/meetings', label: () => m.match_nav_meetings(), icon: CalendarDays },
 		{ path: '/dashboard/compliance', label: () => m.match_nav_compliance(), icon: Scale }
 	];
 

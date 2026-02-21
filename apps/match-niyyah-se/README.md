@@ -5,8 +5,8 @@ Administrator portal for Niyyah.se - internal staff portal for platform operatio
 ## Application Details
 
 - **Production URL:** `https://match.niyyah.se`
-- **Development Port:** `8010`
-- **Port Range:** `8010-8019` (Reserved to avoid conflicts)
+- **Development Port:** `8030`
+- **Port Range:** `8030-8039` (Reserved to avoid conflicts)
 
 ## Technology Stack
 
@@ -60,7 +60,7 @@ pnpm drizzle-kit push
 pnpm start
 ```
 
-The application will be available at `http://localhost:8010`
+The application will be available at `http://localhost:8030`
 
 ## Testing
 
