@@ -35,6 +35,7 @@
 		{ value: 'verifying', label: 'Pending Verification' },
 		{ value: 'active', label: 'Active' },
 		{ value: 'paused', label: 'Paused' },
+		{ value: 'matching', label: 'Matching' },
 		{ value: 'matched', label: 'Matched' },
 		{ value: 'archived', label: 'Archived' },
 		{ value: 'banned', label: 'Banned' }
@@ -190,8 +191,8 @@
 					<div>
 						<div class="text-xs text-slate mb-1">{m.admin_profile_languages()}</div>
 						<div class="font-medium text-midnyt">
-							{#if profile.languages && profile.languages.length > 0}
-								{profile.languages.join(', ')}
+							{#if profile.languages}
+								{profile.languages}
 							{:else}
 								{m.admin_na()}
 							{/if}
@@ -227,10 +228,10 @@
 							<div class="text-xs text-slate mb-1">{m.admin_profile_guardian_name()}</div>
 							<div class="font-medium text-midnyt">{guardian.name}</div>
 						</div>
-						<div>
+						<!-- <div>
 							<div class="text-xs text-slate mb-1">Relationship</div>
 							<div class="font-medium text-midnyt">{guardian.relationship}</div>
-						</div>
+						</div> -->
 						<div>
 							<div class="text-xs text-slate mb-1">{m.admin_profile_guardian_phone()}</div>
 							<div class="font-medium text-midnyt">{guardian.phone || m.admin_na()}</div>

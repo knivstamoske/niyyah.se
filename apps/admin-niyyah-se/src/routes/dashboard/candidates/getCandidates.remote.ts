@@ -9,7 +9,7 @@ import { and, count, desc, eq, ilike, or, sql } from 'drizzle-orm';
  */
 const CandidateFiltersSchema = z.object({
 	status: z
-		.enum(['all', 'onboarding', 'verifying', 'active', 'paused', 'matched', 'archived', 'banned'])
+		.enum(['all', 'onboarding', 'verifying', 'active', 'paused', 'matching', 'matched', 'archived', 'banned'])
 		.optional(),
 	gender: z.enum(['all', 'male', 'female']).optional(),
 	search: z.string().optional()

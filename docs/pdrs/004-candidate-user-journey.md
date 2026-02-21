@@ -45,13 +45,50 @@ We will implement a candidate user journey based on the following strict princip
 ### Candidate Lifecycle & States
 
 The candidate moves through the following states:
+
+```text
+       ┌────────────┐
+       │ Onboarding │
+       └──────┬─────┘
+              │ (Submit profile)
+              ▼
+    ┌────────────────────┐
+    │Pending Verification│
+    └─────────┬──────────┘
+              │ (Vetted by facilitator)
+              ▼
+       ┌────────────┐        (Pause)        ┌────────────┐
+       │   Active   │─────────────────────► │   Paused   │
+       └────┬───▲───┘ ◄─────────────────────└──────────┬─┘
+            │   │            (Resume)                  │
+ (Propose)  │   │ (Decline)                            │
+            ▼   │                                      │
+       ┌────────────┐                                  │
+       │  Matching  │                                  │
+       └────┬───▲───┘                                  │
+            │   │                                      │
+  (Accept)  │   │ (Match fails)                        │
+            ▼   │                                      │
+       ┌────────────┐                                  │
+       │  Matched   │                                  │
+       └──────┬─────┘                                  │
+              │ (Married / Leave platform)             │
+              ▼                                        │
+       ┌────────────┐                                  │
+       │  Archived  │◄─────────────────────────────────┘
+       └────────────┘            (Leave platform)
+
+ * Note: Any state can transition to [Banned] for policy violations.
+```
+
 1.  **Onboarding**: Filling out profile and guardian details.
 2.  **Pending Verification**: Awaiting manual vetting by a facilitator.
 3.  **Active / Ready for Matching**: Vetted and available for facilitators to match.
 4.  **Paused**: Candidate voluntarily pauses matching (available only after full onboarding + verification).
-5.  **Matched / In Progress**: Engaging with a potential partner.
-6.  **Archived**: Successfully married or decided to leave. Profile is stored briefly, then deleted.
-7.  **Banned**: Permanently removed for policy violations.
+5.  **Matching**: Facilitator has proposed a match, pending candidate decisions.
+6.  **Matched / In Progress**: Engaging with a potential partner.
+7.  **Archived**: Successfully married or decided to leave. Profile is stored briefly, then deleted.
+8.  **Banned**: Permanently removed for policy violations.
 
 ### Monetization
 

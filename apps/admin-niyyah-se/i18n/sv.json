@@ -189,6 +189,7 @@
 	"admin_status_verifying": "Väntande Verifiering",
 	"admin_status_active": "Aktiv",
 	"admin_status_paused": "Pausad",
+	"admin_status_matching": "Matchar",
 	"admin_status_matched": "Matchad",
 	"admin_status_archived": "Arkiverad",
 	"admin_status_banned": "Bannlyst",

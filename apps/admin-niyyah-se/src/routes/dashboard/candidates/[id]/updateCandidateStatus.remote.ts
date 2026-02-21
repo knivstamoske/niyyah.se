@@ -14,6 +14,7 @@ const UpdateCandidateStatusSchema = z.object({
 		'verifying',
 		'active',
 		'paused',
+		'matching',
 		'matched',
 		'archived',
 		'banned'
@@ -54,11 +55,13 @@ export const updateCandidateStatus = command(
 					? 'archive'
 					: newStatus === 'paused'
 						? 'pause'
-						: newStatus === 'active' && profile.currentStatus === 'paused'
-							? 'resume'
-							: newStatus === 'active' && profile.currentStatus === 'verifying'
-								? 'verify'
-								: null;
+						: newStatus === 'matching'
+							? 'propose_match'
+							: newStatus === 'active' && profile.currentStatus === 'paused'
+								? 'resume'
+								: newStatus === 'active' && profile.currentStatus === 'verifying'
+									? 'verify'
+									: null;
 
 		if (eventType) {
 			await db.insert(niyyah.userEvent).values({

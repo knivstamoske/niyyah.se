@@ -14,6 +14,7 @@
 		{ value: 'verifying', label: () => m.admin_status_verifying() },
 		{ value: 'active', label: () => m.admin_status_active() },
 		{ value: 'paused', label: () => m.admin_status_paused() },
+		{ value: 'matching', label: () => m.admin_status_matching() },
 		{ value: 'matched', label: () => m.admin_status_matched() },
 		{ value: 'archived', label: () => m.admin_status_archived() },
 		{ value: 'banned', label: () => m.admin_status_banned() }
@@ -36,6 +37,7 @@
 		verifying: 'bg-warning/20 text-warning',
 		active: 'bg-success/20 text-success',
 		paused: 'bg-taupe/20 text-taupe',
+		matching: 'bg-bronze/20 text-bronze',
 		matched: 'bg-bronze/20 text-bronze',
 		archived: 'bg-slate/20 text-slate',
 		banned: 'bg-error/20 text-error'

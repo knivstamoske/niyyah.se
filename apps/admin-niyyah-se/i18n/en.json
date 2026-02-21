@@ -189,6 +189,7 @@
 	"admin_status_verifying": "Pending Verification",
 	"admin_status_active": "Active",
 	"admin_status_paused": "Paused",
+	"admin_status_matching": "Matching",
 	"admin_status_matched": "Matched",
 	"admin_status_archived": "Archived",
 	"admin_status_banned": "Banned",

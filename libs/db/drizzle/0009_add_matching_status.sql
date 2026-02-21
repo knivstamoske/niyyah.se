@@ -1,0 +1,1 @@
+ALTER TYPE "candidate"."candidate_status" ADD VALUE 'matching' BEFORE 'matched';

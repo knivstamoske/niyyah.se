@@ -92,6 +92,7 @@ export const candidateStatus = schema.enum("candidate_status", [
   "verifying",
   "active",
   "paused",
+  "matching",
   "matched",
   "archived",
   "banned",
