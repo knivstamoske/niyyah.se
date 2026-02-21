@@ -16,7 +16,7 @@ Traditional monolithic applications with role-based access control (RBAC) within
 
 ## Decision
 
-We will build **five separate frontend applications**, each serving a specific purpose with isolated user bases and independent deployment:
+We will build **four separate frontend applications**, each serving a specific purpose with isolated user bases and independent deployment:
 
 ### 1. MarketingWebsite (`niyyah.se`)
 
@@ -44,21 +44,9 @@ We will build **five separate frontend applications**, each serving a specific p
   - Notifications about proposed sittings
   - Booking management
   - Post-sitting feedback
+  - Guardian (wali) coordination and verification
 
-### 3. GuardianWebapp (`wali.niyyah.se`)
-
-- **Purpose:** Verification portal for guardians (wali) of women candidates
-- **Technology:** SvelteKit with full-stack capabilities, deployed as PWA
-- **Authentication:** Magic link/OTP-based, no traditional signup
-- **Features:**
-  - One-time link verification from SMS/email
-  - View sitting details for their ward
-  - Confirm or decline guardian role
-  - Minimal profile (name, relation, contact info)
-  - Notifications about upcoming sittings
-- **Note:** Guardians don't create accounts themselves; they're invited by women candidates
-
-### 4. FacilitatorWebapp (`match.niyyah.se`)
+### 3. FacilitatorWebapp (`match.niyyah.se`)
 
 - **Purpose:** Used by verified individuals who propose matches and coordinate sittings
 - **Technology:** SvelteKit with full-stack capabilities, deployed as PWA
@@ -72,7 +60,7 @@ We will build **five separate frontend applications**, each serving a specific p
   - Internal notes and logs
   - Profile with mosque affiliation metadata (simplified, no organization structure)
 
-### 5. AdministratorPortal (`admin.niyyah.se`)
+### 4. AdministratorPortal (`admin.niyyah.se`)
 
 - **Purpose:** Internal staff portal for platform operations and moderation
 - **Technology:** SvelteKit with full-stack capabilities, deployed as PWA
@@ -103,7 +91,7 @@ We will build **five separate frontend applications**, each serving a specific p
 
 - **Code duplication:** Some authentication and UI patterns will be repeated across apps
   - _Mitigation:_ Shared libraries in `/libs` for common components
-- **Infrastructure complexity:** Five separate deployments instead of one
+- **Infrastructure complexity:** Four separate deployments instead of one
   - _Mitigation:_ Use consistent deployment pipelines and infrastructure-as-code
 - **Cross-application features:** Harder to implement features that span multiple user types
   - _Mitigation:_ Well-defined APIs for inter-application communication
@@ -121,7 +109,6 @@ We will build **five separate frontend applications**, each serving a specific p
 2. Each application should have its own `package.json` and live in `/apps/<app-name>`
 3. Shared TypeScript types and utilities should live in `/libs` for consistency
 4. Environment variables and secrets are managed per-application
-5. GuardianWebapp should implement short-lived tokens since guardians only need access for verification
 
 ## Alternatives Considered
 
