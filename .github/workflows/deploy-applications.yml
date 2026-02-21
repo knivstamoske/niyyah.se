@@ -34,6 +34,12 @@ jobs:
       image_name: ${{ github.repository_owner }}/admin-niyyah-se
       dockerfile: ./apps/admin-niyyah-se/Dockerfile
 
+  build-match:
+    uses: ./.github/workflows/reusable-build.yml
+    with:
+      image_name: ${{ github.repository_owner }}/match-niyyah-se
+      dockerfile: ./apps/match-niyyah-se/Dockerfile
+
   deploy-www:
     needs: build-www
     environment: production
@@ -57,3 +63,11 @@ jobs:
     steps:
       - name: Trigger deployment webhook
         run: curl ${{ secrets.ADMIN_NIYYAH_SE_DEPLOY_WEBHOOK_URL }}
+
+  deploy-match:
+    needs: build-match
+    environment: production
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger deployment webhook
+        run: curl ${{ secrets.MATCH_NIYYAH_SE_DEPLOY_WEBHOOK_URL }}

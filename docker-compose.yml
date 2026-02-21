@@ -54,6 +54,30 @@ services:
     depends_on:
       - postgresql
 
+  match-niyyah-se:
+    profiles: ["apps"]
+    image: match-niyyah-se
+    build:
+      context: .
+      dockerfile: apps/match-niyyah-se/Dockerfile
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      ORIGIN: ${MATCH_NIYYAH_SE_ORIGIN}
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgresql:5432/${POSTGRES_DB}?options=-c%20search_path%3Dfacilitator
+      AUTH_SECRET: ${MATCH_NIYYAH_SE_AUTH_SECRET}
+      SMTP_HOST: ${MATCH_NIYYAH_SE_SMTP_HOST}
+      SMTP_PORT: ${MATCH_NIYYAH_SE_SMTP_PORT}
+      SMTP_SECURE: ${MATCH_NIYYAH_SE_SMTP_SECURE}
+      SMTP_USER: ${MATCH_NIYYAH_SE_SMTP_USER}
+      SMTP_PASS: ${MATCH_NIYYAH_SE_SMTP_PASS}
+      SMTP_FROM: ${MATCH_NIYYAH_SE_SMTP_FROM}
+      LINK_EXPIRY: ${MATCH_NIYYAH_SE_LINK_EXPIRY}
+    ports:
+      - "8030:8030"
+    depends_on:
+      - postgresql
+
   # Use mailpit to test emails when developing
   mailpit:
     image: axllent/mailpit

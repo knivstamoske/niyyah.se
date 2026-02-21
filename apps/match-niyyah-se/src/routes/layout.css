@@ -1,0 +1,4 @@
+@import 'tailwindcss';
+@import '@niyyah/ui/styles.css';
+@plugin '@tailwindcss/forms';
+@plugin '@tailwindcss/typography';
