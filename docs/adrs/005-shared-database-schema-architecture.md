@@ -23,7 +23,6 @@ We will use a **single PostgreSQL database with multiple schemas** to balance da
 Each application gets its own dedicated schema for authentication and application-specific data:
 
 - `candidate` - CandidateWebapp authentication and session data
-- `guardian` - GuardianWebapp authentication and session data
 - `facilitator` - FacilitatorWebapp authentication and session data
 - `administrator` - AdministratorPortal authentication and session data
 - `marketing` - MarketingWebsite waitlist and marketing data
@@ -56,7 +55,7 @@ A central schema containing all shared business domain data:
 
 **Access pattern:**
 
-- All authenticated applications (candidate, guardian, facilitator, administrator) have read/write access to `niyyah`
+- All authenticated applications (candidate, facilitator, administrator) have read/write access to `niyyah`
 - The marketing website does NOT have access to `niyyah` (it only stores pre-registration data)
 - Business logic and constraints are enforced at the application layer and database level.
 
