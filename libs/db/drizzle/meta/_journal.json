@@ -92,6 +92,13 @@
       "when": 1771712206870,
       "tag": "0012_remove_guardian_schema",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1771718594538,
+      "tag": "0013_add_proposal_and_simplify_meeting",
+      "breakpoints": true
     }
   ]
 }

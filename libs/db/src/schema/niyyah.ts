@@ -48,9 +48,6 @@ export const userEvent = schema.table("user_event", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
-/**
- * Meeting status enum based on PDR 005
- */
 export const meetingStatus = schema.enum("meeting_status", [
   "scheduling",
   "scheduled",
@@ -60,13 +57,23 @@ export const meetingStatus = schema.enum("meeting_status", [
 ]);
 
 /**
- * Meeting table for tracking physical meetings between candidates
- * Facilitator sets it up, candidates must give feedback on completion
+ * Proposal status enum based on PDR 006
  */
-export const meeting = schema.table("meeting", {
+export const proposalStatus = schema.enum("proposal_status", [
+  "pending",
+  "accepted",
+  "declined",
+  "withdrawn",
+]);
+
+/**
+ * Proposal table for tracking match proposals between candidates
+ * Facilitator initiates it, both candidates must accept to proceed to a meeting
+ */
+export const proposal = schema.table("proposal", {
   id: uuid("id").primaryKey().defaultRandom(),
 
-  // Candidates involved in the meeting
+  // Candidates involved in the proposal
   candidate1Id: uuid("candidate1_id")
     .notNull()
     .references((): any => profile.id, { onDelete: "cascade" }),
@@ -74,12 +81,37 @@ export const meeting = schema.table("meeting", {
     .notNull()
     .references((): any => profile.id, { onDelete: "cascade" }),
 
-  // The facilitator that is managing this meeting
+  // The facilitator that is managing this proposal
   facilitatorId: text("facilitator_id")
     .notNull()
     .references((): any => facilitatorUser.id, { onDelete: "cascade" }),
 
+  status: proposalStatus("status").notNull().default("pending"),
+
+  // Feedback/Response points
+  candidate1Response: text("candidate1_response"),
+  candidate2Response: text("candidate2_response"),
+
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
+/**
+ * Meeting table for tracking physical meetings between candidates
+ * Facilitator sets it up, candidates must give feedback on completion
+ */
+export const meeting = schema.table("meeting", {
+  id: uuid("id").primaryKey().defaultRandom(),
+
   status: meetingStatus("status").notNull().default("scheduling"),
+
+  // Link to the proposal that initiated this meeting
+  // This provides access to candidate1Id, candidate2Id, and facilitatorId
+  proposalId: uuid("proposal_id")
+    .notNull()
+    .references((): any => proposal.id, {
+      onDelete: "cascade",
+    }),
 
   // Scheduled meeting details
   scheduledAt: timestamp("scheduled_at"),
